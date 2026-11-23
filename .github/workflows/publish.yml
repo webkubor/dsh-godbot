@@ -9,6 +9,11 @@ on:
         description: Annotated release tag to publish
         required: true
         type: string
+      dist_tag:
+        description: npm dist-tag override for this release
+        type: choice
+        default: auto
+        options: [auto, next, latest]
 
 permissions:
   contents: read
@@ -25,6 +30,7 @@ jobs:
     timeout-minutes: 25
     env:
       RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      REQUESTED_DIST_TAG: ${{ inputs.dist_tag || 'auto' }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -49,9 +55,10 @@ jobs:
           version=$(node -p "require('./package.json').version")
           test "$(node -p "require('./package.json').name")" = '@dsh-plugins/nativecrew'
           test "${RELEASE_TAG#nativecrew-}" = "v$version"
-          case "$version" in
-            *-*) echo 'NPM_DIST_TAG=next' >> "$GITHUB_ENV" ;;
-            *) echo 'NPM_DIST_TAG=latest' >> "$GITHUB_ENV" ;;
+          case "$REQUESTED_DIST_TAG:$version" in
+            auto:*-*|next:*) echo 'NPM_DIST_TAG=next' >> "$GITHUB_ENV" ;;
+            auto:*|latest:*) echo 'NPM_DIST_TAG=latest' >> "$GITHUB_ENV" ;;
+            *) exit 1 ;;
           esac
       - run: npm ci
       - run: npm run typecheck
@@ -62,6 +69,7 @@ jobs:
         run: |
           mkdir -p dist
           archive=$(npm pack --pack-destination dist --silent)
-          echo "NPM_ARCHIVE=dist/$archive" >> "$GITHUB_ENV"
+          test -f "./dist/$archive"
+          echo "NPM_ARCHIVE=./dist/$archive" >> "$GITHUB_ENV"
       - name: Publish with npm Trusted Publishing
         run: npm publish "$NPM_ARCHIVE" --access public --tag "$NPM_DIST_TAG"
