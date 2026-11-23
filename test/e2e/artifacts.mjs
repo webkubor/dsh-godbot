@@ -8,16 +8,20 @@ export const repository = fileURLToPath(new URL('../../', import.meta.url))
 export const sha256 = data => createHash('sha256').update(data).digest('hex')
 
 // A /plugins/?? response can contain many packages. Hash each complete NativeCrew registration exactly as delivered.
-export function clientRegistrations(source) {
-  const start = 'window.__ModuleLoader__.load({ id: "dsh-godbot", factory(require) {'
+const packageNames = ['@dsh-plugins/nativecrew', 'dsh-godbot']
+
+export function clientRegistrations(source, names = packageNames) {
   const end = '\nreturn Object.defineProperty({ ...module.exports }, Symbol.toStringTag, { value: "Module" });\n} });'
   const hashes = []
-  let offset = 0
-  for (let i; (i = source.indexOf(start, offset)) >= 0;) {
-    const j = source.indexOf(end, i + start.length)
-    if (j < 0) throw new Error('Incomplete dsh-godbot browser registration')
-    offset = j + end.length
-    hashes.push(sha256(source.slice(i, offset)))
+  for (const name of names) {
+    const start = 'window.__ModuleLoader__.load({ id: "' + name + '", factory(require) {'
+    let offset = 0
+    for (let i; (i = source.indexOf(start, offset)) >= 0;) {
+      const j = source.indexOf(end, i + start.length)
+      if (j < 0) throw new Error('Incomplete browser registration for ' + name)
+      offset = j + end.length
+      hashes.push(sha256(source.slice(i, offset)))
+    }
   }
   return hashes
 }
@@ -26,10 +30,10 @@ export async function inspectArchive(file) {
   const path = resolve(file)
   const member = name => execFileSync('tar', ['-xzOf', path, 'package/' + name], { encoding: 'utf8', maxBuffer: 32_000_000 })
   const pkg = JSON.parse(member('package.json'))
-  if (pkg.name !== 'dsh-godbot') throw new Error('Expected dsh-godbot archive')
+  if (!packageNames.includes(pkg.name)) throw new Error('Expected a NativeCrew or legacy Godbot archive')
   const buildId = member('src/host/build-id.js').match(/buildId\s*=\s*["']([a-f0-9]+)["']/u)?.[1]
   if (!buildId) throw new Error('No Host build ID in ' + path)
-  const registrations = clientRegistrations(member('client.js'))
+  const registrations = clientRegistrations(member('client.js'), [pkg.name])
   if (registrations.length !== 1) throw new Error('Expected one browser registration in ' + path)
   return { path, pkg, version: pkg.version, buildId, clientSha256: registrations[0], sha256: sha256(await readFile(path)) }
 }

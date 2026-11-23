@@ -1,6 +1,6 @@
 {
   "name": "@dsh-plugins/nativecrew",
-  "version": "0.2.0-rc.28",
+  "version": "0.2.0-rc.29",
   "description": "NativeCrew 原生协作：隔离沙箱中的原生 Agent 自动派工与任务交接。",
   "license": "MIT",
   "repository": {
@@ -31,6 +31,7 @@
     "licenses",
     "FEATURE_PARITY.md",
     "README.md",
+    "CHANGELOG.md",
     "icon.svg",
     "locale",
     "brand"
