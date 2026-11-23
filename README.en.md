@@ -43,7 +43,7 @@ For a page delivery, have Codex implement it and Claude Code review it. Open the
 
 ![The NativeCrew task board shows the owner, acceptance criteria, submitted evidence, and review controls](https://raw.githubusercontent.com/webkubor/nativecrew/main/assets/task-board-terracotta.png)
 
-This screenshot shows the current NativeCrew development build with the terracotta theme in DSH Web. The interface language is Chinese. A local test model submitted the sample report through the actual task flow.
+This screenshot shows the NativeCrew terracotta theme running in DSH Web. The interface language is Chinese. A local test model submitted the sample report through the actual task flow.
 
 **Try one assignment.** Open **Settings → Task board → Assign task**, pick a configured Bot, and add acceptance criteria. When the Bot reports back, review its evidence on the board. Save repeated assignments as a workflow.
 

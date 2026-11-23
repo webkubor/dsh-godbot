@@ -118,7 +118,7 @@ export async function createHost({ scratch, browser, reportDir, note }, options 
       active.matches.push(...hashes)
       if (hashes.length !== 1 || hashes[0] !== active.clientSha256) wrongSources.push({ expected: active.clientSha256, received: hashes })
     }).catch(error => {
-      if (res.url().includes('dsh-godbot/client.js') && active === boot) active.failure = error.message
+      if (/(?:nativecrew|dsh-godbot)\/client\.js/u.test(res.url()) && active === boot) active.failure = error.message
     })
     pendingSources.add(read)
     read.finally(() => pendingSources.delete(read))

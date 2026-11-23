@@ -43,7 +43,7 @@
 
 ![NativeCrew 的任务板显示负责人、验收条件、回报证据和验收按钮](https://raw.githubusercontent.com/webkubor/nativecrew/main/assets/task-board-terracotta.png)
 
-截图取自 DSH Web 中运行的 NativeCrew 开发构建，展示仓库当前的陶橙主题。示例任务由本地测试模型回报，同一界面可打开负责人的会话并验收结果。
+截图展示 NativeCrew 陶橙主题在 DSH Web 中的实机效果。示例任务由本地测试模型回报，同一界面可打开负责人的会话并验收结果。
 
 **试一项任务。** 打开 **设置 → 任务板 → 分配任务**，选一个已配置的 Bot，写清交付内容与验收条件。收到回报后，在任务板查看证据并点验收。相同任务需要反复执行时，可保存为工作流。
 
