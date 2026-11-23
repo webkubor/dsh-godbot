@@ -1,16 +1,16 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // A third-party skin (dsh-dream-skin and others) makes DSH's background tokens
-// semi-transparent from its glass sliders. Godbot colors its own surfaces from its theme,
+// semi-transparent from its glass sliders. NativeCrew colors its own surfaces from its theme,
 // so those sliders never reached them. This bridge reads the composed DSH tokens — the
 // value the document actually gets, override layers included — and, only while a token is
-// translucent, lets the matching Godbot surfaces use the theme color at that alpha:
+// translucent, lets the matching NativeCrew surfaces use the theme color at that alpha:
 // the main pane, the cards and settings, the composer glass (all off `--bt-main`) and the
 // sidebar (off `--bt-sidebar`). With no skin, nothing is set and every surface keeps its
 // theme color. Text keeps the theme ink; an alpha floor keeps the theme's contrast on the
 // wallpaper behind the surface.
 
 /**
- * The lowest opacity a Godbot surface takes. Text keeps the theme ink, so the floor is
+ * The lowest opacity a NativeCrew surface takes. Text keeps the theme ink, so the floor is
  * what guarantees its contrast over whatever wallpaper the skin shows: at 0.7 every one
  * of the four themes keeps at least 5:1 over a pure white or a pure black wallpaper
  * (70% of the theme surface, 30% of the wallpaper). A skin asking for more transparency
@@ -103,7 +103,7 @@ export const contrastRatio = (foreground, background) => {
  * The custom properties for the document right now: the composed DSH tokens read from
  * computed styles, and the active theme's colors. Safe to call on every theme change.
  * @param {Document} doc - the document whose body carries the theme and the skin tokens.
- * @param {{ light: object, dark: object }} theme - the active Godbot theme.
+ * @param {{ light: object, dark: object }} theme - the active NativeCrew theme.
  * @param {{ minAlpha?: number }} [options] - the alpha floor.
  * @returns {Record<string, string>} the variables to set (possibly none).
  */

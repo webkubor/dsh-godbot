@@ -15,7 +15,7 @@ import { openFullTeam, openSettingsPage } from '../native-ui.mjs'
 // next start runs the new version. DSH reloads plugins in place, but the running
 // DSH never loads the update: the release here cannot be imported into it (the
 // reload trap), the way rc.16 could not after pnpm moved a dependency it had
-// already resolved, and Godbot keeps answering until the restart.
+// already resolved, and NativeCrew keeps answering until the restart.
 export default async function UPDATE({ makeHost, candidate, scratch, note }) {
   const [major, minor, patch] = candidate.version.split('-')[0].split('.').map(Number)
   const version = `${major}.${minor}.${patch + 1}`
@@ -74,7 +74,7 @@ export default async function UPDATE({ makeHost, candidate, scratch, note }) {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ endpoint: 'update-restart' }),
     })).json())
     assert.equal(earlyRestart.error?.code, 'bot/refused', 'restart requires an installed update')
-    const readyLabel = new RegExp(`^Godbot ${version.replaceAll('.', '\\.')} (可以安装|is ready to install)$`, 'u')
+    const readyLabel = new RegExp(`^NativeCrew ${version.replaceAll('.', '\\.')} (可以安装|is ready to install)$`, 'u')
     const notice = page.locator('.bt-leftcol[data-left=open]').getByRole('button', { name: readyLabel })
     await notice.getByText(readyLabel).waitFor()
     await host.capture('update-sidebar')
@@ -84,7 +84,7 @@ export default async function UPDATE({ makeHost, candidate, scratch, note }) {
     const railNotice = page.locator('.bt-leftcol[data-left=rail]').getByRole('button', { name: readyLabel })
     await railNotice.waitFor()
     await railNotice.click()
-    const details = page.getByRole('dialog', { name: /^(Godbot 更新|Godbot update)$/u })
+    const details = page.getByRole('dialog', { name: /^(NativeCrew 更新|NativeCrew update)$/u })
     await details.waitFor()
     await page.keyboard.press('Escape')
     await details.waitFor({ state: 'hidden' })
@@ -92,11 +92,11 @@ export default async function UPDATE({ makeHost, candidate, scratch, note }) {
     await page.setViewportSize(desktop)
 
     // About also shows the chosen mode and the waiting release.
-    await openSettingsPage(host, /^(关于 Godbot|About Godbot)$/u)
+    await openSettingsPage(host, /^(关于 NativeCrew|About NativeCrew)$/u)
     const mode = page.getByRole('combobox', { name: /^(自动更新|Automatic updates)$/u })
     await mode.waitFor()
     assert.equal(await mode.inputValue(), 'notify')
-    await page.getByText(new RegExp(`Godbot ${version.replaceAll('.', '\\.')} (已下载|is downloaded)`, 'u')).first().waitFor()
+    await page.getByText(new RegExp(`NativeCrew ${version.replaceAll('.', '\\.')} (已下载|is downloaded)`, 'u')).first().waitFor()
     // The settings page fades in; capture it once it has.
     await page.waitForTimeout(800)
     await host.capture('update-ready')
@@ -122,7 +122,7 @@ export default async function UPDATE({ makeHost, candidate, scratch, note }) {
     assert.equal((await host.snapshot()).buildId, candidate.buildId)
     await assert.rejects(host.bot('update-restart'), /Unknown endpoint update-restart/u, 'only the authenticated browser route can restart DSH')
     const v = version.replaceAll('.', '\\.')
-    const installedLabel = new RegExp('^Godbot ' + v + ' (已安装，重启 DSH 后生效|is installed\\. Restart DSH to use it\\.)$', 'u')
+    const installedLabel = new RegExp('^NativeCrew ' + v + ' (已安装，重启 DSH 后生效|is installed\\. Restart DSH to use it\\.)$', 'u')
     const installedNotice = page.getByRole('button', { name: installedLabel })
     if (await installedNotice.getAttribute('aria-expanded') === 'false') await installedNotice.click()
     const restartLabel = /^(重启 DSH|Restart DSH)$/u
@@ -134,7 +134,7 @@ export default async function UPDATE({ makeHost, candidate, scratch, note }) {
 
     await page.keyboard.press('Escape')
     await details.waitFor({ state: 'hidden' })
-    await openSettingsPage(host, /^(关于 Godbot|About Godbot)$/u)
+    await openSettingsPage(host, /^(关于 NativeCrew|About NativeCrew)$/u)
     await page.locator('.bt-settings-layer').getByRole('button', { name: restartLabel }).waitFor()
     await page.locator('button.bt-settings-close:visible').click()
     await installedNotice.click()
@@ -154,7 +154,7 @@ export default async function UPDATE({ makeHost, candidate, scratch, note }) {
     assert.equal((await host.snapshot()).buildId, next.buildId)
     assert.notEqual((await host.bot('hello')).boot, before.boot)
     assert.equal((await host.bot('state')).mainBotId, mainBot, 'the restarted browser still uses the same profile')
-    await page.getByRole('button', { name: new RegExp('^Godbot ' + v + ' (已安装。|is installed\\.)$', 'u') }).waitFor()
+    await page.getByRole('button', { name: new RegExp('^NativeCrew ' + v + ' (已安装。|is installed\\.)$', 'u') }).waitFor()
     await host.capture('update-restarted')
     note('update-running', { version: after.current, phase: after.phase, buildId: next.buildId, automaticBrowserReload: true, asked: [...new Set(asked)] })
   } finally {

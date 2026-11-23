@@ -1,5 +1,5 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
-// Phone link: the computer's end of the Godbot phone app. A paired phone calls the same
+// Phone link: the computer's end of the NativeCrew phone app. A paired phone calls the same
 // api/godbot/team endpoints as this window, end to end encrypted through a Relay Server that only
 // forwards (link/). The computer only connects out, so it needs no open port.
 //

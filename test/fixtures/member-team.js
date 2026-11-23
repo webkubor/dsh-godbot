@@ -56,7 +56,7 @@ export function profileChanges(store, member, req, stateDir) {
     if (!member.workspaceRoot || !within(member.workspaceRoot, cwd)) throw new Error('Choose a directory inside this member’s own managed worktree')
     return { fields, workspace: { cwd, workspaceRoot: member.workspaceRoot } }
   }
-  if (within(join(realpathSync(stateDir), 'worktrees'), cwd)) throw new Error('This directory belongs to a managed Godbot worktree')
+  if (within(join(realpathSync(stateDir), 'worktrees'), cwd)) throw new Error('This directory belongs to a managed NativeCrew worktree')
   return { fields, workspace: memberWorkspace(cwd, mode, member.id, stateDir) }
 }
 export function addMember(store, req, stateDir) {
@@ -72,7 +72,7 @@ export function addMember(store, req, stateDir) {
     throw new Error('A shared read-only workspace requires the Codex read-only sandbox')
   }
   const cwd = directory(req.cwd || team.cwd)
-  if (stateDir && within(join(realpathSync(stateDir), 'worktrees'), cwd)) throw new Error('This directory belongs to a managed Godbot worktree')
+  if (stateDir && within(join(realpathSync(stateDir), 'worktrees'), cwd)) throw new Error('This directory belongs to a managed NativeCrew worktree')
   const workspace = memberWorkspace(cwd, workspaceMode, id, stateDir)
   const member = store.put('members', record({
     id, teamId: team.id, name, role, memory, kind, ...workspace, ...(req.accountProfileId ? { accountProfileId: req.accountProfileId } : {}), nativeId: null, activeTurnId: null,

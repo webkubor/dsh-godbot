@@ -155,7 +155,7 @@ async function openContainer(home, botId, target, config) {
   const docker = dockerCommand(config, target)
   const { id, name } = resource(home, botId)
   const image = target === 'cloud' ? config.cloudImage || config.containerImage : config.containerImage
-  if (!image) throw new Error('Configure the dedicated Godbot browser image in this profile first')
+  if (!image) throw new Error('Configure the dedicated NativeCrew browser image in this profile first')
   if (!(await inspect(docker, 'volume', name, id))) await docker.run('volume', 'create', '--label', label + '=' + id, name)
   // A crashed Host can leave a process that still holds the profile's Chromium lock.
   await stopOwned(docker, name, id)

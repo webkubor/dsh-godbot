@@ -2,7 +2,7 @@ import { workspaceHash, managementHash, legacyAgentsHash, providerSettingsHash, 
 
 export { workspaceHash, managementHash }
 export const panelId = 'dsh-godbot'
-const historyKey = 'dshGodbotWorkspace'
+const historyKey = 'dshNativeCrewWorkspace'
 
 const isWorkspaceHash = hash => workspaceHashes.includes(hash)
 

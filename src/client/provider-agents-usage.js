@@ -65,7 +65,7 @@ function DailyHistory({history}) {
 function LocalDetail({row,period}) {
   const totals = row?.periods?.[period]
   return h('div',{className:'gb-pr-usage-local','data-godbot-account-usage':true},
-    h('div',{className:'gb-pr-heading'},h('strong',null,'Godbot 会话用量'),h(Count,{totals})),
+    h('div',{className:'gb-pr-heading'},h('strong',null,'NativeCrew 会话用量'),h(Count,{totals})),
     (totals?.reports || totals?.unreported) > 0 && row.attribution !== 'unknown' &&
       h('small',{className:'gb-pr-muted'},'按运行环境累计。同一环境更换登录账号后，历史记录仍计入这里。'),
     h(Coverage,{totals}),h(DailyHistory,{history:row?.history}),
@@ -165,7 +165,7 @@ export function UsageOverview({rows,usage,period,setPeriod,select,client,readOnl
   const sorted = usageProviders(rows,data?.providers,period)
   return h('section',{className:'gb-pr-section','data-provider-usage-overview':true},
     h(QuotaComparison,{rows,client,readOnly}),
-    h('div',{className:'gb-pr-heading'},h('h3',null,'Godbot 会话用量'),
+    h('div',{className:'gb-pr-heading'},h('h3',null,'NativeCrew 会话用量'),
       h('button',{type:'button',className:'bt-soft bt-soft-sm',onClick:()=>usage.refresh(true),disabled:usage.loading},'刷新统计')),
     h(PeriodSwitch,{period,setPeriod}),
     h('p',{className:'gb-pr-muted'},'按提供商汇总本工作台收到的 token 计数。'),

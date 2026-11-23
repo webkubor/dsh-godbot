@@ -3,7 +3,7 @@ import { LoopbackMcp } from '../../src/team/mcp.js'
 import { teamTools } from './member-tools.js'
 
 const reads = new Set(['list_members', 'list_tasks'])
-const turnContext = { type: 'string', description: 'Copy the turnContext from this Godbot turn. Earlier turns expire.' }
+const turnContext = { type: 'string', description: 'Copy the turnContext from this NativeCrew turn. Earlier turns expire.' }
 
 // Native MCP transports identify their process/session but do not attest which
 // turn sent a request. A separate value travels only in each actual turn prompt.

@@ -7,7 +7,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import { setTimeout as delay } from 'node:timers/promises'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 import { nextRoutineTime, normalizeRoutineTiming } from '../../src/host/routine-timing.js'
 import { Store } from '../../src/host/store.js'
 import { workspaceCommand } from '../../src/host/workspace-archive.js'
@@ -18,7 +18,7 @@ async function fixture(t) {
   const starts = []
   async function restart() {
     await service?.close()
-    service = new GodbotService({ stateDir: dir, openDriver: async ({ memberId, onEvent }) => ({
+    service = new NativeCrewService({ stateDir: dir, openDriver: async ({ memberId, onEvent }) => ({
       nativeId: memberId, capabilities: {}, close: async () => {},
       start: async turn => { starts.push({ ...turn, finish: () => onEvent({ type: 'done', status: 'completed', turnId: turn.turnId }) }) },
     }) })

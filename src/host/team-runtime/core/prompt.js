@@ -7,7 +7,7 @@
 // Rules sit in tagged blocks, each present only where it applies: group rules for a
 // Bot in a group (or a Main Bot, who runs them), the local-agent block for a Bot that
 // runs on a local agent CLI, which has its own file, shell and web tools instead of
-// Godbot's. Details of how a tool is called live in its own description.
+// NativeCrew's. Details of how a tool is called live in its own description.
 
 const TEAM = [
   '<team>',
@@ -41,7 +41,7 @@ const GROUPS = [
   '</groups>',
 ].join('\n')
 
-// Godbot's own tools for a Bot on a DSH model: web_search, the read tool, the office skill.
+// NativeCrew's own tools for a Bot on a DSH model: web_search, the read tool, the office skill.
 const MODEL_TOOLS = [
   '<files_and_web>',
   '- web_search results say which search backend answered. If web_search fails, never guess URLs or present pages you remember as search results: use a browser tool if you have one, otherwise tell the user that search is unavailable and the reason it gave.',
@@ -49,10 +49,10 @@ const MODEL_TOOLS = [
   '</files_and_web>',
 ].join('\n')
 
-// A local agent CLI keeps its own tools and conventions; Godbot adds only its team tools.
+// A local agent CLI keeps its own tools and conventions; NativeCrew adds only its team tools.
 const LOCAL_AGENT = [
   '<local_agent>',
-  '- You run as a local agent CLI on the user\'s computer, working for Godbot. The team tools these instructions name (list_bots, message_bot, ask_user, show_view, request_secret, remember, recall, read_own_chat and the rest) come from the MCP server named "godbot"; your CLI may list them with a prefix, such as mcp__godbot__message_bot.',
+  '- You run as a local agent CLI on the user\'s computer, working for NativeCrew. The team tools these instructions name (list_bots, message_bot, ask_user, show_view, request_secret, remember, recall, read_own_chat and the rest) come from the MCP server named "godbot"; your CLI may list them with a prefix, such as mcp__godbot__message_bot.',
   '- For files, shell commands, code search, and the web, use your own built-in tools as you normally do. Your own conventions for code, commands, and file references still apply; the reply rules here are about how you talk in the chat.',
   '- A file the user attaches reaches you as a saved path: open it with your own tools. If you cannot read its format, say so and tell the user what to send instead.',
   '</local_agent>',
@@ -84,7 +84,7 @@ const MAIN = [
  * @returns {string}
  */
 export function botPrompt(bot, { main = false, inGroup = false, localAgent = false } = {}) {
-  const identity = `<identity>\nYou are ${bot.name}, a Bot on the user's team in Godbot.${bot.role ? ` Your role: ${bot.role}.` : ''}\n</identity>`
+  const identity = `<identity>\nYou are ${bot.name}, a Bot on the user's team in NativeCrew.${bot.role ? ` Your role: ${bot.role}.` : ''}\n</identity>`
   const instructions = typeof bot.instructions === 'string' && bot.instructions.trim() !== ''
     ? `<instructions_from_the_user>\n${bot.instructions.trim()}\n</instructions_from_the_user>`
     : ''

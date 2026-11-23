@@ -40,7 +40,7 @@ export function readOnlyWorkspaceSnapshot(stateDir, runtime) {
 }
 
 /** Management and automation share the Bot roster, its sessions and its work receipts. */
-export class GodbotService {
+export class NativeCrewService {
   constructor({ stateDir, runtime, config = {}, subprocess }) {
     if (runtime.readOnly()) throw new Error(runtime.readOnly())
     this.stateDir = stateDir
@@ -180,7 +180,7 @@ export class GodbotService {
   }
 
   dispatch(req) {
-    if (this.closing) throw new Error('Godbot is shutting down')
+    if (this.closing) throw new Error('NativeCrew is shutting down')
     const { action } = req
     const rt = this.runtime
     if (rt.readOnly() && (!readActions.has(action) || req.refreshHistory)) throw new Error(rt.readOnly())

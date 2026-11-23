@@ -59,8 +59,8 @@ export default async function E0({ makeHost, candidate, note }) {
   await verifyBotModelHeader(a, godbot, note)
   await openProviderSettingsFromTeam(a)
   const settings = a.page.locator('.bt-settings-nav:visible')
-  await settings.getByRole('button', { name: /^(关于|About).*Godbot$/iu }).click()
-  await a.page.locator('.bt-about-name').getByText('Godbot', { exact: true }).waitFor()
+  await settings.getByRole('button', { name: /^(关于|About).*NativeCrew$/iu }).click()
+  await a.page.locator('.bt-about-name').getByText('NativeCrew', { exact: true }).waitFor()
   await a.page.locator('.bt-about-version').getByText(candidate.version, { exact: false }).waitFor()
   const oldProjectLinks = a.page.locator('a[href*="Fei2411/DS-Bot" i]:visible')
   assert.equal(await oldProjectLinks.count(), 0)
@@ -104,9 +104,9 @@ async function verifyBotModelHeader(host, godbot, note) {
   await showsModel(model.name)
   await showsLevel(defaultLabel)
   const godbotLabel = page.locator('.bt-head .bt-pill-name')
-  await godbotLabel.getByText('GodBot', { exact: true }).waitFor()
+  await godbotLabel.getByText('NativeCrew', { exact: true }).waitFor()
   assert.ok(await godbotLabel.evaluate(label => label.scrollWidth <= label.clientWidth),
-    'the GodBot name fits its desktop chat header')
+    'the NativeCrew name fits its desktop chat header')
 
   await page.locator('.bt-side-collapse').click()
   await page.locator('.bt-leftcol').waitFor({ state: 'detached' })

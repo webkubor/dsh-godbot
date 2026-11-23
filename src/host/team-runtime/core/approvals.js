@@ -1,7 +1,7 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // Approvals. A member's group Session is hidden, so DSH's approval card never shows
-// there and the turn would wait forever: Godbot answers those requests itself, from
-// the group chat. A Bot's own chat keeps DSH's card, but Godbot can answer those too
+// there and the turn would wait forever: NativeCrew answers those requests itself, from
+// the group chat. A Bot's own chat keeps DSH's card, but NativeCrew can answer those too
 // (IM chats, the phone app): the request is raced — whichever side answers first wins,
 // and the other card withdraws.
 import { randomUUID } from 'node:crypto'

@@ -6,7 +6,7 @@ import { spawnAgent } from './discover.js'
 const run = promisify(execFile)
 const windows = process.platform === 'win32'
 
-// Each Godbot handle launches one CLI. An independent process group keeps
+// Each NativeCrew handle launches one CLI. An independent process group keeps
 // its shell commands separate from the host and from other members' CLIs.
 export function ownProcess(spawn = spawnAgent) {
   let child

@@ -1,6 +1,6 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // The Codex app-server engine: `codex app-server --listen stdio://`, one
-// JSON-RPC process per route that multiplexes threads. Godbot Sessions map to
+// JSON-RPC process per route that multiplexes threads. NativeCrew Sessions map to
 // threads; turns stream item notifications back.
 import { JsonRpcPeer, wireProcess, EventQueue } from './jsonrpc.js'
 import { codexInputModalities } from '../../../../drivers/external/codex.js'
@@ -10,7 +10,7 @@ import { cleanEnv, findEngineExecutable, spawnAgent, terminateChild } from '../.
 const MCP_SERVER = 'godbot'
 
 // The team's instructions first, then the user's own from their Codex config,
-// which keep the last word as they would without Godbot.
+// which keep the last word as they would without NativeCrew.
 export function withOwnInstructions(team, own) {
   if (own === undefined || own === '') return team
   return `${team}\n\nThe developer instructions from the user's own Codex configuration still apply:\n\n${own}`
@@ -179,9 +179,9 @@ export class CodexEngine {
       })
     }
     // Codex asks before every MCP tool call under `on-request`. A refusal reads as
-    // "user rejected MCP tool call", so Godbot's own loopback server is approved
+    // "user rejected MCP tool call", so NativeCrew's own loopback server is approved
     // here: toolsFor() already narrowed what the Bot may call. Other servers and
-    // real form elicitations keep the refusal; they are not Godbot's to approve.
+    // real form elicitations keep the refusal; they are not NativeCrew's to approve.
     if (method === 'mcpServer/elicitation/request' && params?.serverName === MCP_SERVER && params?._meta?.codex_approval_kind === 'mcp_tool_call') {
       return Promise.resolve({ action: 'accept', content: null, _meta: null })
     }

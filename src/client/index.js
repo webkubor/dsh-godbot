@@ -24,17 +24,17 @@ function icon({ size = 18 }) {
 }
 
 export function apply(ctx) {
-  ctx.effect(() => installSidebarLoadingStyle(document), 'Godbot sidebar loading style')
+  ctx.effect(() => installSidebarLoadingStyle(document), 'NativeCrew sidebar loading style')
   ctx.effect(() => {
     const style = installStyles(themeStyle + controlsCss + modalCss + inboxCss + runtimeCss, 'workspace-controls')
     return () => style.remove()
-  }, 'Godbot controls and dialogs')
+  }, 'NativeCrew controls and dialogs')
   const client = createClient(ctx.connection)
   ctx.slots.inject('sidebar.panellist', () =>
-    ctx.slots.register({ name: 'sidebar.panellist', id: panelId, label: 'Godbot', order: 11 }, icon),
+    ctx.slots.register({ name: 'sidebar.panellist', id: panelId, label: 'NativeCrew', order: 11 }, icon),
   )
   ctx.slots.inject('main', () => {
-    // DSH selects this key when the Godbot sidebar entry is clicked.
+    // DSH selects this key when the NativeCrew sidebar entry is clicked.
     const unregister = ctx.slots.register({ name: 'main', key: panelId }, () => null)
     let router
     router = connectNavigation(ctx, window, target => mountTeamSurface(ctx, client, {

@@ -48,13 +48,13 @@ export class TerminalLeases {
       try { await Promise.race([claim.done, abort.promise]) }
       finally { signal?.removeEventListener('abort', onAbort) }
     }
-    if (this.disposed) throw new Error('Godbot 团队已关闭。')
+    if (this.disposed) throw new Error('NativeCrew 团队已关闭。')
   }
 
   dispose() {
     this.disposed = true
     const claims = [...this.claims.values()]
-    for (const claim of claims) claim.controller.abort(new Error('Godbot 团队已关闭。'))
+    for (const claim of claims) claim.controller.abort(new Error('NativeCrew 团队已关闭。'))
     return Promise.all(claims.map(claim => claim.done))
   }
 }

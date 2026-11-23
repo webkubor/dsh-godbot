@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { Readable } from 'node:stream'
 import { setImmediate } from 'node:timers/promises'
-import { GodbotService } from '../../src/host/service.js'
+import { NativeCrewService } from '../../src/host/service.js'
 import { botWorkspaceId } from '../../src/host/bot-task-workspace.js'
 
 test('CI, webhooks, GitHub events and scheduled workflows dispatch to the registered Bot chat', async t => {
@@ -19,7 +19,7 @@ test('CI, webhooks, GitHub events and scheduled workflows dispatch to the regist
     chatOf: id => 'current-session/' + id, botOf(id) { return this.state.bots[id] },
     openWork() {}, async deliver(request) { deliveries.push(request) },
   }
-  const service = new GodbotService({ stateDir, runtime })
+  const service = new NativeCrewService({ stateDir, runtime })
   t.after(async () => { await service.close(); await rm(stateDir, { recursive: true, force: true }) })
   const owner = (action, payload) => service.dispatch({ action, teamId: botWorkspaceId, ...payload })
   const api = service.automation

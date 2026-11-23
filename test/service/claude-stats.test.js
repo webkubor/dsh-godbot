@@ -87,7 +87,7 @@ test('uses CLAUDE_CONFIG_DIR for the current CLI identity when no override is gi
 })
 
 test('historical team statistics are selected by Bot, part, sequence and assistant identity', async () => {
-  const { GodbotService } = await import('../../src/host/service.js')
+  const { NativeCrewService } = await import('../../src/host/service.js')
   const report = { durationMs: 20, models: [] }
   const reply = { id: 'm', source: { provider: 'local-claude-code', replayState: { response: {godbotClaudeSessionUsage: report} } } }
   let queried = 0
@@ -98,7 +98,7 @@ test('historical team statistics are selected by Bot, part, sequence and assista
       assert.equal(address.sessionId,'older')
       return { records: [{event:{seq:10,type:'assistant/message',data:{message:reply}}}].filter(x=>x.event.seq<=throughSeq) }
     }}} }
-  const read = (opts) => GodbotService.prototype.claudeReportSession.call({ runtime:rt }, opts)
+  const read = (opts) => NativeCrewService.prototype.claudeReportSession.call({ runtime:rt }, opts)
   assert.deepEqual(await read({botId:'a',sessionId:'older',seq:10,messageId:'m'}), report)
   assert.equal(await read({botId:'a',sessionId:'older',seq:10,messageId:'wrong'}), null)
   assert.equal(await read({botId:'a',sessionId:'older',seq:11}), null)

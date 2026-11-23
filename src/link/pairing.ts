@@ -25,7 +25,7 @@ export interface PairingOffer {
 
 const MAX_NAME = 64
 const MAX_CODE = 128
-// Godbot's QR codes use godbot://; codes from older Godbot and DS Bot use dsbot:// and still pair.
+// NativeCrew's QR codes use godbot://; codes from older NativeCrew and DS Bot use dsbot:// and still pair.
 const PAIRING_SCHEME = 'godbot:'
 export const PAIRING_SCHEMES: readonly string[] = ['godbot:', 'dsbot:']
 

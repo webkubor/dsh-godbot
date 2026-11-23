@@ -11,7 +11,7 @@ const QUIET = 4
 function statusText(phone) {
   if (phone.error) return phone.error
   if (!phone.on) return t('Off. Phones cannot reach this computer.')
-  if (phone.status === 'online') return t('On. Paired phones can use Godbot here.')
+  if (phone.status === 'online') return t('On. Paired phones can use NativeCrew here.')
   if (phone.status === 'offline') return t('Cannot reach the Server. Trying again…')
   return t('Connecting…')
 }

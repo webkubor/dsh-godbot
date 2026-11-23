@@ -137,7 +137,7 @@ export function install(rt) {
   // writing over what could not be read, the way store.js treats a broken state.json.
   const unreadable = (path, error) => {
     rt.warn('godbot: unreadable memory file %s: %s', path, error)
-    throw Object.assign(new Error(`Memory file ${path} could not be read (${error?.code ?? error?.message}). Godbot leaves it as it is; fix or move the file.`), { code: 'memory/unreadable' })
+    throw Object.assign(new Error(`Memory file ${path} could not be read (${error?.code ?? error?.message}). NativeCrew leaves it as it is; fix or move the file.`), { code: 'memory/unreadable' })
   }
   const readText = (path) => {
     try {

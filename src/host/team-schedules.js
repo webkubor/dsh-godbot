@@ -65,7 +65,7 @@ export async function createTeamSchedule(rt, req) {
   if (!scheduler) throw new Error('当前 DSH 宿主没有启用自动化任务。')
   const patch = patchOf(rt, req)
   if (!patch.title || !patch.prompt || !patch.target || !patch.timing) throw new Error('请填写任务名称、指令、执行目标和时间。')
-  // DSH can deliver a newly due schedule before its returned ID is saved in Godbot.
+  // DSH can deliver a newly due schedule before its returned ID is saved in NativeCrew.
   if (req.checkOnly === true) patch.prompt = checkOnlyScheduleMarker + patch.prompt
   const entry = checked(await scheduler.create(patch))
   if (req.checkOnly === true) {

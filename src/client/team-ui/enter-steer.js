@@ -1,6 +1,6 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // Plain Enter on an empty composer while the Bot works submits nothing in the
-// shell. Godbot reads it as "steer my queued messages into the running turn" —
+// shell. NativeCrew reads it as "steer my queued messages into the running turn" —
 // the queue dock's steer button for every queued row at once (#839).
 
 // The composer can steer: idle draft, no text, no attachments, and at least one

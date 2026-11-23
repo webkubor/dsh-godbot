@@ -1,7 +1,7 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // Private Bots. A private Bot reads the team like any Bot, but no other Bot reads it, and
 // what it sends out waits for the user. DSH does not fence reads, so this closes the
-// tools Godbot owns and checks the paths that the file tools and the shell are given;
+// tools NativeCrew owns and checks the paths that the file tools and the shell are given;
 // a shell can still reach any file the account can (see docs/plans).
 import { join, resolve } from 'node:path'
 import { within } from './core/folders.js'
@@ -340,7 +340,7 @@ export function install(rt) {
     const keys = await spellings(dir)
     const others = [
       ['the team workspace', teamFolder()],
-      ...(rt.config.godbotStateDir ? [['the Godbot data directory', rt.config.godbotStateDir]] : []),
+      ...(rt.config.godbotStateDir ? [['the NativeCrew data directory', rt.config.godbotStateDir]] : []),
       ...Object.values(state.bots).filter(other => other.id !== bot.id && other.workDir).map(other => [`the folder of ${other.name}`, other.workDir]),
       ...Object.values(state.rooms).filter(room => room.workDir).map(room => [`the folder of "${room.name}"`, room.workDir]),
       ...Object.values(state.rooms).flatMap(room => Object.entries(room.memberDirs ?? {})

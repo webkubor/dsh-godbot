@@ -8,7 +8,7 @@
 // The host also looks by itself, on a clock, the way magpie's updater does:
 // at start and every six hours. A release archive is fetched and verified as soon
 // as it is found, so installing is local. With automatic updates on, the archive
-// is installed once Godbot has been idle for a while (no turn running, no native
+// is installed once NativeCrew has been idle for a while (no turn running, no native
 // terminal open); otherwise the sidebar and About offer it. A new version runs
 // from the next DSH start.
 //
@@ -16,9 +16,9 @@
 // DSH's own CLI, `dsh plugin --profile <name> add` (what install-local runs), not
 // the plugin manager in this process: that one imports the new version here at
 // once. DSH keeps the module resolutions this process made until it publishes a
-// changed runtime resolution, so when pnpm moves a copy of one of Godbot's
+// changed runtime resolution, so when pnpm moves a copy of one of NativeCrew's
 // dependencies during the install (a dedupe) and that table stays the same, the
-// new version still opens the old path, its import fails, and Godbot stops. The CLI
+// new version still opens the old path, its import fails, and NativeCrew stops. The CLI
 // leaves the running version alone; the next start loads the new one in a fresh
 // process. Where the CLI cannot be found the plugin manager still installs. A
 // release that lands in the profile but does not start in place is started again:
@@ -44,7 +44,7 @@ export const FETCH_TIMEOUT_MS = 8000
 // The first check waits until the host has settled its own start.
 const STARTUP_DELAY_MS = 15_000
 // The clock: how often the host asks by itself, how long a failed download waits
-// before it is tried again, and how long Godbot stays idle before an automatic install.
+// before it is tried again, and how long NativeCrew stays idle before an automatic install.
 export const AUTO_CHECK_MS = 6 * 60 * 60_000
 export const RETRY_MS = 30 * 60_000
 export const IDLE_MS = 2 * 60_000
@@ -321,7 +321,7 @@ export function install(rt) {
   // Why the downloaded release cannot install into this profile.
   let blocked = null
   // The clock: when it last asked by itself, when a download last failed, since
-  // when Godbot has been idle, and the version an automatic install failed on
+  // when NativeCrew has been idle, and the version an automatic install failed on
   // (not tried again by itself; a click still can).
   let autoAskedAt = Number.NEGATIVE_INFINITY
   let failedAt = 0
@@ -552,7 +552,7 @@ export function install(rt) {
       if (problem !== null) {
         blocked = problem
         Object.assign(status, { phase: 'idle', error: null })
-        rt.warn('godbot: Godbot %s cannot install into this profile: %s', chosen.version, JSON.stringify(problem))
+        rt.warn('godbot: NativeCrew %s cannot install into this profile: %s', chosen.version, JSON.stringify(problem))
         return
       }
       chosen.archive = archive
@@ -562,14 +562,14 @@ export function install(rt) {
       .catch((error) => {
         if (target !== chosen) return
         progress = null
-        // Stopped on purpose (updates turned off, Godbot stopping): nothing failed.
+        // Stopped on purpose (updates turned off, NativeCrew stopping): nothing failed.
         if (abort.signal.aborted) {
           if (status.phase === 'downloading') Object.assign(status, { phase: 'idle', error: null })
           return
         }
         downloadFailed = true
         failedAt = now()
-        rt.warn('godbot: downloading Godbot %s failed: %s', chosen.version, error?.message ?? error)
+        rt.warn('godbot: downloading NativeCrew %s failed: %s', chosen.version, error?.message ?? error)
         Object.assign(status, { phase: 'failed', error: String(error?.message ?? error).slice(0, 600) })
       })
       .then(() => view())
@@ -584,7 +584,7 @@ export function install(rt) {
   /** Start installing the newest version; the answer comes back through `check`. */
   function start({ auto = false } = {}) {
     if (status.phase === 'installing') return view()
-    if (target === null) throw new Error('No Godbot update is available')
+    if (target === null) throw new Error('No NativeCrew update is available')
     if (blocked !== null) throw new Error(blockedText(blocked))
     const service = manager()
     // DSH's CLI where the plugin manager would reload this plugin in place; the plugin manager elsewhere.
@@ -653,7 +653,7 @@ export function install(rt) {
     if (command !== null) {
       void installWithCli(chosen, command).then(() => {
         installed(chosen.version)
-        note('godbot: Godbot %s is installed; it runs from the next DSH start', chosen.version)
+        note('godbot: NativeCrew %s is installed; it runs from the next DSH start', chosen.version)
       }, failed)
       return
     }
@@ -673,7 +673,7 @@ export function install(rt) {
         // again, so pin the version that is actually running.
         const oldSpec = await Promise.resolve(installSpecOf(ctx)).catch(() => undefined)
         const previous = typeof oldSpec === 'string' && sourceOf(oldSpec).kind === 'registry' ? `${PKG.name}@${PKG.version}` : oldSpec
-        // The bundle is gone now; a failed install leaves no Godbot unless the old one goes back.
+        // The bundle is gone now; a failed install leaves no NativeCrew unless the old one goes back.
         const restore = async (failed) => {
           if (typeof previous !== 'string' || previous === '') return failed
           const back = await Promise.resolve(service.installBundle(previous, sourceOf(previous).kind === 'registry' && chosen.registry ? { registry: chosen.registry } : {})).catch(error => ({ error: { code: error?.message ?? 'restore failed' } }))
@@ -684,7 +684,7 @@ export function install(rt) {
           return `${failed}; ${previous} was reinstalled`
         }
         // A removal deselects the bundle before it unloads and removes the package, so
-        // one that fails afterwards leaves the profile changed (`changed`) without Godbot.
+        // one that fails afterwards leaves the profile changed (`changed`) without NativeCrew.
         // Selecting the bundle again undoes that; if the package is gone too, the old
         // version is installed again. A removal that throws ran nothing (lock timeout).
         const recover = async (failed) => {
@@ -723,8 +723,8 @@ export function install(rt) {
           // DSH start runs it. Either way the note stays for the start that runs it.
           const why = result.error?.diagnostic ?? result.error?.code
           const retry = await startInPlace(service, packages, reloads)
-          if (retry === null) note('godbot: Godbot %s did not start in place (%s); it started after DSH published its module resolution again', chosen.version, why)
-          else note('godbot: Godbot %s is installed but did not start in this DSH; restart DSH to use it: %s; starting it again: %s', chosen.version, why, retry)
+          if (retry === null) note('godbot: NativeCrew %s did not start in place (%s); it started after DSH published its module resolution again', chosen.version, why)
+          else note('godbot: NativeCrew %s is installed but did not start in this DSH; restart DSH to use it: %s; starting it again: %s', chosen.version, why, retry)
           installed(chosen.version)
           return
         }
@@ -741,8 +741,8 @@ export function install(rt) {
   }
 
   function blockedText(problem) {
-    if (problem.reason === 'dsh') return `Godbot ${target?.version ?? ''} needs DSH ${problem.dsh}`
-    if (problem.reason === 'peers') return `Godbot ${target?.version ?? ''} needs ${problem.peers.join(', ')}; run scripts/install-local.mjs again`
+    if (problem.reason === 'dsh') return `NativeCrew ${target?.version ?? ''} needs DSH ${problem.dsh}`
+    if (problem.reason === 'peers') return `NativeCrew ${target?.version ?? ''} needs ${problem.peers.join(', ')}; run scripts/install-local.mjs again`
     return `The release archive holds ${problem.found}`
   }
 
@@ -765,7 +765,7 @@ export function install(rt) {
   }
 
   // One minute of the clock: ask when due, fetch again after a failed download,
-  // and in auto mode install the ready version once Godbot has been idle a while.
+  // and in auto mode install the ready version once NativeCrew has been idle a while.
   // A host that only reads the team never installs by itself: the writing host does.
   async function tick() {
     if (!enabled || settings.mode === 'off') { waiting = null; return }
@@ -789,7 +789,7 @@ export function install(rt) {
     waiting = [{ kind: 'idle' }]
     if (idleSince === 0) { idleSince = at; return }
     if (at - idleSince < IDLE_MS) return
-    rt.warn('godbot: installing Godbot %s now that the workspace is idle', target.version)
+    rt.warn('godbot: installing NativeCrew %s now that the workspace is idle', target.version)
     try { start({ auto: true }) } catch (error) {
       autoSkip = target.version
       rt.warn('godbot: automatic update to %s did not start: %s', target.version, error?.message ?? error)
@@ -813,7 +813,7 @@ export function install(rt) {
       return () => {
         stopped = true
         clearTimeout(timer)
-        preparingAbort?.abort(new Error('Godbot stopped'))
+        preparingAbort?.abort(new Error('NativeCrew stopped'))
       }
     }, 'godbot: update clock')
   }

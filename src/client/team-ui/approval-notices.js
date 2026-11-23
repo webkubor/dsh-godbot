@@ -4,7 +4,7 @@ import { t } from './i18n.js'
 
 // A system notification for each approval that starts waiting while this window is in
 // the background or shows another conversation. Only where the platform already allows
-// notifications: Godbot never asks for the permission.
+// notifications: NativeCrew never asks for the permission.
 export function noticeApprovals({ work, roster, shownSession, openSession, since = Date.now() }) {
   if (typeof window !== 'undefined' && typeof desktopBridge()?.notify === 'function') return () => {}
   const told = new Set()

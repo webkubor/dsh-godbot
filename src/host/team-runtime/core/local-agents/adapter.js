@@ -1,5 +1,5 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
-// The LlmAdapter that serves every local-agent route. A Godbot Bot whose model
+// The LlmAdapter that serves every local-agent route. A NativeCrew Bot whose model
 // is one of these routes answers through a local agent CLI instead of a model
 // API: the loop, Sessions, tools and approvals are the ordinary ones; this
 // adapter turns each request into a prompt for the CLI session the Session is
@@ -24,7 +24,7 @@ const APPROVE_TOOL = 'approve_agent_action'
 // A CLI that answers its compaction command first and condenses after (Devin) says
 // that it started within this long, or it is taken to have condensed without a word.
 const COMPACT_START_MS = 15_000
-// What a request Godbot makes of the CLI for itself answers to a tool call it tries.
+// What a request NativeCrew makes of the CLI for itself answers to a tool call it tries.
 const NO_TOOLS = 'Tools are not available for this request. Answer with text only.'
 // Events a prompt's turn says or ends with.
 const PROMPT_EVENTS = new Set(['text', 'thought', 'activity', 'tool', 'execution-trace', 'usage', 'done', 'error'])
@@ -113,7 +113,7 @@ export class LocalAgentAdapter extends LlmAdapter {
     return driver
   }
 
-  // What Godbot knows of a route without starting its CLI: the CLI's default, what a
+  // What NativeCrew knows of a route without starting its CLI: the CLI's default, what a
   // probe found, and what a Bot runs on. DSH and the catalog ask this for every route.
   async listModels(route) {
     if (engineOf(route, this.deps.customAgents()) === undefined) return []
@@ -182,7 +182,7 @@ export class LocalAgentAdapter extends LlmAdapter {
   }
 
   // ---------------------------------------------------------------------------
-  // The live bridge for one Godbot Session.
+  // The live bridge for one NativeCrew Session.
   async liveFor(options, preset) {
     const sessionId = String(options.sessionId)
     let live = this.live.get(sessionId)
@@ -238,7 +238,7 @@ export class LocalAgentAdapter extends LlmAdapter {
       // it condensed in this Session; the parts module decides with them.
       context: record?.context,
       compactions: record?.compactions ?? 0,
-      // Output of a request Godbot made for itself may trail its end (Devin's
+      // Output of a request NativeCrew made for itself may trail its end (Devin's
       // "Context compacted"); until the next prompt, text, thoughts and activity drop.
       mute: false,
       // Turns the CLI ran by itself, by id, until the turn that shows each one ends;
@@ -1066,7 +1066,7 @@ export class LocalAgentAdapter extends LlmAdapter {
   }
 
   // ---------------------------------------------------------------------------
-  // Requests Godbot makes of a CLI for itself. None of them reaches the conversation.
+  // Requests NativeCrew makes of a CLI for itself. None of them reaches the conversation.
 
   // The CLI's own compaction of a Session's CLI session: 'done', or 'unsupported'
   // when the CLI offers no way to ask for one (it then condenses only on its own).
@@ -1233,7 +1233,7 @@ export class LocalAgentAdapter extends LlmAdapter {
     }
   }
 
-  // What a request Godbot made for itself spent, on the Session it served.
+  // What a request NativeCrew made for itself spent, on the Session it served.
   meter(live, result) {
     if (result.usage !== undefined) this.deps.recordUsage?.({ sessionId: live.sessionId, kind: 'compaction', provider: live.route, model: live.model, usage: result.usage })
     return result

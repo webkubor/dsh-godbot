@@ -354,9 +354,9 @@ function mountProduct(ctx, client, navigation, target, ready) {
     installSlash(triggers, roster, actions, controllerOf) {
       const source = teamSlashSource(roster, actions, client)
       const unregister = triggers.registerSource(source)
-      actions.bindGodbotSlash = (sessionId) => bindTeamSlashSource(controllerOf(sessionId), source, sessionId)
+      actions.bindNativeCrewSlash = (sessionId) => bindTeamSlashSource(controllerOf(sessionId), source, sessionId)
       return () => {
-        delete actions.bindGodbotSlash
+        delete actions.bindNativeCrewSlash
         unregister()
       }
     },
@@ -378,7 +378,7 @@ function mountProduct(ctx, client, navigation, target, ready) {
         child.effect(() => {
           const style = installStyles(controlsStyle + executionStyle + sandboxSettingsStyle, 'team-controls')
           return () => style.remove()
-        }, 'Godbot team styles')
+        }, 'NativeCrew team styles')
         ready()
       } catch (error) {
         ready(error)

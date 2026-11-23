@@ -10,7 +10,7 @@ test('rejects a layout change between probe and native stream readiness', async 
   const root = await mkdtemp(join(tmpdir(), 'godbot-geometry-race-'))
   const osHelper =
     process.platform === 'darwin'
-      ? join(root, 'Godbot Computer Host.app', 'Contents', 'MacOS', 'godbot-screen')
+      ? join(root, 'NativeCrew Computer Host.app', 'Contents', 'MacOS', 'godbot-screen')
       : join(root, 'godbot-screen')
   const fixture = join(root, 'stream-revision')
   const rtc = join(root, 'godbot-desktop-rtc')

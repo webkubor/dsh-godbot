@@ -31,8 +31,8 @@ import { cleanEnv, findEngineExecutable, findExecutable, probeSignIn, probeVersi
 
 const isLocalAgentRoute = route => isBaseLocalRoute(route) || Boolean(sandboxRouteInfo(route))
 
-// What a local agent CLI keeps of a DSH prompt assembly. Sections: Godbot's
-// instructions only. Contexts: the working folder and Godbot's own, plus the
+// What a local agent CLI keeps of a DSH prompt assembly. Sections: NativeCrew's
+// instructions only. Contexts: the working folder and NativeCrew's own, plus the
 // memory, which leaves the instructions for the runtime context.
 const LOCAL_AGENT_SECTIONS = new Set(['bot-identity'])
 const LOCAL_AGENT_CONTEXTS = new Set(['working-directory:current', 'godbot-learning'])
@@ -69,7 +69,7 @@ const toolPaths = items => Array.isArray(items)
   ? items.map(item => item?.path).filter(path => typeof path === 'string' && path !== '').slice(0, 3).join(', ')
   : ''
 
-// Godbot uses an array of command names for compaction. Retain the associated
+// NativeCrew uses an array of command names for compaction. Retain the associated
 // ACP descriptors for exactly as long as that session's name array is live.
 const acpMenus = new WeakMap()
 const acpToolNames = { read: 'Read', edit: 'Edit', delete: 'Delete', move: 'Move', search: 'Search', execute: 'Shell', fetch: 'Fetch', think: 'Think' }
@@ -482,7 +482,7 @@ export class WorkspaceAgentAdapter extends LocalAgentAdapter {
   sendInput(live, input, signal, effort, settled) {
     const delivery = this.slashInputs.get(signal)
     if (!delivery) return super.sendInput(live, input, signal, effort, settled)
-    // Godbot prepends replay and runtime context, so forwarding that string
+    // NativeCrew prepends replay and runtime context, so forwarding that string
     // would make the CLI read a slash command as prose. Codex accepts metadata
     // alongside its ordinary text and retains the entire replay in that case.
     this.slashInputs.delete(signal)
@@ -701,10 +701,10 @@ export function install(rt) {
     queueMicrotask(() => {
       if (disposed || owner.live.get(session.id) !== live || owner.deps.presetFor(session.id) === live.preset) return
       void owner.closeSession(session.id, '会话权限已收紧，请在新的权限下重新运行。').catch(error =>
-        rt.warn?.('Godbot could not close a native session after permission changed: %s', error.message))
+        rt.warn?.('NativeCrew could not close a native session after permission changed: %s', error.message))
     })
   })
-  // A local agent CLI reads only Godbot's part of the prompt: DSH's own sections and
+  // A local agent CLI reads only NativeCrew's part of the prompt: DSH's own sections and
   // contexts describe DSH's tools, approvals and sandbox, which the CLI does not
   // have; it keeps its own. The memory moves to the runtime context, which reaches
   // the CLI as a note with its next input whenever it changes, so the instructions
@@ -749,7 +749,7 @@ export function install(rt) {
   // Helpers the rest of the host asks.
 
   const isLocalAgentRef = ref => isLocalAgentRoute(splitRef(ref)?.provider ?? '')
-  // What a ref runs on: the local agent's route, or 'model' for Godbot's own models.
+  // What a ref runs on: the local agent's route, or 'model' for NativeCrew's own models.
   // Two refs with the same answer share a conversation; two with different ones never do.
   const engineOf = (ref) => {
     if (!ref) return undefined

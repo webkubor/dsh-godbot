@@ -44,7 +44,7 @@ function worktreePath(stateDir, memberId) {
   const parent = join(realpathSync(stateDir), 'worktrees')
   mkdirSync(parent, { recursive: true, mode: 0o700 })
   if (!lstatSync(parent).isDirectory())
-    throw new Error('Godbot worktrees must be a directory inside its state directory')
+    throw new Error('NativeCrew worktrees must be a directory inside its state directory')
   return join(parent, memberId)
 }
 
@@ -159,7 +159,7 @@ async function provision(member, expectedPath, signal) {
           throw new AggregateError([error, cleanupError], `Failed to provision and clean ${expectedPath}`)
       }
     }
-    throw new Error(`Could not prepare Godbot worktree ${expectedPath}: ${error.message}`, { cause: error })
+    throw new Error(`Could not prepare NativeCrew worktree ${expectedPath}: ${error.message}`, { cause: error })
   }
 }
 

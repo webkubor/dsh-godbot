@@ -24,14 +24,14 @@ const records = path => readFileSync(path, 'utf8').trim().split('\n').map(line =
 test('a Bot prompt has only the blocks that apply to it', () => {
   const bot = { name: 'Ada', role: 'Research', instructions: '  Cite sources.  ' }
   const model = botPrompt(bot)
-  assert.match(model, /^<identity>\nYou are Ada, a Bot on the user's team in Godbot\. Your role: Research\.\n<\/identity>/)
+  assert.match(model, /^<identity>\nYou are Ada, a Bot on the user's team in NativeCrew\. Your role: Research\.\n<\/identity>/)
   assert.match(model, /<instructions_from_the_user>\nCite sources\.\n<\/instructions_from_the_user>/)
   for (const block of ['team', 'replies', 'files_and_web', 'long_conversations']) assert.match(model, new RegExp(`<${block}>[\\s\\S]+</${block}>`))
   for (const block of ['main_bot', 'groups', 'local_agent']) assert.doesNotMatch(model, new RegExp(`<${block}>`))
 
   const local = botPrompt({ name: 'Ada' }, { localAgent: true })
   assert.match(local, /<local_agent>[\s\S]+MCP server named "godbot"[\s\S]+<\/local_agent>/)
-  // The CLI has its own file, shell and web tools; Godbot's are not there.
+  // The CLI has its own file, shell and web tools; NativeCrew's are not there.
   assert.doesNotMatch(local, /office_render|web_search|the read tool|<instructions_from_the_user>/)
 
   assert.match(botPrompt(bot, { inGroup: true }), /<groups>[\s\S]+post_to_group[\s\S]+<\/groups>/)
@@ -41,7 +41,7 @@ test('a Bot prompt has only the blocks that apply to it', () => {
   assert.equal(botPrompt(bot, { inGroup: true }), botPrompt(bot, { inGroup: true }), 'the text is byte-stable')
 })
 
-test('a local agent keeps Godbot\'s section and contexts; the memory moves to the runtime context', () => {
+test('a local agent keeps NativeCrew\'s section and contexts; the memory moves to the runtime context', () => {
   const assembly = {
     variables: {},
     tools: [],

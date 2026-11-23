@@ -30,7 +30,7 @@ export function workflowFile(flow, members) {
 
 export function readWorkflowFile(text) {
   const data = JSON.parse(text)
-  if (![workflowFormat, 'godbot-team/v1'].includes(data?.format)) throw new Error('请选择 Godbot 工作流或团队模板文件。')
+  if (![workflowFormat, 'godbot-team/v1'].includes(data?.format)) throw new Error('请选择 NativeCrew 工作流或团队模板文件。')
   if (!Array.isArray(data.bots) || !data.bots.length || data.bots.length > 256) throw new Error('模板缺少有效的成员清单。')
   const owners = new Set()
   const bots = data.bots.map(({ ref, name }) => {

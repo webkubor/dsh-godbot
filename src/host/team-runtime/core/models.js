@@ -69,7 +69,7 @@ function canRetryPolicy(policy, code, retry) {
 // route with the provider's own retry policy, discarding partial chunks from failed attempts.
 export async function assembleLlmStream(ctx, options, { signal, backoff, random = Math.random } = {}) {
   const service = serviceOf(ctx, 'llm')
-  if (service === undefined) throw Object.assign(new Error('Godbot is shutting down'), { code: 'ABORTED', failure: { code: 'ABORTED', message: 'Godbot is shutting down' } })
+  if (service === undefined) throw Object.assign(new Error('NativeCrew is shutting down'), { code: 'ABORTED', failure: { code: 'ABORTED', message: 'NativeCrew is shutting down' } })
   const fused = options.signal && signal ? AbortSignal.any([options.signal, signal]) : (options.signal ?? signal)
   const request = fused === options.signal ? options : { ...options, signal: fused }
   for (let retry = 1; ; retry += 1) {
@@ -258,11 +258,11 @@ export function install(rt) {
   }
 
   // A local agent's model, by its full ref only, so a short name never moves a Bot onto
-  // a CLI. Its CLI is asked only when Godbot does not know the model yet.
+  // a CLI. Its CLI is asked only when NativeCrew does not know the model yet.
   async function resolveLocalModel(ref) {
     const { provider, model } = splitRef(ref)
     const service = llm()
-    if (service === undefined) throw new Error('Godbot is shutting down')
+    if (service === undefined) throw new Error('NativeCrew is shutting down')
     const known = await service.listModels(provider).catch(() => [])
     const served = known.some(entry => entry.id === model) ? known : await rt.localAgentModels(provider)
     if (served.some(entry => entry.id === model)) return ref
@@ -392,7 +392,7 @@ export function install(rt) {
   // internal route that accepts its full input. Its empty catalog keeps the route
   // out of model pickers. Non-relay title and compaction calls keep the team default.
   const relay = new class extends LlmAdapter {
-    providerInfo(provider) { return { id: provider, name: 'Godbot group relay' } }
+    providerInfo(provider) { return { id: provider, name: 'NativeCrew group relay' } }
 
     async resolveModel(provider, model, signal) {
       if (model !== GROUP_RELAY.model) throw new LlmError('Unknown group relay model', 'UNKNOWN_MODEL')

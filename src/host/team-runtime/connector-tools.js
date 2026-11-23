@@ -1,4 +1,4 @@
-// Godbot mounts each connector as a DSH MCP client. Capture its actual registrations so
+// NativeCrew mounts each connector as a DSH MCP client. Capture its actual registrations so
 // a similarly named tool from another plugin or a scoped override is never bridged.
 import * as connectorModule from './core/connectors/index.js'
 
@@ -151,7 +151,7 @@ export class ConnectorTools {
     item.listedAt = Date.now()
   }
 
-  // A Bot's own DSH round shows the tools it was offered. Godbot's own requests
+  // A Bot's own DSH round shows the tools it was offered. NativeCrew's own requests
   // for that Session, such as the memory keeper after each turn, name the
   // Session but carry a usage tag; they must not replace the round's catalog or
   // its call receipts. CLI rounds are observed through their MCP bridge instead.

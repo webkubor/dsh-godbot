@@ -8,7 +8,7 @@ export async function openFullTeam(host) {
   if (await settings.count()) await settings.click()
   assert.equal((await host.snapshot()).workspaceRuntime.mode, 'embedded')
   const state = await host.bot('state')
-  assert.ok(state.mainBotId && state.bots.some(bot => bot.id === state.mainBotId), 'full team loaded its GodBot')
+  assert.ok(state.mainBotId && state.bots.some(bot => bot.id === state.mainBotId), 'full team loaded its NativeCrew')
   return state.mainBotId
 }
 
@@ -67,7 +67,7 @@ export async function verifyModalTheme(dialog, themeSelector = 'body') {
     sample.remove()
     return result
   }, themeSelector)
-  assert.ok(appearance.styledModal, 'Godbot dialog uses the shared native modal')
+  assert.ok(appearance.styledModal, 'NativeCrew dialog uses the shared native modal')
   assert.equal(appearance.foreground, appearance.expectedForeground, 'dialog text follows the workspace theme')
   assert.equal(appearance.surface, appearance.expectedSurface, 'dialog background follows the workspace theme')
   assert.notEqual(appearance.shadow, 'none', 'dialog has elevated chrome')

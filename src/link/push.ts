@@ -1,4 +1,4 @@
-// Godbot's push extension: the end-to-end encrypted notification a computer sends a phone
+// NativeCrew's push extension: the end-to-end encrypted notification a computer sends a phone
 // that is not connected. The phone gives each computer its own key through the encrypted
 // link (RPC `push.key`); the Server and FCM only ever carry the ciphertext.
 // See godbot-server docs/protocol.md §9.

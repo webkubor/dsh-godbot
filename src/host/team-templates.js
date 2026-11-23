@@ -43,7 +43,7 @@ function timing(schedule) {
 
 function normalize(input) {
   const data = typeof input === 'string' ? JSON.parse(input) : input
-  if (data?.format !== version) throw new Error('请选择 Godbot v1 团队模板。')
+  if (data?.format !== version) throw new Error('请选择 NativeCrew v1 团队模板。')
   const refs = new Set()
   const ref = value => {
     if (typeof value !== 'string' || !/^[a-z][a-z0-9-]{0,45}$/.test(value) || refs.has(value)) throw new Error('模板条目标识冲突。')
@@ -124,9 +124,9 @@ async function installTemplate(rt, service, data, requestId) {
       if (room) {
         // Imported groups need a real working folder even when the template did not specify one.
         const workDir = await rt.keepTeamFolder() ?? rt.defaultTeamFolder()
-        result = await rt.importGodbotRoom({ ...opts, workDir, members: entry.members.map(m => mapping[m]), admin: mapping[entry.admin] ?? null, mode: entry.mode })
+        result = await rt.importNativeCrewRoom({ ...opts, workDir, members: entry.members.map(m => mapping[m]), admin: mapping[entry.admin] ?? null, mode: entry.mode })
       } else {
-        result = await rt.importGodbotMember({ ...opts, pickModel: true, role: entry.role, instructions: entry.instructions })
+        result = await rt.importNativeCrewMember({ ...opts, pickModel: true, role: entry.role, instructions: entry.instructions })
       }
     }
     if (!room) result.godbotRequestedSkills = entry.skills

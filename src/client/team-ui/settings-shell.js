@@ -1,9 +1,9 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
-// The settings shell: Godbot holds `sidebar.settings`, the seat DSH's ui-settings-general
+// The settings shell: NativeCrew holds `sidebar.settings`, the seat DSH's ui-settings-general
 // fills elsewhere (the bundle patch turns that row off). Holding the seat means declaring
 // its child slots, and only the declaring entry may render them, so DSH's own settings
 // pages (`settings.section`), their nav icons, header actions, onboarding steps and General
-// rows all draw inside Godbot's settings dialog. This module also takes over what that
+// rows all draw inside NativeCrew's settings dialog. This module also takes over what that
 // shell did besides: the sidebar-foot row with the connection and Desktop update status,
 // the onboarding coordinator, the Settings shortcut, the Host release prompt, the
 // configuration-file action and the code work view switch.
@@ -20,7 +20,7 @@ import { GearIcon } from './icons.js'
 import { useLinger } from './motion.js'
 import { t } from './i18n.js'
 import { freePriority } from './surface.js'
-import { GodbotModal } from '../modal.js'
+import { NativeCrewModal } from '../modal.js'
 
 // The child slots of the seat, as ui-settings declares their types.
 export const SETTINGS_CHILDREN = {
@@ -295,7 +295,7 @@ export function SettingsShell(props) {
     }, { only: step.id }) : null)
 }
 
-// Where one of DSH's section ids opens in Godbot's Settings.
+// Where one of DSH's section ids opens in NativeCrew's Settings.
 export function settingsPlace(id) {
   if (id === 'general') return ['general']
   if (id === 'models') return ['models']
@@ -322,7 +322,7 @@ export function HostReleasePrompt({ useReleaseChange, dismissRelease, reloadPage
   const unknown = t('Unknown')
   const [serviceFrom, serviceTo] = transitionText(change.previous, change.host, unknown)
   const [pageFrom, pageTo] = transitionText(change.page, change.host, unknown)
-  return h(GodbotModal, {
+  return h(NativeCrewModal, {
     title: t('The service version changed'), close: dismissRelease, closeLabel: t('Not now'), dismissOnBackdrop: true,
   },
     h('p', null, t('This page paused live updates. Reload to load the new version.')),
@@ -419,7 +419,7 @@ export function seatHold(held) {
   }
 }
 
-// Registers the seat and its companions. `face` is Godbot's own injected face; the
+// Registers the seat and its companions. `face` is NativeCrew's own injected face; the
 // returned `openOnboarding` reaches a registered onboarding step by id.
 export function installSettingsShell(ctx, { face, actions, ui, held }) {
   const slots = ctx.slots
@@ -461,14 +461,14 @@ export function installSettingsShell(ctx, { face, actions, ui, held }) {
   const disposers = [
     () => update.dispose(),
     // A profile that turned DSH's shell back on keeps it: the seat's child slots are then
-    // declared already, and Godbot's dialog stays on its own pages.
+    // declared already, and NativeCrew's dialog stays on its own pages.
     // SettingsShell holds the seat itself while it is mounted (`holdSeat`).
     slots.inject('sidebar.settings', () => {
       let off
       try {
         off = slots.register({ name: 'sidebar.settings', inject: shellFace, children: SETTINGS_CHILDREN }, SettingsShell)
       } catch (error) {
-        console.warn('[Godbot] DSH settings shell is on; Godbot settings show its own pages only', error)
+        console.warn('[NativeCrew] DSH settings shell is on; NativeCrew settings show its own pages only', error)
         return () => {}
       }
       const trigger = slots.inject('settings.trigger', () => slots.register({ name: 'settings.trigger' }, TriggerContent))

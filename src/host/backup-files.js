@@ -13,7 +13,7 @@ export function seal(value, password) {
   return Buffer.concat([magic, salt, iv, cipher.getAuthTag(), body])
 }
 export function unseal(input, password) {
-  if (!input.subarray(0, 8).equals(magic) || input.length < 53) throw new Error('Invalid Godbot backup')
+  if (!input.subarray(0, 8).equals(magic) || input.length < 53) throw new Error('Invalid NativeCrew backup')
   const dec = createDecipheriv('aes-256-gcm', scryptSync(password, input.subarray(8, 24), 32), input.subarray(24, 36))
   dec.setAAD(magic); dec.setAuthTag(input.subarray(36, 52))
   let bytes

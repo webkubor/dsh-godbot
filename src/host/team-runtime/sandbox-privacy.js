@@ -63,7 +63,7 @@ function existingProjectWork(home) {
   } catch { return [] }
 }
 
-// Godbot installs manual memory tools alongside the review listeners. Filter only
+// NativeCrew installs manual memory tools alongside the review listeners. Filter only
 // those modules' background status events and transcript readers; UI/history/tools
 // across the rest of the runtime keep their original view.
 export function sandboxAwareObserver(module) {
@@ -91,7 +91,7 @@ export function sandboxAwareObserver(module) {
           const index = projects.findIndex(job => text.startsWith('Project folder: ' + job.folder + '\n\n'))
           if (index >= 0 && projects[index].authors.some(id => sandboxAuthor(rt, id))) {
             projects.splice(index, 1)
-            // Godbot consumes the legacy queue through its own persistence path.
+            // NativeCrew consumes the legacy queue through its own persistence path.
             return Promise.resolve('{"action":"none"}')
           }
         }

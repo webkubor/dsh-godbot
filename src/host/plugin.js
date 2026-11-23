@@ -3,13 +3,13 @@ import { join, resolve } from 'node:path'
 import { buildId } from './build-id.js'
 import { RemoteComputers } from './remote-computers.js'
 import { BotTerminals } from './bot-terminals.js'
-import { GodbotService, readOnlyWorkspaceSnapshot } from './service.js'
-import { createGodbotRemote } from './dsh-remote.js'
+import { NativeCrewService, readOnlyWorkspaceSnapshot } from './service.js'
+import { createNativeCrewRemote } from './dsh-remote.js'
 import { dshModelCatalog } from './dsh-models.js'
 import { teamRuntimeStatus, getTeamRuntime, mountTeamRuntime } from './team-runtime.js'
 import { prepareWorkspaceIndex } from './web-index.js'
 
-export const name = 'dsh-godbot'
+export const name = '@dsh-plugins/nativecrew'
 export const inject = ['profileContext', 'agents', 'sessionController', 'agentDefaultModel', 'llm', 'tools', 'typertGateway']
 
 // A reading DSH host may later acquire the Bot team's write lock. Only a
@@ -76,7 +76,7 @@ export async function apply(ctx, config = {}) {
   const stateDir = resolve(config.stateDir || join(profile.home, 'godbot', profile.name))
   const restoreJournal = join(stateDir, '.godbot-restore.json')
   if (existsSync(restoreJournal) && JSON.parse(readFileSync(restoreJournal, 'utf8')).status !== 'complete')
-    throw new Error('Godbot workspace restoration was interrupted. Stop this Host and run godbot workspace recover for the same home and profile.')
+    throw new Error('NativeCrew workspace restoration was interrupted. Stop this Host and run godbot workspace recover for the same home and profile.')
   const models = dshModelCatalog(ctx.sessionController)
   let current
   const workspace = () => {
@@ -86,7 +86,7 @@ export async function apply(ctx, config = {}) {
   mountTeamRuntime(ctx, stateDir, config.teamWorkspace ?? config.dsBot, async (runtime, child) => {
     const scope = workspaceOperations(runtime, () => {
       const subprocess = ctx.get('subprocess')
-      const service = new GodbotService({ stateDir, config, subprocess, runtime })
+      const service = new NativeCrewService({ stateDir, config, subprocess, runtime })
       const terminals = new BotTerminals(service, subprocess)
       const computers = new RemoteComputers(stateDir)
       return { service, terminals, computers, start: () => service.start(child),
@@ -96,7 +96,7 @@ export async function apply(ctx, config = {}) {
     child.effect(() => () => {
       if (current === scope) current = undefined
       return scope.close()
-    }, 'Godbot workspace operations')
+    }, 'NativeCrew workspace operations')
     await scope.ready()
   })
   async function snapshot(scope) {
@@ -110,7 +110,7 @@ export async function apply(ctx, config = {}) {
     await scope.ready()
     return scope.existing().service
   }
-  ctx.plugin(createGodbotRemote({
+  ctx.plugin(createNativeCrewRemote({
     snapshot: async () => ({ buildId, ...await snapshot(current), ...models.view(), workspaceRuntime: teamRuntimeStatus(ctx) }),
     machine: async (request, peer, signal) => {
       const scope = workspace()
@@ -152,10 +152,10 @@ export async function apply(ctx, config = {}) {
     },
   }))
   ctx.inject(['commands'], commandCtx => commandCtx.commands.register({
-    name: 'godbot', definitionId: 'dsh-godbot', description: '打开 Bot 团队工作台',
-    handler: () => ({ kind: 'success', text: '在左侧栏打开 Godbot。点击 Bot 私聊右上角的终端图标（原生 Agent）接手会话，在「设置 → 任务板」中给 Bot 分配任务。' }),
+    name: 'godbot', definitionId: '@dsh-plugins/nativecrew', description: '打开 Bot 团队工作台',
+    handler: () => ({ kind: 'success', text: '在左侧栏打开 NativeCrew。点击 Bot 私聊右上角的终端图标（原生 Agent）接手会话，在「设置 → 任务板」中给 Bot 分配任务。' }),
   }))
   ctx.inject(['webServer'], (webCtx) => {
-    webCtx.effect(() => webCtx.webServer.tapIndex(prepareWorkspaceIndex), 'Godbot workspace document')
+    webCtx.effect(() => webCtx.webServer.tapIndex(prepareWorkspaceIndex), 'NativeCrew workspace document')
   })
 }

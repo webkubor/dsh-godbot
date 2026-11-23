@@ -56,9 +56,9 @@ export function install(rt) {
   let bootstrapping = null
   let renamingMain = null
   // Only the host-side import can associate a workspace row with a legacy identity.
-  const importOptions = Symbol('Godbot import')
+  const importOptions = Symbol('NativeCrew import')
 
-  // The team folder is Godbot's own: deleted, it is made again before a Session needs it.
+  // The team folder is NativeCrew's own: deleted, it is made again before a Session needs it.
   async function keepTeamFolder() {
     const team = rt.teamFolder()
     if (team !== undefined) await mkdir(team, { recursive: true }).catch(error => rt.warn('godbot: team folder %s not made again: %s', team, error))
@@ -72,7 +72,7 @@ export function install(rt) {
     }
     const path = rt.defaultTeamFolder()
     await mkdir(path, { recursive: true })
-    const workspace = await ctx.workspaceRegistry.resolveByPath(path) ?? await ctx.workspaceRegistry.create(path, 'Godbot')
+    const workspace = await ctx.workspaceRegistry.resolveByPath(path) ?? await ctx.workspaceRegistry.create(path, 'NativeCrew')
     state.workspaceId = workspace.id
     await rt.save()
     return workspace.id
@@ -434,7 +434,7 @@ export function install(rt) {
       : await rt.resolveModel(patch.model)
     // What a Bot runs on changes only from its settings, after the user confirmed: every
     // conversation of the Bot starts a new part for it. A Bot without a model runs on the
-    // one it last ran on, and one that never ran runs on Godbot's models.
+    // one it last ran on, and one that never ran runs on NativeCrew's models.
     const engineBefore = rt.engineOf === undefined ? undefined : rt.engineOfBot(bot) ?? 'model'
     if (modelRef === null && engineBefore !== undefined && engineBefore !== 'model') throw new Error(`${bot.name} runs on a local agent and keeps a model of it`)
     const accountBefore = Boolean(bot.accountProfileId)
@@ -1101,7 +1101,7 @@ export function install(rt) {
       await renamingMain
       return
     }
-    // Only the team's first Main Bot is given the Godbot mark; other Bots get a
+    // Only the team's first Main Bot is given the NativeCrew mark; other Bots get a
     // look from their id, and a Bot made Main Bot later keeps its own.
     bootstrapping ??= createBot({ name: defaults.mainName, role: defaults.mainRole, main: true, color: 'cyan', avatar: { shape: 'godbot' }, pickModel: true })
       .finally(() => { bootstrapping = null })
@@ -1109,8 +1109,8 @@ export function install(rt) {
   }
 
   Object.assign(rt, {
-    importGodbotMember: ({ origin, readOnly, reservation, ...options }) => createBot({ ...options, [importOptions]: { origin, readOnly, reservation } }),
-    importGodbotRoom: ({ origin, workDir, reservation, ...options }) => createRoom({ ...options, [importOptions]: { origin, workDir, reservation } }),
+    importNativeCrewMember: ({ origin, readOnly, reservation, ...options }) => createBot({ ...options, [importOptions]: { origin, readOnly, reservation } }),
+    importNativeCrewRoom: ({ origin, workDir, reservation, ...options }) => createRoom({ ...options, [importOptions]: { origin, workDir, reservation } }),
     ensureWorkspace, keepTeamFolder, createSession, createBot, duplicateBot, updateBot, setFlags,
     saveSection, reorderSections, deleteSection,
     roomBusy, autoRoomName, retitleRoom, createRoom, updateRoom, deleteRoom,

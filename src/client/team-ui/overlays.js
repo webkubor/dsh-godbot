@@ -51,7 +51,7 @@ export function Overlays({ useRoster, useUi, useSessions, useSessionStatus, useA
     return () => clearTimeout(timer)
   }, [ui.details, ui.view, ui.renaming, ui.tab, shown === null])
   const pane = shown ?? kept
-  // The settings shell draws the dialog while Godbot holds the seat.
+  // The settings shell draws the dialog while NativeCrew holds the seat.
   const shellHeld = useSettingsShellHeld ? useSettingsShellHeld(value => value) : false
   const [settings, settingsLeaving] = useLinger(shellHeld ? null : ui.settings, DIALOG_EXIT_MS)
   // The memory dialog shows a Bot's memory or a group chat's.

@@ -44,7 +44,7 @@ function textField(bytes, field) {
   return value === undefined ? undefined : decoder.decode(value)
 }
 
-// Match the ACP tool ID from Godbot's owned session, never a filename from the
+// Match the ACP tool ID from NativeCrew's owned session, never a filename from the
 // tool's arguments. Re-reading that file would lose the actual historical result.
 export function readAntigravityToolResult(binding, tool, configDir = join(homedir(), '.gemini', 'antigravity-cli')) {
   const nativeId = binding?.cliSessionId

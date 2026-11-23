@@ -1,4 +1,4 @@
-// Modified for Godbot to complete cancelled prompts and expose the scoped team server. See THIRD_PARTY_NOTICES.
+// Modified for NativeCrew to complete cancelled prompts and expose the scoped team server. See THIRD_PARTY_NOTICES.
 // A fake ACP agent for tests: newline JSON-RPC over stdio. The prompt text
 // picks its behavior so a test can drive each branch:
 //   contains "call-tool"    -> calls the godbot MCP server's tools/call
@@ -303,7 +303,7 @@ async function runPrompt(session, prompt, requestId) {
     update(sessionId, { sessionUpdate: 'tool_call', toolCallId: 't1', title: 'mcp godbot message_bot', kind: 'other', status: 'in_progress' })
     try {
       const calls = text.includes('two-calls') ? 2 : 1
-      const results = await Promise.all([...Array(calls)].map((_, i) => mcpCall(server, 'message_bot', { to: 'GodBot', message: `hi ${i}` })))
+      const results = await Promise.all([...Array(calls)].map((_, i) => mcpCall(server, 'message_bot', { to: 'NativeCrew', message: `hi ${i}` })))
       finish(`tool said: ${results.map(result => (result.content ?? []).map(block => block.text).join('')).join(' | ')}`)
     } catch (error) {
       finish(`tool failed: ${error.message}`)

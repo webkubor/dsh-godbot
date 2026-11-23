@@ -94,7 +94,7 @@ export async function createHost({ scratch, browser, reportDir, note }, options 
   const git = findExecutable('git')
   if (!git) throw new EnvironmentError('git is required to prepare the isolated test workspace')
   await run(git, ['init', '-q', workspace])
-  await run(git, ['-C', workspace, '-c', 'user.name=Godbot E2E', '-c', 'user.email=fixture@localhost',
+  await run(git, ['-C', workspace, '-c', 'user.name=NativeCrew E2E', '-c', 'user.email=fixture@localhost',
     '-c', 'commit.gpgSign=false', 'commit', '-q', '--allow-empty', '-m', 'fixture workspace'])
   const model = await startModel()
   let context
@@ -185,7 +185,7 @@ export async function createHost({ scratch, browser, reportDir, note }, options 
         if (expectedPluginFailure) {
           await until(() => startupMarker, 'the injected startup diagnostic', 12_000)
           const snapshot = await host.snapshot().catch(() => undefined)
-          if (snapshot) throw new Error('Faulty Host still accepts Godbot operations')
+          if (snapshot) throw new Error('Faulty Host still accepts NativeCrew operations')
           return
         }
         if (!secretUrl) throw new Error('DSH exited before it could open its browser session')
@@ -195,11 +195,11 @@ export async function createHost({ scratch, browser, reportDir, note }, options 
           const value = await host.snapshot()
           if (value.workspaceRuntime?.mode === 'embedded') return value
           if (value.workspaceRuntime?.message) throw new Error(value.workspaceRuntime.message)
-        }, 'the embedded Godbot Remote', 45_000)
+        }, 'the embedded NativeCrew Remote', 45_000)
         if (snapshot.buildId !== host.artifact.buildId) throw new Error('Loaded Host build ' + snapshot.buildId + ', expected ' + host.artifact.buildId)
         await until(() => boot.matches.length || boot.failure, 'client registration from the packaged browser plugin', 30_000)
         if (boot.failure || wrongSources.length || boot.matches.some(digest => digest !== host.artifact.clientSha256)) {
-          throw new Error('Served Godbot client differs from the installed archive: ' + JSON.stringify({ expected: host.artifact.clientSha256, received: boot.matches, failure: boot.failure }))
+          throw new Error('Served NativeCrew client differs from the installed archive: ' + JSON.stringify({ expected: host.artifact.clientSha256, received: boot.matches, failure: boot.failure }))
         }
         note('started', { buildId: snapshot.buildId, clientSha256: host.artifact.clientSha256, workspaceMode: snapshot.workspaceRuntime.mode, workspaceVersion: snapshot.workspaceRuntime.version })
       } catch (error) { throw new Error(redact(error.message) + '\n' + redact(output.slice(-3500))) }

@@ -1,6 +1,6 @@
-// Godbot owns the conversation, approvals, tool bridge and permissions. Its
+// NativeCrew owns the conversation, approvals, tool bridge and permissions. Its
 // Claude 0.3.8 transport has no settings stream, and advertises four aliases.
-// Attach the same native controls used by a direct Godbot session to its child.
+// Attach the same native controls used by a direct NativeCrew session to its child.
 import { randomUUID } from 'node:crypto'
 import { ClaudeControlSession, configureClaude, describeClaude } from '../drivers/external/claude-settings.js'
 import { attachClaudeBotTimeline } from './claude-bot-timeline.js'
@@ -70,7 +70,7 @@ class WorkspaceClaudeEngine extends ClaudeEngine {
 
   async prompt(session, blocks, { effort, signal } = {}) {
     const control = this.controls.get(session)
-    // A model or permission change reopens Godbot's CLI process. Clear a
+    // A model or permission change reopens NativeCrew's CLI process. Clear a
     // previous override only on the process to which we actually applied it.
     const choice = effort ?? null
     if (choice !== (control.lastChoice ?? null)) {

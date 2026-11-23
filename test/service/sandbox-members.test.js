@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { setTimeout as delay } from 'node:timers/promises'
 import test from 'node:test'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 import { buildTerminalLaunch } from '../../src/host/terminal-launch.js'
 import { getSandboxWorkspace } from '../../src/host/sandbox-accounts.js'
 
@@ -40,7 +40,7 @@ async function baseline(t) {
   const save = (id, ws) => writeFile(join(registry,id+'.json'), JSON.stringify(ws), { mode:0o600 })
   await save('a',account('a', shared, '/guest/shared')); await save('b',account('b', other, '/guest/other'))
   const opens=[], stateDir=join(root,'state')
-  const make = () => new GodbotService({stateDir, driverConfig:{antigravity:{env:{SYNTHETIC_HOST_ONLY:'fixture'}}},
+  const make = () => new NativeCrewService({stateDir, driverConfig:{antigravity:{env:{SYNTHETIC_HOST_ONLY:'fixture'}}},
     openDriver: async opts => {
       opens.push(opts)
       return { nativeId:opts.resumeId??randomUUID(), capabilities:{resume:true}, async close(){},

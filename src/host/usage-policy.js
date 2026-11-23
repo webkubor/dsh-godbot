@@ -92,7 +92,7 @@ export class UsagePolicy {
       monthly = totals(),
       models = new Map()
     const rows = new Map()
-    // Godbot journals each model attempt under Session#turn:step:attempt. The
+    // NativeCrew journals each model attempt under Session#turn:step:attempt. The
     // live overlay uses its exact key while that journal's asynchronous scan catches up.
     const rt = this.service.runtime
     const ledgerPath = rt?.home && join(rt.home, 'usage.sqlite')

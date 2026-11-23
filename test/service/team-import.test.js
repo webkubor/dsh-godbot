@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, realpath, rm, stat, symlink } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 import { install as installRoster } from '../../src/host/team-runtime/roster.js'
 import { install as installPrivacy } from '../../src/host/team-runtime/privacy.js'
 
@@ -35,7 +35,7 @@ async function fixture(t) {
   }
   installPrivacy(rt)
   installRoster(rt)
-  const create = () => new GodbotService({
+  const create = () => new NativeCrewService({
     stateDir, teamRuntime: () => rt, config: { importWorkspaceParent: join(root, 'imports') },
     openDriver: async request => {
       opened.push(request)
@@ -192,7 +192,7 @@ test('native folders and private donor folders, archives, and memory directories
   await mkdir(inside)
   await symlink(dataDir, alias)
   for (const folder of [dataDir, inside, alias]) {
-    await assert.rejects(f.rt.checkPrivacyChange(bot, { flag: true, moving: true, workDir: folder }), /Godbot data directory/)
+    await assert.rejects(f.rt.checkPrivacyChange(bot, { flag: true, moving: true, workDir: folder }), /NativeCrew data directory/)
   }
   await assert.rejects(f.rt.updateBot(bot.id, { private: true }, member.id), /Only the user/)
   await f.rt.updateBot(bot.id, { private: true })

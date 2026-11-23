@@ -64,7 +64,7 @@ export function install(rt) {
     }
   }
   const readOnly = () => {
-    if (stuck !== undefined) return `The Bot team file ${statePath} could not be read (${stuck}). Godbot does not change it; fix or move the file and reload.`
+    if (stuck !== undefined) return `The Bot team file ${statePath} could not be read (${stuck}). NativeCrew does not change it; fix or move the file and reload.`
     if (holder === undefined) return undefined
     const where = holder.pid ? `pid ${holder.pid}${holder.host ? ` on ${holder.host}` : ''}` : 'unknown process'
     return `The Bot team in ${home} is open in another dsh (Web or Desktop, ${where}). This window shows the team but cannot change it; close the other one and reload.`
@@ -106,7 +106,7 @@ export function install(rt) {
       stuck = undefined
       return parsed
     }
-    stuck = 'saved by a newer Godbot; update Godbot'
+    stuck = 'saved by a newer NativeCrew; update NativeCrew'
     return undefined
   }
 
@@ -419,7 +419,7 @@ export function install(rt) {
     if (!writable()) return required ? Promise.reject(new Error(`This host cannot save the Bot team: ${readOnly()}`)) : writing
     const run = writing.then(async () => {
       // Re-check writability once the queued write runs: an adopt queued before
-      // it may have made this host read-only (e.g. a file a newer Godbot wrote).
+      // it may have made this host read-only (e.g. a file a newer NativeCrew wrote).
       if (stuck !== undefined || holder !== undefined) {
         if (required) throw new Error(`This host cannot save the Bot team: ${readOnly()}`)
         warnReadOnly()

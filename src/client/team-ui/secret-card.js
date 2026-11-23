@@ -321,7 +321,7 @@ function SecretStoreCard({ store, actions, run, Section }) {
   }
   if (mode === 'encrypted') {
     return h(Section, { title: t('Encryption at rest') },
-      hint('Keys are stored encrypted. They stay decrypted in memory while Godbot runs.'),
+      hint('Keys are stored encrypted. They stay decrypted in memory while NativeCrew runs.'),
       form === 'decrypt'
         ? h('div', { className: 'bt-set-row bt-bs-stack' },
           field(t('Passphrase'), passphrase, setPassphrase, true),

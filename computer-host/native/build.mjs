@@ -22,7 +22,7 @@ const here = fileURLToPath(new URL('.', import.meta.url))
 const dest = nativeRuntimePath()
 const previous = join(dest, 'previous')
 const mac = process.platform === 'darwin'
-const capture = mac ? 'Godbot Computer Host.app' : 'godbot-screen'
+const capture = mac ? 'NativeCrew Computer Host.app' : 'godbot-screen'
 const files = ['godbot-desktop-rtc', capture]
 const run = (name, args, cwd = here) => execFileSync(name, args, { cwd, stdio: 'inherit' })
 const installed = []
@@ -86,7 +86,7 @@ function build(stage) {
     ])
     writeFileSync(
       join(contents, 'Info.plist'),
-      `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>CFBundleExecutable</key><string>godbot-screen</string><key>CFBundleIdentifier</key><string>io.github.renjiegod.godbot.computerhost</string><key>CFBundleName</key><string>Godbot Computer Host</string><key>CFBundlePackageType</key><string>APPL</string><key>CFBundleVersion</key><string>1</string><key>LSUIElement</key><true/><key>NSScreenCaptureUsageDescription</key><string>Share a selected display with a controller you approve.</string></dict></plist>`,
+      `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>CFBundleExecutable</key><string>godbot-screen</string><key>CFBundleIdentifier</key><string>io.github.renjiegod.godbot.computerhost</string><key>CFBundleName</key><string>NativeCrew Computer Host</string><key>CFBundlePackageType</key><string>APPL</string><key>CFBundleVersion</key><string>1</string><key>LSUIElement</key><true/><key>NSScreenCaptureUsageDescription</key><string>Share a selected display with a controller you approve.</string></dict></plist>`,
     )
     run('codesign', ['--force', '--options', 'runtime', '--sign', signingIdentity(), app])
     run('codesign', ['--verify', '--strict', app])
@@ -102,7 +102,7 @@ const lock = join(dest, '.install-lock')
 try {
   mkdirSync(lock)
 } catch {
-  throw Error('Another Godbot graphical installation is in progress')
+  throw Error('Another NativeCrew graphical installation is in progress')
 }
 const stage = mkdtempSync(join(dest, '.build-'))
 const rollback = process.argv[2] === '--rollback'

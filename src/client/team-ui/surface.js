@@ -14,7 +14,7 @@ const GROUPS = ['shell', 'conversation']
 // lean on earlier ones (the theme's styles and tokens), never the other way round.
 function disposeAll(disposers, label) {
   for (const dispose of [...disposers].reverse()) {
-    try { dispose?.() } catch (error) { console.warn(`[Godbot] ${label}`, error) }
+    try { dispose?.() } catch (error) { console.warn(`[NativeCrew] ${label}`, error) }
   }
 }
 
@@ -41,7 +41,7 @@ export function surfaceGroups(install, { onError } = {}) {
       return true
     } catch (error) {
       disposeAll(disposers, `roll back ${group}`)
-      console.warn(`[Godbot] install ${group}`, error)
+      console.warn(`[NativeCrew] install ${group}`, error)
       onError?.(group, error)
       return false
     }
@@ -76,7 +76,7 @@ export function surfaceGroups(install, { onError } = {}) {
 
 // The priority that puts an entry below every other entry of its cell (lowest
 // renders). Another plugin that shadows the same cell at the same priority would
-// make the registration throw; in a Bot surface the cell is Godbot's.
+// make the registration throw; in a Bot surface the cell is NativeCrew's.
 export function freePriority(entries, { priority, key, id }) {
   if (priority === undefined) return undefined
   const taken = entries

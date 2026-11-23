@@ -9,7 +9,7 @@ export function WorkspaceActions({ wide, client, onSchedules, onBack }) {
   const schedules = t('Scheduled messages')
   return h('nav', {
     className: 'gb-workspace-actions',
-    'aria-label': 'Godbot 工作区',
+    'aria-label': 'NativeCrew 工作区',
     'data-rail': !wide || undefined,
   },
     h('style', null, actionsStyle),

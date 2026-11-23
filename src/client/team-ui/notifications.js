@@ -88,7 +88,7 @@ export function NotificationsRow() {
     h('div', { className: 'bt-set-copy' },
       h('span', null, t('Notifications')),
       h('span', { className: 'bt-set-hint' }, t('Tell me when a Bot answers while I am looking elsewhere.')),
-      denied ? h('span', { className: 'bt-set-hint bt-danger', role: 'alert' }, t('System notifications are turned off for Godbot. Unread marks still show them.')) : null),
+      denied ? h('span', { className: 'bt-set-hint bt-danger', role: 'alert' }, t('System notifications are turned off for NativeCrew. Unread marks still show them.')) : null),
     h('div', { className: 'bt-set-control' }, h(Switch, {
       label: t('Notifications'), on: prefs.enabled === true,
       onChange: next => changeNotify({ enabled: next }),

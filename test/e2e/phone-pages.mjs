@@ -1,4 +1,4 @@
-// Every page of the Godbot phone app, as the app calls it over the phone link: one read and one
+// Every page of the NativeCrew phone app, as the app calls it over the phone link: one read and one
 // write per page, each write checked on the computer through the team channel. `bot` calls the
 // computer over the end-to-end encrypted link (the phone); `channel` asks the computer itself.
 // Payloads mirror godbot-app (src/screens/manage.tsx, settings-pages.tsx).

@@ -1,4 +1,4 @@
-// PHONE-PAGES: every page of the Godbot phone app, over the end-to-end encrypted link through a
+// PHONE-PAGES: every page of the NativeCrew phone app, over the end-to-end encrypted link through a
 // godbot-server relay: one read and one write per page, each write checked on the computer.
 import assert from 'node:assert/strict'
 import { mkdir, realpath } from 'node:fs/promises'
@@ -26,7 +26,7 @@ export default async function check({ makeHost, candidate, reportDir, scratch, n
     await host.install(candidate)
     await host.start()
     await channel(host, 'phone-set', { server: relay.url, on: true })
-    await until(async () => (await channel(host, 'phone-set', {})).status === 'online', 'Godbot online at the relay', 30_000)
+    await until(async () => (await channel(host, 'phone-set', {})).status === 'online', 'NativeCrew online at the relay', 30_000)
     const offer = parsePairingUri((await channel(host, 'phone-pair')).pairing.uri)
     const keys = generateKeyPair()
     const phone = { deviceId: deviceIdFor(keys.publicKey), ...keys, accessToken: randomToken() }

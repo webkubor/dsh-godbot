@@ -23,7 +23,7 @@ test('the workspace copies historical preferences once and preserves both instal
   assert.equal(values.has(STORAGE.notify), false)
 })
 
-test('only the original default Main Bot look resolves to the Godbot icon', () => {
+test('only the original default Main Bot look resolves to the NativeCrew icon', () => {
   const godbot = { id: 'godbot', avatar: { shape: 'whale' }, color: 'deepseek' }
   const member = { ...godbot, id: 'artist' }
   const roster = { mainBotId: godbot.id, bots: [godbot, member], rooms: [] }

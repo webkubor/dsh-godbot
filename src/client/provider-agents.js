@@ -16,7 +16,7 @@ function LoginCommand({ value, opened }) {
   const [copied, setCopied] = useState(false)
   const [error, setError] = useState('')
   return h('div', { className:'gb-pr-commands' },
-    h('span', { className:'gb-pr-hint', role:'status' }, opened ? '已打开宿主终端，请完成登录后核验身份。' : '在运行 Godbot Host 的交互终端登录'),
+    h('span', { className:'gb-pr-hint', role:'status' }, opened ? '已打开宿主终端，请完成登录后核验身份。' : '在运行 NativeCrew Host 的交互终端登录'),
     h('code', { 'data-account-login-command':true }, value),
     h('div', { className:'gb-pr-actions' }, h(Button, { onClick:async () => {
       try { await navigator.clipboard.writeText(value); setCopied(true); setError('') }

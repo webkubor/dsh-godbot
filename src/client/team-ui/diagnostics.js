@@ -80,8 +80,8 @@ export function failureLabel(code, message) {
 // GitHub refuses very long addresses; past this the diagnostics go by the clipboard.
 const URL_LIMIT = 7000
 export const WHAT_MAX = 2000
-const PASTE_NOTE = 'Godbot copied the diagnostics to the clipboard. Paste them here.'
-const REST_NOTE = 'The recent errors do not fit in the link. Godbot copied the diagnostics to the clipboard: paste them below this line.'
+const PASTE_NOTE = 'NativeCrew copied the diagnostics to the clipboard. Paste them here.'
+const REST_NOTE = 'The recent errors do not fit in the link. NativeCrew copied the diagnostics to the clipboard: paste them below this line.'
 
 export function issueUrl(base, { what = '', diagnostics }) {
   const text = what.trim().slice(0, WHAT_MAX)

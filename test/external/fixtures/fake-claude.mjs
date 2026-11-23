@@ -1,4 +1,4 @@
-// Modified for Godbot to handle native metadata controls. See THIRD_PARTY_NOTICES.
+// Modified for NativeCrew to handle native metadata controls. See THIRD_PARTY_NOTICES.
 // A fake Claude Code for tests: stream-json both ways. Prints the init system
 // line, then answers each user message with thinking + text + result events.
 import { randomUUID } from 'node:crypto'

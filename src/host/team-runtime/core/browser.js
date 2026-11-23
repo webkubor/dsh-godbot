@@ -148,7 +148,7 @@ export function createBrowserChannel({ now = Date.now, waitMs = WAIT_MS, staleMs
 
   function dispose() {
     for (const client of clients.values()) client.end?.()
-    for (const id of [...pending.keys()]) settle(id, { error: 'Godbot stopped before the page was read.' })
+    for (const id of [...pending.keys()]) settle(id, { error: 'NativeCrew stopped before the page was read.' })
     clients.clear()
     holds.clear()
   }
@@ -234,7 +234,7 @@ export function pageText(page, { from = 0, size = TEXT_PAGE, itemsMax = ITEMS_MA
   return lines.join('\n')
 }
 
-export const NO_BROWSER = 'Your browser panel is not open. It exists only in the desktop apps (DSH Desktop and Godbot): ask the user to click your name at the top of your chat, open the browser from there, and load the page.'
+export const NO_BROWSER = 'Your browser panel is not open. It exists only in the desktop apps (DSH Desktop and NativeCrew): ask the user to click your name at the top of your chat, open the browser from there, and load the page.'
 export const NO_PAGE = 'Your browser panel has no page open yet. Ask the user to load the page there first.'
 
 const OPEN_MAX = 64

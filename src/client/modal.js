@@ -1,7 +1,7 @@
 import { createElement as h, useId, useLayoutEffect, useRef } from 'react'
 import { iconButton } from './chat-ui.js'
 
-export function GodbotModal({ title, close, closeLabel = '关闭', wide, headerAside, dismissOnBackdrop, children }) {
+export function NativeCrewModal({ title, close, closeLabel = '关闭', wide, headerAside, dismissOnBackdrop, children }) {
   const dialog = useRef(null)
   const titleId = useId()
 

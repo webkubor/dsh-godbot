@@ -6,7 +6,7 @@ import { join } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import test from 'node:test'
 import { workspaceOperations } from '../../src/host/plugin.js'
-import { GodbotService, readOnlyWorkspaceSnapshot } from '../../src/host/service.js'
+import { NativeCrewService, readOnlyWorkspaceSnapshot } from '../../src/host/service.js'
 import { Store } from '../../src/host/store.js'
 
 function runtime() {
@@ -30,12 +30,12 @@ test('read-only mount can inspect the real Bot roster and new tasks without migr
   raw.put('botTaskDeliveries',{ id:'queued', botId:'existing-bot', messageId:'m', state:'queued' })
   raw.close()
   const scope = workspaceOperations(rt, () => {
-    const service = new GodbotService({stateDir:dir, runtime:rt})
+    const service = new NativeCrewService({stateDir:dir, runtime:rt})
     return { service, start:async()=>{}, close:()=>service.close() }
   })
   t.after(()=>scope.close())
   assert.equal(await scope.ready(),undefined)
-  assert.throws(()=>new GodbotService({stateDir:dir, runtime:rt}),/read-only/)
+  assert.throws(()=>new NativeCrewService({stateDir:dir, runtime:rt}),/read-only/)
   const view = readOnlyWorkspaceSnapshot(dir,rt)
   assert.equal(view.readOnly,true)
   assert.equal(view.bots[0].sessionId,'existing-bot-part')

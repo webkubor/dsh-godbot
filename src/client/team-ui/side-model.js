@@ -11,7 +11,7 @@ export const SIDE_TOKEN = '/side '
 const GROUP_REFUSAL = "Side chat is only available in a Bot's private chat."
 const ATTACHMENT_REFUSAL = '/side does not take attachments.'
 const EMPTY_REFUSAL = 'Write a question after /side.'
-const LOADING_REFUSAL = 'Godbot is still loading this chat.'
+const LOADING_REFUSAL = 'NativeCrew is still loading this chat.'
 
 export function sideSurface(roster, sessionId) {
   if (!roster?.ready) return 'unknown'

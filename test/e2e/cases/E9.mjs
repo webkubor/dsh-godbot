@@ -7,7 +7,7 @@ import { until } from '../host.mjs'
 
 async function checkInboxDialog(host, note) {
   const { page } = host
-  const navigation = page.getByRole('navigation', { name: 'Godbot 工作区' })
+  const navigation = page.getByRole('navigation', { name: 'NativeCrew 工作区' })
   const opener = navigation.getByRole('button', { name: '工作台收件箱', exact: true })
   const dialog = page.getByRole('dialog', { name: '工作台收件箱', exact: true })
   const close = dialog.getByRole('button', { name: '关闭', exact: true })
@@ -154,7 +154,7 @@ export default async function E9({ makeHost, candidate, note }) {
     const reply = 'done-' + randomUUID().slice(0, 8)
     let choices = 0
     host.model.reply = async body => {
-      if (JSON.stringify(body.system).includes('Godbot room routing.')) {
+      if (JSON.stringify(body.system).includes('NativeCrew room routing.')) {
         choices++
         if (mode === 'timeout') await wait(2300)
         return JSON.stringify({ id: worker.id, confidence: mode === 'low' ? 0.23 : 0.99 })

@@ -393,7 +393,7 @@ export async function startComputerHost(options = {}) {
       return protectedChange(() => {
         device(id)
         if (!grants(id).includes(scope) || !grants(id).includes('desktop.view'))
-          throw new Error('Remember the corresponding Godbot desktop grant before remembering a Wayland screen')
+          throw new Error('Remember the corresponding NativeCrew desktop grant before remembering a Wayland screen')
         portalMemory.enable(id, scope)
         return { deviceId: id, portalScopes: portalMemory.scopes(id) }
       })

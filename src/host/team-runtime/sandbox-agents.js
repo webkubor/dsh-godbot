@@ -16,7 +16,7 @@ function workspaceTag(binding) {
   return createHash('sha256').update(JSON.stringify([binding.bindingId, binding.hostCwd, binding.guestCwd])).digest('hex').slice(0, 16)
 }
 const provider = ref => ref?.split('/')[0]
-const unavailable = () => new Error('该账号的沙箱未启用或已移除，请在 Godbot 设置中检查。')
+const unavailable = () => new Error('该账号的沙箱未启用或已移除，请在 NativeCrew 设置中检查。')
 function matchBinding(expected, actual) {
   if (!expected || expected.bindingId !== actual.bindingId || expected.guestCwd !== actual.guestCwd || expected.hostCwd !== actual.hostCwd)
     throw new Error('该沙箱账号或工作目录的绑定已变化，请在 Bot 设置中重新绑定。')
@@ -156,7 +156,7 @@ export class SandboxTeamAgents {
       const next = fields.sandboxBinding
       if (bot.sandboxBinding?.bindingId === next.bindingId && bot.sandboxBinding.hostCwd === next.hostCwd &&
           bot.sandboxBinding.guestCwd === next.guestCwd) return bot
-      // Godbot rotates all private and group parts when their provider changes.
+      // NativeCrew rotates all private and group parts when their provider changes.
       // Give the newly selected workspace its own route, even on the same VM.
       route += '_w_' + workspaceTag(next)
     }

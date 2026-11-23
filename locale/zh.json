@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "NativeCrew",
+    "description": "隔离沙箱中的原生 Agent 协作，支持自动派工与会话交接。"
+  }
+}

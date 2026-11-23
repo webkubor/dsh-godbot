@@ -149,7 +149,7 @@ export class RemoteAgentAdapter extends LlmAdapter {
   }
 
   dispose() {
-    for (const controller of this.active.values()) controller.abort(new Error('Godbot 已关闭'))
+    for (const controller of this.active.values()) controller.abort(new Error('NativeCrew 已关闭'))
   }
 }
 
@@ -174,7 +174,7 @@ export function install(rt) {
     closed = true
     adapter.dispose()
     registration?.()
-  }, 'Godbot remote agents')
+  }, 'NativeCrew remote agents')
 
   let saving = Promise.resolve()
   async function handle(req) {

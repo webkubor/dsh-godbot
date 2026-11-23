@@ -1,8 +1,8 @@
 import { createElement as h, useId, useSyncExternalStore } from 'react'
 import { webIconUrl } from '../host/web-icon.js'
 
-// DSH mounts this outside every Godbot workspace: .gb-theme brings the Godbot
-// palette and the card reuses the Godbot dialog (see workspace-runtime.css).
+// DSH mounts this outside every NativeCrew workspace: .gb-theme brings the NativeCrew
+// palette and the card reuses the NativeCrew dialog (see workspace-runtime.css).
 function RuntimeStatus({ source, retry, navigation }) {
   const state = useSyncExternalStore(source.subscribe, source.read, source.read)
   const titleId = useId()
@@ -18,7 +18,7 @@ function RuntimeStatus({ source, retry, navigation }) {
         'header',
         { className: 'gb-modal-head' },
         h('img', { className: 'gb-runtime-mark', src: webIconUrl, alt: '' }),
-        h('h2', { id: titleId }, 'Godbot 团队'),
+        h('h2', { id: titleId }, 'NativeCrew 团队'),
       ),
       h(
         'div',
@@ -33,7 +33,7 @@ function RuntimeStatus({ source, retry, navigation }) {
           : h('p', { className: 'gb-runtime-lead' }, '团队工作台暂时无法打开'),
         waiting
           ? state.message && h('small', null, state.message)
-          : h('p', { className: 'gb-modal-note', role: 'alert' }, state.message || '没有收到 Godbot Host 的运行状态。'),
+          : h('p', { className: 'gb-modal-note', role: 'alert' }, state.message || '没有收到 NativeCrew Host 的运行状态。'),
         h(
           'div',
           { className: 'gb-modal-actions' },
@@ -80,7 +80,7 @@ export function openWorkspace(ctx, client, navigation, mount) {
       if (!active || token !== generation) return
       const runtime = result.workspaceRuntime ?? {
         mode: 'unavailable',
-        message: '当前 Godbot Host 尚未提供团队运行状态。',
+        message: '当前 NativeCrew Host 尚未提供团队运行状态。',
       }
       if (runtime.mode === 'embedded') {
         unmount = mount((error) => {

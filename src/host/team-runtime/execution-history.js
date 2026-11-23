@@ -218,7 +218,7 @@ export class ExecutionHistory {
     try { write(this.database()) } catch (error) {
       if (!this.loggedWriteFailure) {
         this.loggedWriteFailure = true
-        this.rt.ctx?.logger?.warn('Could not save Godbot execution history: %s', error?.code ?? 'write failed')
+        this.rt.ctx?.logger?.warn('Could not save NativeCrew execution history: %s', error?.code ?? 'write failed')
       }
     }
   }
@@ -442,5 +442,5 @@ function mergeRows(rt, events, toolId) {
 export function install(rt) {
   const history = rt.executionHistory = new ExecutionHistory(rt)
   rt.ctx.on('session/event', (session, event) => history.observe(session.id, event))
-  rt.ctx.effect(() => () => history.close(), 'Godbot Bot execution history')
+  rt.ctx.effect(() => () => history.close(), 'NativeCrew Bot execution history')
 }

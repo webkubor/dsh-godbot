@@ -1,6 +1,6 @@
 import { Fragment, createElement as h, useCallback, useEffect, useRef, useState } from 'react'
 import { Icon } from './chat-ui.js'
-import { GodbotModal } from './modal.js'
+import { NativeCrewModal } from './modal.js'
 import { BrowserTeachingPanel } from './browser-teaching.js'
 import style from './browser-viewer.css'
 
@@ -97,7 +97,7 @@ function BrowserPanel({ client, bot, sessionId, close }) {
     agent: frame?.expired ? '接管已过期，Bot 可继续' : 'Bot 可操作',
   }
   const frameTitle = frame?.title || frame?.url
-  return h(GodbotModal,
+  return h(NativeCrewModal,
     {
       title: bot.name + ' 的网页浏览器', close, closeLabel: '关闭面板', wide: true,
       headerAside: frame && h('span', { className: 'gb-browser-status', role: 'status' }, state[frame.control]),

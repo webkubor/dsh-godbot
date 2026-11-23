@@ -51,7 +51,7 @@ function storedReply(interaction, decision, answer) {
   }
 }
 
-export class GodbotService {
+export class NativeCrewService {
   constructor({ stateDir, openDriver, teamRuntime, subprocess, driverConfig = {}, config = {} }) {
     this.store = new Store(stateDir)
     this.automation = new AutomationApi(this, config.automation)
@@ -358,7 +358,7 @@ export class GodbotService {
     return true
   }
   dispatch(req) {
-    if (this.closing) throw new Error('Godbot is shutting down')
+    if (this.closing) throw new Error('NativeCrew is shutting down')
     // dispatch is called by the owner RPC. Agent tools only reach mutate with their actor.
     if (req?.action === 'provider-usage' || req?.action === 'provider-usage-refresh')
       return this.providerUsage.dispatch(req)
@@ -418,8 +418,8 @@ export class GodbotService {
     return this.mutate(req, null)
   }
   mutate(req, actor, slash) {
-    if (this.closing) throw new Error('Godbot is shutting down')
-    if (!req || typeof req.action !== 'string') throw new Error('Missing Godbot action')
+    if (this.closing) throw new Error('NativeCrew is shutting down')
+    if (!req || typeof req.action !== 'string') throw new Error('Missing NativeCrew action')
     const s = this.store
     if (this.teamBridge.running.size) {
       const teams = [req.teamId, s.get('members', req.memberId)?.teamId, s.get('tasks', req.taskId)?.teamId,
@@ -663,7 +663,7 @@ export class GodbotService {
         return { id: member.id, status: 'connecting' }
       }
       default:
-        throw new Error('Unsupported Godbot action: ' + req.action)
+        throw new Error('Unsupported NativeCrew action: ' + req.action)
     }
   }
   maintain(member) {
@@ -1064,7 +1064,7 @@ export class GodbotService {
       // in this native conversation. Its historical messages remain intact.
       const text = member.role || member.memory || member.profileUpdatedAt
         ? [
-          '[Godbot member: ' + member.name + ']\nCurrent profile, replacing any earlier profile in this conversation.',
+          '[NativeCrew member: ' + member.name + ']\nCurrent profile, replacing any earlier profile in this conversation.',
           'Role instructions:\n' + (member.role || '(none)'),
           'Fixed memory for this member:\n' + (member.memory || '(none)'),
           '[Current task]\n' + cmd.text,
@@ -1336,7 +1336,7 @@ export class GodbotService {
       this.store.close()
       const failures = released.filter((r) => r.status === 'rejected').map((r) => r.reason)
       if (failures.length)
-        throw new AggregateError(failures, 'Godbot could not confirm all member processes closed')
+        throw new AggregateError(failures, 'NativeCrew could not confirm all member processes closed')
     })()
     return this.closed
   }

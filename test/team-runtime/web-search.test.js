@@ -65,7 +65,7 @@ test('the workspace search provider uses the session credential and falls back t
   assert.equal(calls, 1)
 })
 
-test('an explicit other provider stays selected and Godbot reuses an existing auto owner', () => {
+test('an explicit other provider stays selected and NativeCrew reuses an existing auto owner', () => {
   const ctx = context()
   ctx.state.selection = 'custom'
   managed(ctx)

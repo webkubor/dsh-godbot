@@ -274,7 +274,7 @@ test('a deep link keeps the user in the current tab on Return, even with unrelat
 })
 test('the old standalone Agent bookmark opens the Bot workspace with ordinary history semantics', () => {
   const url = 'https://dsh.test/work/#/godbot/agents'
-  for (const saved of [null, { dshGodbotWorkspace: { session: 'ordinary', panel: 'files', hash: '#/session/abc', pushed: false } }]) {
+  for (const saved of [null, { dshNativeCrewWorkspace: { session: 'ordinary', panel: 'files', hash: '#/session/abc', pushed: false } }]) {
     const browser = browserAt(url, saved)
     const app = shell(browser)
     assert.equal(browser.location.hash, workspaceHash)

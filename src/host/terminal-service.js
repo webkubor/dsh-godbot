@@ -316,10 +316,10 @@ export class TerminalService {
   }
 
   async dispose() {
-    this.lifetime.abort(new Error('Godbot terminal service stopped'))
+    this.lifetime.abort(new Error('NativeCrew terminal service stopped'))
     await Promise.allSettled([...this.opening])
     const results = await Promise.allSettled([...this.entries.keys()].map(id => this.close(id)))
     const errors = results.filter(r => r.status === 'rejected').map(r => r.reason)
-    if (errors.length) throw new AggregateError(errors, 'Could not close all Godbot terminals')
+    if (errors.length) throw new AggregateError(errors, 'Could not close all NativeCrew terminals')
   }
 }

@@ -41,7 +41,7 @@ function rowsOf(dir) {
   const db = new DatabaseSync(file)
   try {
     const checkpoint = db.prepare('PRAGMA wal_checkpoint(TRUNCATE)').get()
-    if (checkpoint.busy) throw new Error('The Godbot database still has an active writer')
+    if (checkpoint.busy) throw new Error('The NativeCrew database still has an active writer')
     return db.prepare('SELECT seq,collection,id,data FROM records ORDER BY seq').all().filter(r => !credentials.has(r.collection))
       .map(r => ({ collection: r.collection, seq: r.seq, id: r.id, value: portableRecord(r.collection, JSON.parse(r.data)) }))
   } finally { db.close() }
@@ -307,10 +307,10 @@ export async function workspaceCommand(argv) {
   const home = realpathSync(v.home), dir = v['state-dir'] ? realpathSync(v['state-dir']) : join(home,'godbot',v.profile)
   const opts = {home,dir,profile:v.profile}
   const leaseFile = join(dir,'godbot-owner.sqlite3')
-  if (!existsSync(leaseFile)) throw new Error('Initialize this Godbot profile before using workspace backup/restore')
+  if (!existsSync(leaseFile)) throw new Error('Initialize this NativeCrew profile before using workspace backup/restore')
   const lease = new DatabaseSync(leaseFile)
   try {
-    try { lease.exec('PRAGMA busy_timeout=0; BEGIN IMMEDIATE') } catch { throw new Error('Stop this Godbot Host before backup or restore') }
+    try { lease.exec('PRAGMA busy_timeout=0; BEGIN IMMEDIATE') } catch { throw new Error('Stop this NativeCrew Host before backup or restore') }
     const recovered = checkJournal(dir,verb==='rollback')
     if (verb==='recover' || verb==='rollback') return { state: recovered ?? 'clean' }
     if (!v.file || !v['password-file']) throw new Error('Provide --file and --password-file')

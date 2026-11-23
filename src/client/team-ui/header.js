@@ -166,7 +166,7 @@ export function HeaderPill({ sessionId, useRoster, useSessions, useSessionStatus
       onClick: () => actions.openGroupSearch(room.id),
     }, h(SearchIcon))
     : null
-  // Godbot: who this is, its model and the conversation tools share one bar at the
+  // NativeCrew: who this is, its model and the conversation tools share one bar at the
   // top-right, so the transcript's leading edge stays clear. A goal keeps its island.
   return h('div', { className: 'bt-head' },
     showGoal

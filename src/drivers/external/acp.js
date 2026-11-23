@@ -1,7 +1,7 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // The Agent Client Protocol engine: one child process per route (or per working
 // folder when the CLI pins shell commands to its process cwd), ACP over stdio.
-// A process multiplexes sessions: each Godbot Session maps to one ACP session,
+// A process multiplexes sessions: each NativeCrew Session maps to one ACP session,
 // created or resumed with our loopback MCP server attached.
 import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -14,7 +14,7 @@ import { acpMode } from './engines.js'
 import { acpToolExitCode, acpToolStatus } from './tool-results.js'
 
 const CLIENT = { name: 'godbot', version: '1' }
-// Godbot's loopback MCP server, which carries the Bot's team tools.
+// NativeCrew's loopback MCP server, which carries the Bot's team tools.
 const MCP_SERVER = 'godbot'
 const AUTH_ERROR = /not signed in|not logged in|login required|unauthorized|authentication/i
 const TIMEOUT_ERROR = /timed out|timeout/i
@@ -128,7 +128,7 @@ export class AcpEngine {
     try {
       const reply = await peer.request('initialize', {
         protocolVersion: 1,
-        // `session.compaction` asks for compaction_update notices, so Godbot hears when
+        // `session.compaction` asks for compaction_update notices, so NativeCrew hears when
         // the agent condenses its own context.
         clientCapabilities: { fs: { readTextFile: false, writeTextFile: false }, terminal: false, session: { compaction: {} } },
         clientInfo: CLIENT,
@@ -331,7 +331,7 @@ export class AcpEngine {
     }
   }
 
-  // A new or resumed ACP session for one Godbot Session.
+  // A new or resumed ACP session for one NativeCrew Session.
   async open(dshSessionId, openArgs) {
     if (this.engine.cwdPerProcess) return this.openInWorker(dshSessionId, openArgs)
     const { cwd, mcp, resumeId, preset, model } = openArgs
@@ -427,7 +427,7 @@ export class AcpEngine {
     const thought = configOptionsOf(options, 'thought_level')
     const availableModels = entries(model?.options ?? session.models)
     const thoughtChoices = effortOptions(flatten(thought?.options))
-    // Godbot's Antigravity mapping: a model/level pair must appear among the
+    // NativeCrew's Antigravity mapping: a model/level pair must appear among the
     // full variant ids. A standalone base id has no configurable level.
     const variantIds = new Set(entries(session.models).map((m) => m.id))
     const variantMap = availableModels.some((m) =>

@@ -344,7 +344,7 @@ export function createBotBrowsers({ bridge, createSource, storage = globalThis.l
       // job resolves undefined instead of rejecting, so no caller drops one.
       job = create(tabId)
         .catch((error) => {
-          console.warn('[Godbot] browser acquire', error)
+          console.warn('[NativeCrew] browser acquire', error)
           publish(tabId, { loading: false, error: String(error?.message ?? error) })
           return undefined
         })
@@ -372,7 +372,7 @@ export function createBotBrowsers({ bridge, createSource, storage = globalThis.l
     entry.stop()
     entry.element.remove()
     publish(tabId, { live: false, loading: false })
-    await bridge.release(entry.lease).catch(error => console.warn('[Godbot] browser release', error))
+    await bridge.release(entry.lease).catch(error => console.warn('[NativeCrew] browser release', error))
   }
 
   function openTab(botId, url) {
@@ -500,7 +500,7 @@ export function createBotBrowsers({ bridge, createSource, storage = globalThis.l
     save(botId, undefined)
     seen.delete(botId)
     // The desktop app keeps a Bot's logins on disk; they go with the Bot.
-    await bridge.forget?.(`bot:${botId}`)?.catch(error => console.warn('[Godbot] browser forget', error))
+    await bridge.forget?.(`bot:${botId}`)?.catch(error => console.warn('[NativeCrew] browser forget', error))
   }
 
   return {
@@ -609,7 +609,7 @@ export function serveBrowserReads({ browsers, post, clientId = globalThis.crypto
       answered.set(id, job)
       if (answered.size > 200) answered.delete(answered.keys().next().value)
     }
-    await post('browser-result', await job).catch(error => console.warn('[Godbot] browser result', error))
+    await post('browser-result', await job).catch(error => console.warn('[NativeCrew] browser result', error))
   }
   const loop = async () => {
     let failures = 0

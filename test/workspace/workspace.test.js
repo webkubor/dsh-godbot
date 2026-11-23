@@ -5,7 +5,7 @@ import { mkdtempSync, mkdirSync, readFileSync, realpathSync, rmSync, symlinkSync
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { setTimeout as pause } from 'node:timers/promises'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 import { Store } from '../../src/host/store.js'
 import { addMember, createTeam } from '../fixtures/member-team.js'
 import { memberWorkspace, prepareMemberWorkspace, workspaceBlocker } from '../fixtures/member-workspace.js'
@@ -147,7 +147,7 @@ test('only two host-enforced read-only policies can share a working tree, and on
 test('service submits independent worktree turns while overlapping writers queue, then wakes the blocked writer', async (t) => {
   const { repo, stateDir, resources } = workspace(t)
   const started = new Map()
-  const service = new GodbotService({
+  const service = new NativeCrewService({
     stateDir,
     openDriver: async (options) => ({
       nativeId: options.memberId,

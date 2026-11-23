@@ -8,7 +8,7 @@ export const inject = ['web']
 export function apply(ctx, config = {}) {
   const web = ctx.web
   // 0.2.2-rc.1's WebRuntime selects the volatile config id, then the launch
-  // environment id. Participate only on explicit selection, so adding Godbot
+  // environment id. Participate only on explicit selection, so adding NativeCrew
   // never makes a profile with a single implicit provider ambiguous.
   const selected = () => web.config.searchProvider.get() ?? process.env.DSH_WEB_SEARCH_PROVIDER
   try {

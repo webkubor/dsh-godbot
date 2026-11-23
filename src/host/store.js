@@ -16,7 +16,7 @@ function acquireHostLease(dir) {
     lease.close()
     // SQLite may report an extended SQLITE_BUSY or SQLITE_LOCKED code.
     if ([5, 6].includes(error.errcode & 0xff)) {
-      const busy = new Error('Another Godbot host already owns the state directory ' + dir, { cause: error })
+      const busy = new Error('Another NativeCrew host already owns the state directory ' + dir, { cause: error })
       busy.code = 'GODBOT_STATE_IN_USE'
       throw busy
     }

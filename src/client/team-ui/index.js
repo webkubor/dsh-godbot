@@ -103,7 +103,7 @@ export function apply(ctx, godbot) {
   // style so the shell's own interface returns. `plain` stays false until a Bot-mode
   // view hosts a plain session, which drops only the conversation replacements.
   const surface = createSource({ mode: 'bot', plain: false })
-  // Whether Godbot holds the settings seat; Overlays draws the Settings dialog while it does not.
+  // Whether NativeCrew holds the settings seat; Overlays draws the Settings dialog while it does not.
   const settingsShellHeld = createSource(false)
   let settingsShell = null
   // DSH Agent Session ids from the last pull, so a reload already knows the main
@@ -282,7 +282,7 @@ export function apply(ctx, godbot) {
         ui.set(state => (state.bootFailed ? { ...state, bootFailed: false } : state))
       } catch (error) {
         if (!stopped) {
-          console.warn('[Godbot] state', error)
+          console.warn('[NativeCrew] state', error)
           // Only a missing Bot API counts toward a failed start: while the
           // host plugin stays unmounted the route answers 404. A network miss
           // is the host reconnecting, not a start-up failure (#516).
@@ -337,7 +337,7 @@ export function apply(ctx, godbot) {
     }, 'godbot: app update status')
   }
 
-  // The Godbot app's own updater; its state goes beside the host's answer as ownApp,
+  // The NativeCrew app's own updater; its state goes beside the host's answer as ownApp,
   // which the About row turns into the app's update state and buttons.
   const ownAppUpdates = globalThis.godbotApp?.updates ?? null
   if (ownAppUpdates?.state && ownAppUpdates.subscribe) {
@@ -380,7 +380,7 @@ export function apply(ctx, godbot) {
 
   // Mentions wear each Bot's color and character silhouette (or its photo). User text
   // DSH draws (a message waiting to be sent or to join a running turn, and since DSH
-  // 0.2.1-alpha.3 the contents of Godbot's own user bubble, .bt-uhost) shows "@Name" as
+  // 0.2.1-alpha.3 the contents of NativeCrew's own user bubble, .bt-uhost) shows "@Name" as
   // a file reference; one whose label is a whole Bot name wears the Bot's mark there too
   // (a name with a space is cut by DSH, so it stays as DSH draws it).
   const installMentions = () => {
@@ -448,7 +448,7 @@ export function apply(ctx, godbot) {
       activeTheme = themes[id]
       skin.apply()
       const release = releaseTokens
-      releaseTokens = ctx.theme.overrideTokens('dsh-godbot', shellTokens(themes[id]))
+      releaseTokens = ctx.theme.overrideTokens('@dsh-plugins/nativecrew', shellTokens(themes[id]))
       if (typeof release === 'function') release()
       if (snapshot.ready) {
         try { localStorage.setItem(PREFS_KEY, JSON.stringify({ theme: prefs.theme, accent: prefs.accent, motion: prefs.motion, layout: prefs.layout, effects: prefs.effects, width: prefs.width, flatWidth: prefs.flatWidth, thinking: prefs.thinking, defaultBotModel: prefs.defaultBotModel, enterToSend: prefs.enterToSend })) } catch { /* storage unavailable */ }
@@ -480,7 +480,7 @@ export function apply(ctx, godbot) {
     const hub = { registerShape, registerTheme, themes: () => Object.keys(allThemes()), shapes: () => Object.keys(SHAPES) }
     const queued = Array.isArray(window.godbotQueue) ? window.godbotQueue : []
     window.godbot = hub
-    window.godbotQueue = { push: (task) => { try { task(hub) } catch (error) { console.warn('[Godbot] registration', error); noteClientError('registration', error) } } }
+    window.godbotQueue = { push: (task) => { try { task(hub) } catch (error) { console.warn('[NativeCrew] registration', error); noteClientError('registration', error) } } }
     for (const task of queued) window.godbotQueue.push(task)
     return () => {
       if (window.godbot === hub) delete window.godbot
@@ -553,7 +553,7 @@ export function apply(ctx, godbot) {
   const openingWait = bindOpeningWait(ui, {
     onSlow: () => { void Promise.resolve(ctx.sessions.refresh?.()).catch(quietly('refresh sessions')) },
   })
-  ctx.effect(() => () => openingWait.end(), 'Godbot opening timer')
+  ctx.effect(() => () => openingWait.end(), 'NativeCrew opening timer')
   const beginOpening = (target) => {
     const owner = ownerOfSession(target)
     openingWait.begin({ target, id: owner?.id ?? target, name: owner?.name ?? '' })
@@ -577,7 +577,7 @@ export function apply(ctx, godbot) {
       if (main && godbot.active()) void actions.landOn(main).catch(quietly('recover empty Bot view'))
     },
   })
-  ctx.effect(() => () => sessionSelection.dispose(), 'Godbot session selection')
+  ctx.effect(() => () => sessionSelection.dispose(), 'NativeCrew session selection')
   // A New session moves the Bot's chat on to a fresh part and archives the part on
   // screen, and DSH can clear the view while the move runs. From the click until the
   // roster has the fresh part, the
@@ -948,7 +948,7 @@ export function apply(ctx, godbot) {
     update.set(previous => ({ ...previous, ...value }))
     wakeUpdate()
   }
-  // The DSH the newest released Godbot verified installs the same way.
+  // The DSH the newest released NativeCrew verified installs the same way.
   actions.installDshUpdate = async () => {
     const dsh = await call('dsh-update-install')
     update.set(previous => ({ ...previous, dsh }))
@@ -1082,11 +1082,11 @@ export function apply(ctx, godbot) {
   // Since DSH 0.2.1-alpha.3 user text is drawn by rules and a content factory, not the
   // primitives' text projection; the user's bubble draws with either (user-message.js).
   const hostDrawsUserText = typeof ctx.uiConversation.userText?.register === 'function'
-  // Godbot's own rows in the `/` menu of a Bot chat and a group chat (the DSH rows stay;
+  // NativeCrew's own rows in the `/` menu of a Bot chat and a group chat (the DSH rows stay;
   // the host module stops their execution there).
   ctx.effect(() => installCommandActions(ctx, { roster, actions }), 'godbot: bot command actions')
-  // Godbot holds the settings seat in every mode, Agent mode included: the bundle patch
-  // turns DSH's own shell off, and this one draws DSH's settings pages in Godbot's dialog.
+  // NativeCrew holds the settings seat in every mode, Agent mode included: the bundle patch
+  // turns DSH's own shell off, and this one draws DSH's settings pages in NativeCrew's dialog.
   ctx.effect(() => {
     const offStyles = installCompiledStyles(SETTINGS_SHELL_CSS, 'settings-shell')
     settingsShell = installSettingsShell(ctx, { face, actions, ui, held: settingsShellHeld })
@@ -1319,7 +1319,7 @@ export function apply(ctx, godbot) {
     [SIDE_CSS, 'side'],
     [BROWSER_CSS, 'browser'],
   ]
-  // Settings outside Bot mode (Agent mode) brings Godbot's own rules and colors while it
+  // Settings outside Bot mode (Agent mode) brings NativeCrew's own rules and colors while it
   // shows; the shell overrides and DSH's tokens stay as Agent mode has them.
   let shellSheets = 0
   actions.holdSettingsLook = () => {
@@ -1485,7 +1485,7 @@ export function apply(ctx, godbot) {
       setPlain(true)
       void call('agent-adopt', { agentId, sessionId: main }).then(() => pull()).catch((error) => {
         pendingAdopt.delete(main)
-        console.warn('[Godbot] agent-adopt', error)
+        console.warn('[NativeCrew] agent-adopt', error)
         // The Session never joined the Agent: the sync puts the team surface
         // back (a Map delete fires no subscription), and the user hears why.
         sync()
@@ -1536,7 +1536,7 @@ export function apply(ctx, godbot) {
       }
       if (verifyAttempts >= 3) return
       verifyAttempts += 1
-      console.warn('[Godbot] sidebar entry missing after shell mount; remounting')
+      console.warn('[NativeCrew] sidebar entry missing after shell mount; remounting')
       groups.remount('shell')
       verifyTimer = setTimeout(verifySidebar, 250)
     }

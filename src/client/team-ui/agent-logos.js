@@ -1,5 +1,5 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
-// The official marks of the agent CLIs Godbot drives, shown only to name the
+// The official marks of the agent CLIs NativeCrew drives, shown only to name the
 // agent a Bot runs on. The trademarks belong to their owners (see NOTICE).
 // Vector marks: Simple Icons 16.36.0 (CC0-1.0). Devin, OpenAI and Antigravity: the vendors' app icons.
 // Brand colors are content, not theme: hex digits without '#', added at use.

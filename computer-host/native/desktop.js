@@ -16,7 +16,7 @@ export function nativeRuntimePath() {
   return (
     process.env.GODBOT_DESKTOP_RUNTIME ||
     (mac
-      ? join(homedir(), 'Library', 'Application Support', 'Godbot Computer Host', 'native')
+      ? join(homedir(), 'Library', 'Application Support', 'NativeCrew Computer Host', 'native')
       : join(process.env.XDG_DATA_HOME || join(homedir(), '.local', 'share'), 'godbot-computer', 'native'))
   )
 }
@@ -25,7 +25,7 @@ function programs() {
   return {
     media: join(root, 'godbot-desktop-rtc'),
     platform: mac
-      ? join(root, 'Godbot Computer Host.app', 'Contents', 'MacOS', 'godbot-screen')
+      ? join(root, 'NativeCrew Computer Host.app', 'Contents', 'MacOS', 'godbot-screen')
       : join(root, 'godbot-screen'),
     encoder: process.env.GODBOT_DESKTOP_FFMPEG || 'ffmpeg',
   }
@@ -133,14 +133,14 @@ export function createDesktopAdapter({ directory, onEnded: adapterEnded } = {}) 
       if (mac && error.code === 2) {
         return {
           available: false, control: false, displays: [],
-          reason: 'Update the Godbot Computer Host and desktop helper together, then restart the host',
+          reason: 'Update the NativeCrew Computer Host and desktop helper together, then restart the host',
         }
       }
       return {
         available: false,
         control: false,
         displays: [],
-        reason: 'Install the Godbot desktop helper and launch it in an unlocked user session',
+        reason: 'Install the NativeCrew desktop helper and launch it in an unlocked user session',
       }
     }
   }
@@ -274,7 +274,7 @@ export function createDesktopAdapter({ directory, onEnded: adapterEnded } = {}) 
         p.once('error', () => shutdown('Could not start the desktop helper'))
         p.once('exit', (code) => shutdown(
           mac && p === platformChild && code === 3
-            ? 'Start the current signed Godbot Computer Host and its matching desktop helper with an approved desktop session'
+            ? 'Start the current signed NativeCrew Computer Host and its matching desktop helper with an approved desktop session'
             : 'A desktop session process stopped'
         ))
         for (const stream of p.stdio) stream?.on('error', () => shutdown('Desktop helper connection closed'))

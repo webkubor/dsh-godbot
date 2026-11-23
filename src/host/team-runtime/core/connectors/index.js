@@ -2,7 +2,7 @@
 // Connectors: outside services every Bot can use. One engine mounts each
 // connected service's MCP server on the plugin context through the local
 // gateway (gateway.js), so every Bot gets mcp__<id>__* tools while credentials
-// stay Godbot secrets that never reach the mcp-client config. OAuth sign-in is
+// stay NativeCrew secrets that never reach the mcp-client config. OAuth sign-in is
 // in oauth.js, the service list in catalog.js, mail in mail/.
 import { randomBytes, randomUUID } from 'node:crypto'
 import { createServer } from 'node:http'
@@ -277,7 +277,7 @@ export function install(rt) {
       try { url = new URL(req.url ?? '/', 'http://127.0.0.1') } catch { res.writeHead(400); res.end(); return }
       if (url.pathname !== '/callback') { res.writeHead(404); res.end(); return }
       res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' })
-      res.end('<!doctype html><title>Signed in</title><p style="font-family:sans-serif;margin:3em;text-align:center">Signed in — you can close this tab and go back to Godbot.</p>')
+      res.end('<!doctype html><title>Signed in</title><p style="font-family:sans-serif;margin:3em;text-align:center">Signed in — you can close this tab and go back to NativeCrew.</p>')
       void ready({ code: url.searchParams.get('code'), state: url.searchParams.get('state'), iss: url.searchParams.get('iss'), error: url.searchParams.get('error'), errorDescription: url.searchParams.get('error_description') }).catch(error => rt.warn('godbot: connector sign-in callback failed: %s', reason(error)))
     })
     listener.on('error', error => {

@@ -78,7 +78,7 @@ export class BotTerminals {
         entry.onAbort = () => { void this.close(id).catch(() => {}) }
         lease.signal?.addEventListener('abort', entry.onAbort, { once: true })
         lease.signal?.throwIfAborted()
-        if (this.stopping) throw new Error('Godbot 正在关闭。')
+        if (this.stopping) throw new Error('NativeCrew 正在关闭。')
         const info = this.pty.info(id)
         if (info.exit) await this.release(id)
         return this.view(entry, info, false)

@@ -212,7 +212,7 @@ export default async function newSession({ makeHost, candidate, note }) {
   assert.equal(await page.locator('[class*="composerHero"]').count(), 0, 'the Bot keeps its own message box, not DSH\'s workspace picker')
   const top = await host.bot('earlier', { sessionId: busy.after.current })
   assert.ok(top.startedAt >= busy.clickedAt - 5000, 'the new thread begins when it was made, not with the Bot: ' + top.startedAt)
-  // The opening turn is answered with the fixed line. Godbot's own requests (a memory
+  // The opening turn is answered with the fixed line. NativeCrew's own requests (a memory
   // review of the earlier messages, say) may name the part too; a turn carries the
   // Bot's tools.
   await until(async () => (await state()).partsRunning?.[busy.after.current] !== true, 'the opening turn ended')

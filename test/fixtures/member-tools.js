@@ -7,7 +7,7 @@ const spec = (name, description, properties = {}, required = []) => ({
 })
 
 export const teamTools = [
-  spec('list_members', 'List members and their current activity in your Godbot team.'),
+  spec('list_members', 'List members and their current activity in your NativeCrew team.'),
   spec('list_tasks', 'Read tasks, owners, dependencies and acceptance criteria in your team.'),
   spec(
     'send_message',

@@ -1,6 +1,6 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // The DSH Agent: a team's one plain dsh entry, listed beside the Bots but not one of
-// them. Its Sessions are ordinary root Sessions in the Godbot workspace, so they get
+// them. Its Sessions are ordinary root Sessions in the NativeCrew workspace, so they get
 // the whole dsh conversation surface and none of the team tools.
 import { randomUUID } from 'node:crypto'
 import { AGENT_NAME, AGENT_SESSION_TITLE_MAX } from './constants.js'

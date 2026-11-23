@@ -9,7 +9,7 @@ import { reducedMotion, stepMenuFocus, useLinger } from './motion.js'
 // its start has scrolled away, a pill under the header takes the reader back there; when
 // the reply has sections, the pill names the one being read and lists them all.
 
-// The pill sits GAP below Godbot's header; a section counts as being read once its heading
+// The pill sits GAP below NativeCrew's header; a section counts as being read once its heading
 // is within SLACK of the pill's bottom edge.
 const GAP = 8
 const PILL = 28
@@ -44,7 +44,7 @@ export function sectionAt(tops, line) {
   return at
 }
 
-// The band of `scroller` the reader sees: below Godbot's floating header, which lies over
+// The band of `scroller` the reader sees: below NativeCrew's floating header, which lies over
 // the scroller's top in DSH and in the desktop app alike, and above DSH's composer, which
 // sits inside the scroller (the desktop app's sits below it).
 export function readingBand(scroller) {

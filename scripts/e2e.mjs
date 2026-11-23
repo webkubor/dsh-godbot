@@ -118,7 +118,7 @@ if (values.help) {
     await rm(scratch, { recursive: true, force: true })
     report.endedAt = new Date().toISOString()
     await saveEvidence(reportDir, 'report.json', report)
-    console.log('Godbot E2E report: ' + join(reportDir, 'report.json'))
+    console.log('NativeCrew E2E report: ' + join(reportDir, 'report.json'))
     if (report.environmentFailure || report.cases.some(row => row.status !== 'passed' && row.status !== 'skipped') || report.cases.length !== cases.length) process.exitCode = 1
   }
 }

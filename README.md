@@ -1,6 +1,9 @@
-# dsh-godbot
+# NativeCrew（原生协作）
 
-**Godbot 是 dsh 的多 Agent 团队工作台。** 把 Claude Code、Codex、Antigravity 和原生 dsh 成员放进同一个团队：你可以直接接管某个成员的原生会话，也可以让成员互发消息、分派任务、提交证据并由你验收。
+包名 `@dsh-plugins/nativecrew`，命令 `nativecrew`。旧命令、数据目录与 RPC 标识继续兼容。本产品基于 Godbot 上游，来源许可见 THIRD_PARTY_NOTICES。
+
+
+**NativeCrew 是 dsh 的多 Agent 团队工作台。** 把 Claude Code、Codex、Antigravity 和原生 dsh 成员放进同一个团队：你可以直接接管某个成员的原生会话，也可以让成员互发消息、分派任务、提交证据并由你验收。
 
 *A multi-agent team workbench plugin for dsh — run Claude Code, Codex, Antigravity and native dsh members as one team, with native session hand-off, workflows, schedules, CI hooks and audit trails.*
 
@@ -11,7 +14,7 @@
 | 能力 | 说明 |
 | --- | --- |
 | 原生 Agent 接管 | 在 Bot 私聊中切到「原生对话」或「原生终端」，与 Bot 共用同一个会话、工作目录和进程，随时交还聊天。 |
-| 团队协作 | GodBot 组建团队和群聊，成员之间 `@` 点名、派工、提交证据；群组有独立的任务板、待办和阶段目标。 |
+| 团队协作 | NativeCrew 组建团队和群聊，成员之间 `@` 点名、派工、提交证据；群组有独立的任务板、待办和阶段目标。 |
 | 多 Bot 工作流 | 用节点和条件连线编排可重复运行的流程，支持汇合、分支、版本锁定，并可从 CI 触发。 |
 | 自动化任务 | 一次性、固定间隔、每天、每周、五字段 Cron 或 iCalendar RRULE，由本机 Host 调度。 |
 | 沙箱多账号 | 同一提供商可登记多个隔离账号，每个账号运行在独立的 Lima 虚拟机中，按目录授权挂载项目。 |
@@ -68,26 +71,26 @@ dsh web
 2. 安装到指定 profile（上例为 `web`）；
 3. 把插件的 DSH 依赖链接到当前运行的 dsh 安装。工具权限依赖同一份作用域注册表，升级或移动 dsh 后重新运行脚本即可重建链接。
 
-运行 `dsh web` 后，使用 DSH 提供的登录入口打开网页，在侧栏选择 **Godbot**，或直接打开 `/#/godbot`。
+运行 `dsh web` 后，使用 DSH 提供的登录入口打开网页，在侧栏选择 **NativeCrew**，或直接打开 `/#/godbot`。
 
-新建 profile 的团队数据保存在 Godbot 数据目录的 `team-workspace/` 下。已有 profile 继续使用原团队目录，保留会话和工作文件的绝对路径。
+新建 profile 的团队数据保存在 NativeCrew 数据目录的 `team-workspace/` 下。已有 profile 继续使用原团队目录，保留会话和工作文件的绝对路径。
 
 ### 更新
 
-Godbot 会自己检查新版本。Host 启动后以及之后每 6 小时，它查询本仓库的 [GitHub Releases](https://github.com/renjiegod/dsh-godbot/releases)；发现更新的版本后，把安装包下载到 `~/.local/share/dsh-godbot/packages/`，并按 GitHub 为该文件记录的 SHA-256 校验。安装包内的 `package.json` 还要满足两点才会安装：
+NativeCrew 会自己检查新版本。Host 启动后以及之后每 6 小时，它查询本仓库的 [GitHub Releases](https://github.com/renjiegod/dsh-godbot/releases)；发现更新的版本后，把安装包下载到 `~/.local/share/dsh-godbot/packages/`，并按 GitHub 为该文件记录的 SHA-256 校验。安装包内的 `package.json` 还要满足两点才会安装：
 
 - `engines.dsh` 与当前运行的 DSH 版本一致；
 - 新版本声明的 DSH 依赖已链接在当前 profile 中。
 
-不满足时，**设置 → 关于 Godbot** 只显示原因（例如需要的 DSH 版本），不会安装。在同一页面的 **自动更新** 中选择行为：
+不满足时，**设置 → 关于 NativeCrew** 只显示原因（例如需要的 DSH 版本），不会安装。在同一页面的 **自动更新** 中选择行为：
 
 | 模式 | 行为 |
 | --- | --- |
-| **自动安装**（默认） | 下载并校验后，等 Godbot 连续空闲 2 分钟（没有 Bot 正在运行回合，也没有被接管的原生终端），安装到 profile，下次启动 DSH 时生效。 |
+| **自动安装**（默认） | 下载并校验后，等 NativeCrew 连续空闲 2 分钟（没有 Bot 正在运行回合，也没有被接管的原生终端），安装到 profile，下次启动 DSH 时生效。 |
 | **下载后询问** | 下载并校验后，侧栏顶部的云朵按钮和关于页提供 **更新**，由你决定何时安装。 |
 | **手动检查** | 只在点击 **检查更新** 时查询；点 **更新** 时再下载并安装。 |
 
-安装后页面提示「重启 DSH 后开始使用」，正在运行的 Godbot 照常工作，等该 profile 的会话空闲后重启 dsh 即可。DSH 会就地重载插件，但 Godbot 不在运行中的 DSH 里加载新版本，而是用 DSH 自己的 `dsh plugin --profile <名称> add` 安装（`install-local.mjs` 用的也是它）：就地重载时如果 pnpm 挪动了已经加载过的依赖（比如去重），新版本会导入失败，Godbot 会一直停到重启 DSH。只读 Host 不会自动安装，由持有团队写锁的 Host 负责。
+安装后页面提示「重启 DSH 后开始使用」，正在运行的 NativeCrew 照常工作，等该 profile 的会话空闲后重启 dsh 即可。DSH 会就地重载插件，但 NativeCrew 不在运行中的 DSH 里加载新版本，而是用 DSH 自己的 `dsh plugin --profile <名称> add` 安装（`install-local.mjs` 用的也是它）：就地重载时如果 pnpm 挪动了已经加载过的依赖（比如去重），新版本会导入失败，NativeCrew 会一直停到重启 DSH。只读 Host 不会自动安装，由持有团队写锁的 Host 负责。
 
 - 自动更新只针对 `.tgz` 安装包（`scripts/install-local.mjs` 的安装结果，以及之后的每次更新）。以 `link:` 或文件夹方式安装的开发副本，请在源码目录中更新。
 - 预发布版（版本号带 `-`）跟随更新的预发布版，正式版只跟随正式版。
@@ -108,14 +111,14 @@ Godbot 会自己检查新版本。Host 启动后以及之后每 6 小时，它�
 
 ### 团队工作台
 
-从 dsh 侧栏选择 **Godbot**，或打开 `/#/godbot`。团队工作台在当前 dsh 窗口打开，每个 profile 保存自己的成员、群聊和工作目录。在 **设置 → 任务板** 查看任务和工作流，在 **设置 → 定时派工** 管理派工计划。Godbot 侧栏的 ← 按钮返回进入 Godbot 前的 dsh 页面。
+从 dsh 侧栏选择 **NativeCrew**，或打开 `/#/godbot`。团队工作台在当前 dsh 窗口打开，每个 profile 保存自己的成员、群聊和工作目录。在 **设置 → 任务板** 查看任务和工作流，在 **设置 → 定时派工** 管理派工计划。NativeCrew 侧栏的 ← 按钮返回进入 NativeCrew 前的 dsh 页面。
 
-- **搭建团队。** 首次进入时选择 GodBot 使用的模型。可以让 GodBot 创建其他 Bot、组建群聊、指派管理员，也可以在侧栏手动创建。每个 Bot 的详情中可设置身份、职责、工作文件夹、权限、模型与推理档位。
+- **搭建团队。** 首次进入时选择 NativeCrew 使用的模型。可以让 NativeCrew 创建其他 Bot、组建群聊、指派管理员，也可以在侧栏手动创建。每个 Bot 的详情中可设置身份、职责、工作文件夹、权限、模型与推理档位。
 - **协作与追踪。** 成员可直接聊天、在群聊中使用 `@成员` 或由管理员调度。群组有独立历史、任务板、待办和阶段目标。运行中可补充消息、处理审批或提问，`/side` 可就当前上下文开旁聊。工作台还提供聊天检索、分段历史、文件与图片、交互卡片和用量统计。
 - **记忆与隐私。** 在 Bot 或群聊详情中管理记忆条目、主题、固定、变更历史与撤销，也可以在对话中让 Bot 记住或回忆。私密 Bot 需要独立目录，并受群成员身份和对外分享审批约束；删除后私密目录保护仍有效。CLI 的 shell 和网络访问服从各自运行环境的权限。
-- **从工作中学习。** 团队空闲时（最多每 12 小时一次），Godbot 回顾 Bot 最近较长的工作，觉得值得时在它的私聊里以卡片提议一个技能，或修改项目文件夹的 AGENTS.md，由你批准或拒绝。批准的技能存进 设置 → 能力 的共享能力并挂到该 Bot 上，不会写成文件；Bot 自己也知道卡片的内容和结果。用本地或远程 Agent 的 Bot 读不到团队技能，不会收到技能提议。两类提议都可以在 设置 → 通用 → 记忆 里关掉；管理员也可以在 `cordis.patch.yml` 的 `teamWorkspace` 里设 `learning: false`（全部关闭）或 `agentsMd: false`（只关 AGENTS.md 提议）。
+- **从工作中学习。** 团队空闲时（最多每 12 小时一次），NativeCrew 回顾 Bot 最近较长的工作，觉得值得时在它的私聊里以卡片提议一个技能，或修改项目文件夹的 AGENTS.md，由你批准或拒绝。批准的技能存进 设置 → 能力 的共享能力并挂到该 Bot 上，不会写成文件；Bot 自己也知道卡片的内容和结果。用本地或远程 Agent 的 Bot 读不到团队技能，不会收到技能提议。两类提议都可以在 设置 → 通用 → 记忆 里关掉；管理员也可以在 `cordis.patch.yml` 的 `teamWorkspace` 里设 `learning: false`（全部关闭）或 `agentsMd: false`（只关 AGENTS.md 提议）。
 - **定时任务与集成。** 设置中可管理计划、共享 MCP、技能、连接器和通讯渠道。计划使用当前 dsh 的调度服务，真实账号连接沿用各服务的授权流程。设备能力以宿主为准：浏览器接管依赖桌面桥，电脑操控需要可用的执行器和系统授权。
-- **手机配对。** 在团队设置的「手机」页面填入 WebSocket 中继地址（godbot-server，例如 `wss://relay.example.org/v1/link`），开启访问后，用 Godbot Android App 扫描一次性配对码。管理员也可以通过 `teamWorkspace.phoneRelay` 为新 profile 指定中继，已有配对继续使用之前的中继。中继支持推送时，「推送通知」开着的情况下，手机没连接时也会收到需要你处理的审批、提问和 Bot 回复；通知内容在电脑上加密，中继和 FCM 看不到。同一页面有从中继下载 App 的二维码。
+- **手机配对。** 在团队设置的「手机」页面填入 WebSocket 中继地址（godbot-server，例如 `wss://relay.example.org/v1/link`），开启访问后，用 NativeCrew Android App 扫描一次性配对码。管理员也可以通过 `teamWorkspace.phoneRelay` 为新 profile 指定中继，已有配对继续使用之前的中继。中继支持推送时，「推送通知」开着的情况下，手机没连接时也会收到需要你处理的审批、提问和 Bot 回复；通知内容在电脑上加密，中继和 FCM 看不到。同一页面有从中继下载 App 的二维码。
 
 每个 DSH profile 使用自己的 Bot 名单和任务板。首次运行这个版本会清理该 profile 原独立团队的成员、任务、工作流和关联历史；已有的 Bot、群聊、私聊历史和账号配置继续由 Bot 工作区保存。
 
@@ -136,7 +139,7 @@ Godbot 会自己检查新版本。Host 启动后以及之后每 6 小时，它�
 - **交还聊天** 结束该进程，让 Bot 在原会话中继续。若在 CLI 内用 `/new`、`/clear` 或 `/resume` 切换了会话，交还后 Bot 会接回最初绑定的会话。
 
 > [!NOTE]
-> 选择任一模式前，请先处理正在运行的回合和待审批项。受宿主强制只读保护的工作区继续在 Bot 聊天中操作。选择 Claude Code 的原生模式时，Godbot 会核对并确认 CLI 提示中的 Bot 工作目录，后续工具调用沿用 Claude Code 的权限设置。
+> 选择任一模式前，请先处理正在运行的回合和待审批项。受宿主强制只读保护的工作区继续在 Bot 聊天中操作。选择 Claude Code 的原生模式时，NativeCrew 会核对并确认 CLI 提示中的 Bot 工作目录，后续工具调用沿用 Claude Code 的权限设置。
 
 ### 输入原生命令
 
@@ -146,7 +149,7 @@ Godbot 会自己检查新版本。Host 启动后以及之后每 6 小时，它�
 - Antigravity 使用 ACP 公布的命令；
 - Codex 技能按原生 `$技能名` 传入当前线程。
 
-模型选择等交互会打开对应的 Godbot 控件，需要完整终端界面的项目会标注「原生终端」。群聊使用群自身的命令和 `@成员`。
+模型选择等交互会打开对应的 NativeCrew 控件，需要完整终端界面的项目会标注「原生终端」。群聊使用群自身的命令和 `@成员`。
 
 在 Claude Code 私聊中：
 
@@ -182,7 +185,7 @@ stdio MCP 的 `run_workflow` 接收 `workflowId`、`revision` 和 `requestId`，
 
 ### 自动化任务
 
-Godbot 提供两类自动化入口：
+NativeCrew 提供两类自动化入口：
 
 | 入口 | 用途 |
 | --- | --- |
@@ -209,7 +212,7 @@ DSH、Claude Code 和 Codex 成员可从当前会话调用已授权的应用工�
 
 ### 远程控制自己的 Mac 和 Linux 电脑
 
-在目标电脑安装 Godbot Computer Host，在 Godbot 工作台侧栏打开 **远程电脑 / Remote computers**。首次使用时，在目标端运行 `godbot-computer manage`，选择 **Pair controller**。安卓 App 通过 **Computers → Remote computers** 扫码，本机 dsh web 粘贴配对链接并核对指纹。每个控制端使用单独的一次性配对链接。
+在目标电脑安装 NativeCrew Computer Host，在 NativeCrew 工作台侧栏打开 **远程电脑 / Remote computers**。首次使用时，在目标端运行 `godbot-computer manage`，选择 **Pair controller**。安卓 App 通过 **Computers → Remote computers** 扫码，本机 dsh web 粘贴配对链接并核对指纹。每个控制端使用单独的一次性配对链接。
 
 有图形会话时可以 **查看桌面**，电脑所有者同意后才能使用鼠标和键盘。无桌面的 Linux 服务器可以 **打开终端**。终端以目标账号运行。目标端可以随时结束会话、移除已记住的权限或撤销控制端。参见[电脑端安装、权限、网络和升级说明](computer-host/README.md)。
 
@@ -227,7 +230,7 @@ DSH、Claude Code 和 Codex 成员可从当前会话调用已授权的应用工�
 docker build -t dsh-godbot-browser:1 src/host/team-runtime/browser-container
 ```
 
-然后在该 web profile 的 `cordis.patch.yml` 合并 Godbot 配置并重启 Host。`cloudContext` 填写管理员已配置的远程 Docker context，仅使用本机容器时可省略；可按需补充 `containerContext`、`cloudImage` 或 `dockerCommand`。
+然后在该 web profile 的 `cordis.patch.yml` 合并 NativeCrew 配置并重启 Host。`cloudContext` 填写管理员已配置的远程 Docker context，仅使用本机容器时可省略；可按需补充 `containerContext`、`cloudImage` 或 `dockerCommand`。
 
 ```yaml
 - id: godbot
@@ -244,7 +247,7 @@ Bot 可用 `godbot_desktop_view` 读取当前画面与窗口标识，再用 `god
 
 ### 网页搜索
 
-Godbot 提供 `auto` 网页搜索，可在 DSH profile 中启用。DSH 按当前 profile 的选择运行 `web_search`：启用 `auto` 后，搜索先尝试当前会话模型线路支持的原生搜索；该线路缺少 API key 或无法搜索时，改用 Bing、DuckDuckGo 的公开结果页。每次结果的 `Search backend` 字段说明实际来源。
+NativeCrew 提供 `auto` 网页搜索，可在 DSH profile 中启用。DSH 按当前 profile 的选择运行 `web_search`：启用 `auto` 后，搜索先尝试当前会话模型线路支持的原生搜索；该线路缺少 API key 或无法搜索时，改用 Bing、DuckDuckGo 的公开结果页。每次结果的 `Search backend` 字段说明实际来源。
 
 DSH Web 0.2.2-rc.1 的网页搜索设置页提供内置 DeepSeek 选项。要选择 `auto`，在该 profile 的 `cordis.patch.yml`（默认 web profile 位于 `~/.dsh/profiles/web/cordis.patch.yml`）合并以下配置并重启 DSH。若已有 `web` 配置，保留原有字段及所选 `fetchProvider`，仅修改 `searchProvider`。该选择适用于该 profile 内使用 DSH `web_search` 的会话。
 
@@ -257,15 +260,15 @@ DSH Web 0.2.2-rc.1 的网页搜索设置页提供内置 DeepSeek 选项。要选
 
 ## 浏览器示范、执行策略与远程 Agent
 
-- **浏览器示范。** 在 Bot 私聊打开网页浏览器并接管网页，展开「浏览器示范」，填写目标后录制。Godbot 保存网页来源、点击、表单输入动作和按键次序。输入值、网页正文、截图及完整网址不进入示范。结束后点「整理成 Skill 提案」，回 Bot 私聊检查并批准。获批后技能分配给此 Bot，可在能力设置里授权给其他 Bot。录制使用 DSH Web 的服务端浏览器。
-- **执行策略。** 在「设置 → 执行策略」按 Bot、发起来源、工具和可选目标加规则，先用「预览规则结果」确认匹配。工具填写具体名称、前缀加 `*`，或用 `changes` 匹配可能修改状态的工具。匹配到禁止时直接拒绝，匹配到要求批准时沿用审批卡。审计保留触发来源和审批结果，可按 Bot、来源和决定筛选并导出。规则覆盖 Godbot 接管的工具调用。原生 CLI 的内部能力仍由其沙箱及审批机制约束。
+- **浏览器示范。** 在 Bot 私聊打开网页浏览器并接管网页，展开「浏览器示范」，填写目标后录制。NativeCrew 保存网页来源、点击、表单输入动作和按键次序。输入值、网页正文、截图及完整网址不进入示范。结束后点「整理成 Skill 提案」，回 Bot 私聊检查并批准。获批后技能分配给此 Bot，可在能力设置里授权给其他 Bot。录制使用 DSH Web 的服务端浏览器。
+- **执行策略。** 在「设置 → 执行策略」按 Bot、发起来源、工具和可选目标加规则，先用「预览规则结果」确认匹配。工具填写具体名称、前缀加 `*`，或用 `changes` 匹配可能修改状态的工具。匹配到禁止时直接拒绝，匹配到要求批准时沿用审批卡。审计保留触发来源和审批结果，可按 Bot、来源和决定筛选并导出。规则覆盖 NativeCrew 接管的工具调用。原生 CLI 的内部能力仍由其沙箱及审批机制约束。
 - **远程 AG-UI。** 在「设置 → 远程 Agent」注册 AG-UI 的运行地址，按需保存 Bearer 凭据，再在 Bot 的模型设置选取该 Agent。远端接收该 Bot 的文字对话，工作台流式显示回复，工具状态可在「查看会话执行记录」里续读。Host 不会将本机工具或文件提供给远端。停止会关闭本端的流，远端的内部审批、执行及取消由其服务负责。执行地址默认使用公网 HTTPS。可在 `config.teamWorkspace.remoteAgents.allowPrivateOrigins` 中为已知的内网服务加精确的协议、域名和端口。
 - **统一创建自动化。** 「设置 → 自动化」可创建会话日程、需验收的派工或固定版本的工作流。其中派工与工作流也能从签名 Webhook 或 GitHub 公开仓库事件触发。选「只检查并反馈」会限制经过 Host 工具网关的修改类工具，自动派工的发起来源也会保留到后续转派。
 - **业务组件。** 「设置 → 业务组件」编辑 JSON 蓝图、预览、保存草稿并发布。通过同一页单独授权 Bot 和数据函数。Bot 可用 `list_components` 查看获准版本，用 `show_component` 提交参数或显示表单。组件用 Deep View 的声明式控件。发布新版与修改草稿分开，撤销授权对后续调用立即生效。
 
 ### 组织账号登录共享工作区
 
-如果已有 OIDC 身份提供商，可在工作区 Host 的 Godbot 配置增加以下设置。可使用实体组织已有的应用注册。
+如果已有 OIDC 身份提供商，可在工作区 Host 的 NativeCrew 配置增加以下设置。可使用实体组织已有的应用注册。
 
 ```yaml
 - id: godbot
@@ -291,7 +294,7 @@ DSH Web 0.2.2-rc.1 的网页搜索设置页提供内置 DeepSeek 选项。要选
 
 ### 在沙箱中登录 CLI
 
-在运行 Godbot Host 的机器上查看账号，并在交互终端给需要的 CLI 登录，登录可以在创建第一个聊天前完成。下例使用已登记的账号 ID `sandbox-agy-a`。用本地安装脚本安装时，可通过 `~/.dsh/profiles/web/node_modules/.bin/godbot` 调用该命令。
+在运行 NativeCrew Host 的机器上查看账号，并在交互终端给需要的 CLI 登录，登录可以在创建第一个聊天前完成。下例使用已登记的账号 ID `sandbox-agy-a`。用本地安装脚本安装时，可通过 `~/.dsh/profiles/web/node_modules/.bin/godbot` 调用该命令。
 
 ```sh
 godbot sandbox list
@@ -391,8 +394,8 @@ godbot export "$RUN_ID" --output evidence.json
 
 在任务板选择成员，填写固定任务和验收标准，将生成的 URL 和密钥交给事件发送方。发送 JSON 时：
 
-- `X-Godbot-Delivery`：稳定的投递 ID；
-- `X-Godbot-Signature`：`HMAC-SHA256(secret, deliveryId + "\n" + 原始请求体)` 的小写十六进制值。
+- `X-NativeCrew-Delivery`：稳定的投递 ID；
+- `X-NativeCrew-Signature`：`HMAC-SHA256(secret, deliveryId + "\n" + 原始请求体)` 的小写十六进制值。
 
 有效请求返回 HTTP 202 和运行 ID。暂停触发器后停止接收新事件。
 
@@ -418,11 +421,11 @@ godbot export "$RUN_ID" --output evidence.json
 - 每种资源单独授权，可选择普通 Bot 或群聊。Bot 转私密后，其私聊及仍包含它的群从共享入口撤下。共享会话时，历史消息和曾经在该会话分享的材料也对获准人可见。
 - 共享导出的内容包括该对话的历史消息和证据。邀请及登录凭据由身份服务保管。完整团队中由 Bot 交付的本机文件，须仍在获准资源的公开工作目录中才能下载；修改工作目录、文件指向或撤权后，旧下载地址会重新检查。
 - 共享用户通过自己的配对身份操作，服务端记录授权变化、聊天、上传、导出、验收和审批，owner 可在同一面板查看审计。授权成员聊天会使用该成员已配置的模型、工具与执行权限。
-- 默认邀请使用本机回环地址。同事从其他设备访问时，可由运维配置 HTTPS 反向代理，把共享站点的 `/share/` 转发到界面显示的本机监听端口，并将 Godbot 插件配置的 `automation.publicUrl` 设为该 HTTPS 站点的来源地址，保留对应 Host 头。
+- 默认邀请使用本机回环地址。同事从其他设备访问时，可由运维配置 HTTPS 反向代理，把共享站点的 `/share/` 转发到界面显示的本机监听端口，并将 NativeCrew 插件配置的 `automation.publicUrl` 设为该 HTTPS 站点的来源地址，保留对应 Host 头。
 
 ## 加密备份和换机
 
-先结束活动任务，关闭使用源或目标 DSH 数据目录的 Host。目标 profile 需先安装并启动一次 Godbot。
+先结束活动任务，关闭使用源或目标 DSH 数据目录的 Host。目标 profile 需先安装并启动一次 NativeCrew。
 
 备份包含 Bot 任务与工作流数据库、完整团队状态和记忆、所属的 DSH v4 JSONL 会话、引用的附件，以及工作台创建的工作目录。文件使用 scrypt 派生密钥和 AES-256-GCM 加密，命令会输出归档的 SHA-256。密码文件应只允许本人读取。
 
@@ -436,7 +439,7 @@ godbot workspace restore --home /new/dsh --profile web --file team.godbot --pass
 - 恢复会保留共享附件和审计记录，并清空真人权限，暂停计划与 GitHub 订阅。Claude、Codex、Antigravity 和自定义 ACP 的原生会话还依赖各工具在目标机可访问的会话存储。
 - **中断恢复：** 关闭目标 Host，运行 `godbot workspace recover --home /new/dsh --profile web`。
 - **回滚：** 完成恢复后可用 `godbot workspace rollback --home /new/dsh --profile web` 回到该次恢复前的工作台，回退会撤销恢复后在目标工作台产生的修改。
-- 自定义了 Godbot `stateDir` 的 profile，需给每条命令加 `--state-dir`。
+- 自定义了 NativeCrew `stateDir` 的 profile，需给每条命令加 `--state-dir`。
 
 ## 命令行速查
 
@@ -456,7 +459,7 @@ godbot workspace restore --home /new/dsh --profile web --file team.godbot --pass
 
 | 变量 | 用途 |
 | --- | --- |
-| `GODBOT_URL` | CI 访问的 Godbot 地址 |
+| `GODBOT_URL` | CI 访问的 NativeCrew 地址 |
 | `GODBOT_TOKEN_FILE` | 保存 CI 凭据的 secret 文件路径 |
 | `GODBOT_SANDBOX_ACCOUNTS_DIR` | 自定义沙箱账号清单目录 |
 | `GODBOT_UPDATE_CHECK` | 设为 `0` 时 Host 不检查、不下载、不安装更新 |
@@ -473,7 +476,7 @@ godbot workspace restore --home /new/dsh --profile web --file team.godbot --pass
 | **DSH 模型报错** | 查看成员实际使用的 provider、model、HTTP 状态和错误信息，也可在普通 dsh 会话中用同一路由对照。确认另一条路由可用后，可在空闲成员面板显式切换。 |
 | **侧栏缺失或连接失败** | 核对当前 profile 的插件状态、DSH 版本与 owner 登录。默认状态目录为 `$DSH_HOME/godbot/<profile>`，使用默认 home 时位于 `~/.dsh/godbot/<profile>`。 |
 | **`GODBOT_STATE_IN_USE`** | 每个状态目录只允许一个 Host 持有。核对已有 Host；两个独立实例应使用不同的状态目录。 |
-| **自动更新失败** | 原因显示在「设置 → 关于 Godbot」，Host 诊断日志也有记录。下载失败会在 30 分钟后自动重试；安装由 DSH 插件管理器执行，`spawn pnpm ENOENT` 表示运行 dsh 的环境里找不到 pnpm，需把 pnpm 加入该环境的 `PATH`（或为插件管理器配置 `pnpmCommand`）后点「重试」。自动安装失败的版本不会再自动重试。 |
+| **自动更新失败** | 原因显示在「设置 → 关于 NativeCrew」，Host 诊断日志也有记录。下载失败会在 30 分钟后自动重试；安装由 DSH 插件管理器执行，`spawn pnpm ENOENT` 表示运行 dsh 的环境里找不到 pnpm，需把 pnpm 加入该环境的 `PATH`（或为插件管理器配置 `pnpmCommand`）后点「重试」。自动安装失败的版本不会再自动重试。 |
 
 ## 开发与验证
 
@@ -494,8 +497,8 @@ npm pack --dry-run
 | `npm run test:e2e -- --case UPDATE` | 自动更新：从本机模拟的发布列表下载、校验新版本，经 DSH 插件管理器安装，重启后运行新版本 |
 | `GODBOT_RELAY_BIN=<godbot-relay> npm run test:e2e -- --case PHONE` | 手机链路：经 godbot-server 中继配对、调用团队接口、交换推送密钥，离线时经（模拟的）FCM 收到加密推送，移除后无法再连。未设置 `GODBOT_RELAY_BIN` 时记为 `skipped` |
 | `GODBOT_RELAY_BIN=<godbot-relay> npm run test:e2e -- --case PHONE-PAGES` | 手机 App 的每个页面经加密链路各做一次读和一次写（Bot、群、记忆、日程、工作文件夹、用量、Bot 浏览器、密钥、模型服务商、连接器、能力、更新、诊断、侧聊），写入都在电脑上核对 |
-| `GODBOT_RELAY_BIN=<godbot-relay> node test/e2e/phone-host.mjs` | 常驻的测试宿主：隔离的 Godbot、中继和一个本地控制接口，给手机 App 的 UI 测试用（打印配对链接） |
-| `GODBOT_RELAY_BIN=<godbot-relay> GODBOT_ANDROID_E2E=<godbot-app> npm run test:e2e -- --case PHONE-ANDROID` | 真机流程：模拟器上的 Godbot Android App 扫码配对、加载团队、给主 Bot 发消息并显示回复。需要已构建的 App 和一台运行中的模拟器 |
+| `GODBOT_RELAY_BIN=<godbot-relay> node test/e2e/phone-host.mjs` | 常驻的测试宿主：隔离的 NativeCrew、中继和一个本地控制接口，给手机 App 的 UI 测试用（打印配对链接） |
+| `GODBOT_RELAY_BIN=<godbot-relay> GODBOT_ANDROID_E2E=<godbot-app> npm run test:e2e -- --case PHONE-ANDROID` | 真机流程：模拟器上的 NativeCrew Android App 扫码配对、加载团队、给主 Bot 发消息并显示回复。需要已构建的 App 和一台运行中的模拟器 |
 | `npm run test:e2e -- --case E1` | 验证跨后端读取连接器工具 |
 | `npm run test:e2e -- --case E2` | 验证写入审批、撤权、重启和终端交还 |
 | `npm run test:e2e -- --suite live-connectors` | 通过本机已登录的 Claude Code、Codex 调用测试工单服务 |
@@ -505,7 +508,7 @@ npm pack --dry-run
 > [!WARNING]
 > `live-*` 套件和 `test/external/live-control.mjs` 使用本机已登录的账号，会消耗对应订阅或模型额度。测试用的 DSH profile 和工单数据均为临时创建。`L-BOT-WORKFLOW` 可通过 `GODBOT_E2E_CLAUDE_CONFIG_DIR` 和 `GODBOT_E2E_CODEX_HOME` 指定测试账号目录。
 
-仓库的 GitHub Actions（`.github/workflows/verification.yml`）在每次 push 和 Pull Request 时于 macOS 上运行单元测试、构建和 `npm pack --dry-run`。对打包产物执行 `release` E2E 套件耗时较长，需在 Actions 页面选择 **Verify Godbot package → Run workflow** 手动触发。
+仓库的 GitHub Actions（`.github/workflows/verification.yml`）在每次 push 和 Pull Request 时于 macOS 上运行单元测试、构建和 `npm pack --dry-run`。对打包产物执行 `release` E2E 套件耗时较长，需在 Actions 页面选择 **Verify NativeCrew package → Run workflow** 手动触发。
 
 ### 发布新版本
 
@@ -513,7 +516,7 @@ npm pack --dry-run
 2. 推送同名 tag，例如 `git tag v0.2.0 && git push origin v0.2.0`。
 3. `.github/workflows/release.yml` 核对 tag 与 `package.json` 版本一致，运行测试和构建，再创建 GitHub Release 并上传 `dsh-godbot-<version>.tgz` 及其 `.sha256`。版本号带 `-`（如 `0.2.0-rc.4`）时标记为预发布。
 
-已安装的 Godbot 会在下一次检查时发现这个版本（见 [更新](#更新)）。
+已安装的 NativeCrew 会在下一次检查时发现这个版本（见 [更新](#更新)）。
 
 ## 相关文档与第三方声明
 

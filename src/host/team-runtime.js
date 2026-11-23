@@ -11,8 +11,8 @@ import * as workspaceSearch from './workspace-search.js'
 
 const mounts = new WeakMap()
 const services = ['llm', 'tools', 'systemPrompt', 'sessionController', 'sessions', 'sessionTitle', 'workspaceRegistry', 'connection', 'profileContext']
-const startupMessage = 'Waiting for the Godbot workspace services in this DSH profile.'
-const standaloneMessage = 'Another team plugin is active in this DSH profile. To open the Godbot team workspace here, disable that plugin and restart DSH.'
+const startupMessage = 'Waiting for the NativeCrew workspace services in this DSH profile.'
+const standaloneMessage = 'Another team plugin is active in this DSH profile. To open the NativeCrew team workspace here, disable that plugin and restart DSH.'
 
 function hasEntry(rows, names) {
   return rows.some(row => !row.disabled && (
@@ -33,7 +33,7 @@ export function verifyWorkspaceScope(profile) {
     const inProfile = join(profile.dir, 'node_modules', name, 'package.json')
     if (!existsSync(inProfile)) continue
     if (realpathSync(inProfile) !== realpathSync(fromApp.resolve(name + '/package.json'))) {
-      throw new Error('This DSH profile uses a separate copy of ' + name + '. Run the Godbot local installer for this profile and restart DSH to restore per-Bot tool isolation.')
+      throw new Error('This DSH profile uses a separate copy of ' + name + '. Run the NativeCrew local installer for this profile and restart DSH to restore per-Bot tool isolation.')
     }
   }
 }
@@ -47,9 +47,9 @@ export function mountTeamRuntime(ctx, stateDir, options = {}, onReady) {
     if (mode !== 'starting') mount.ready.resolve()
   }
   ctx.effect(() => () => {
-    update('unavailable', 'The Godbot workspace has stopped.')
+    update('unavailable', 'The NativeCrew workspace has stopped.')
     mounts.delete(ctx)
-  }, 'Godbot workspace')
+  }, 'NativeCrew workspace')
   let installSearch
   try {
     const rows = composeEntries([readProfilePatches('dsh', ctx.profileContext)])
@@ -61,7 +61,7 @@ export function mountTeamRuntime(ctx, stateDir, options = {}, onReady) {
     // Respect a separately mounted search plugin, regardless of loader order.
     installSearch = !hasEntry(rows, ['ds-bot/web-search', 'dsh-godbot/web-search'])
   } catch (error) {
-    update('unavailable', 'Cannot determine Godbot workspace ownership: ' + error.message)
+    update('unavailable', 'Cannot determine NativeCrew workspace ownership: ' + error.message)
     return
   }
 
@@ -71,8 +71,8 @@ export function mountTeamRuntime(ctx, stateDir, options = {}, onReady) {
     let active = true
     child.effect(() => () => {
       active = false
-      if (mount.mode !== 'unavailable') update('unavailable', 'The Godbot workspace services have stopped.')
-    }, 'Godbot workspace resources')
+      if (mount.mode !== 'unavailable') update('unavailable', 'The NativeCrew workspace services have stopped.')
+    }, 'NativeCrew workspace resources')
     try {
       const home = workspaceHome(stateDir)
       const rt = createRuntime(child, { ...options, godbotStateDir: stateDir, workspace: options.workspace ?? join(home, 'workspace'), home })
@@ -84,8 +84,8 @@ export function mountTeamRuntime(ctx, stateDir, options = {}, onReady) {
       }
     } catch (error) {
       if (!active || mounts.get(ctx) !== mount) return
-      update('unavailable', 'Could not start the Godbot workspace: ' + error.message)
-      child.logger.warn('Godbot workspace startup failed: %s', error.stack ?? error.message)
+      update('unavailable', 'Could not start the NativeCrew workspace: ' + error.message)
+      child.logger.warn('NativeCrew workspace startup failed: %s', error.stack ?? error.message)
       // A partial installation may have acquired the state lock or registered
       // tools. Dispose only this child after apply returns to the Cordis runner.
       queueMicrotask(() => { void child.fiber?.dispose() })
@@ -101,7 +101,7 @@ export function teamRuntimeStatus(ctx) {
 export async function getTeamRuntime(ctx) {
   const mount = mounts.get(ctx)
   if (mount?.mode === 'starting') {
-    // A custom DSH profile may intentionally omit one of Godbot's services.
+    // A custom DSH profile may intentionally omit one of NativeCrew's services.
     // Do not leave an explicit import waiting indefinitely.
     let timer
     try {
@@ -114,7 +114,7 @@ export async function getTeamRuntime(ctx) {
     }
   }
   if (mount?.runtime) return mount.runtime
-  const error = new Error(mount?.message ?? 'The Godbot team workspace is unavailable.')
+  const error = new Error(mount?.message ?? 'The NativeCrew team workspace is unavailable.')
   if (mount?.mode === 'standalone') error.code = 'GODBOT_TEAM_DISABLED'
   throw error
 }

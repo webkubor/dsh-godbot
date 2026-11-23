@@ -545,13 +545,13 @@ const labels = {
     'Comparez cette empreinte à celle affichée sur l’ordinateur : ',
     'Mit dem Fingerabdruck auf dem Computer vergleichen: ',
   ],
-  'Create a pairing offer in Godbot Computer Host on the target, then paste it here.': [
-    '请在目标电脑的 Godbot Computer Host 生成配对链接，并粘贴到这里。',
-    '接続先の Godbot Computer Host でペアリングリンクを作成し、ここに貼り付けてください。',
-    '대상 컴퓨터의 Godbot Computer Host에서 페어링 링크를 만든 다음 여기에 붙여넣으세요.',
-    'Crea un enlace de emparejamiento en Godbot Computer Host en el equipo de destino y pégalo aquí.',
-    'Créez un lien d’association dans Godbot Computer Host sur l’ordinateur distant, puis collez-le ici.',
-    'Erstellen Sie in Godbot Computer Host auf dem Zielcomputer einen Kopplungslink und fügen Sie ihn hier ein.',
+  'Create a pairing offer in NativeCrew Computer Host on the target, then paste it here.': [
+    '请在目标电脑的 NativeCrew Computer Host 生成配对链接，并粘贴到这里。',
+    '接続先の NativeCrew Computer Host でペアリングリンクを作成し、ここに貼り付けてください。',
+    '대상 컴퓨터의 NativeCrew Computer Host에서 페어링 링크를 만든 다음 여기에 붙여넣으세요.',
+    'Crea un enlace de emparejamiento en NativeCrew Computer Host en el equipo de destino y pégalo aquí.',
+    'Créez un lien d’association dans NativeCrew Computer Host sur l’ordinateur distant, puis collez-le ici.',
+    'Erstellen Sie in NativeCrew Computer Host auf dem Zielcomputer einen Kopplungslink und fügen Sie ihn hier ein.',
   ],
   'View a desktop or open a terminal on a paired Mac or Linux computer.': [
     '在配对的 Mac 或 Linux 电脑上查看桌面或打开终端。',

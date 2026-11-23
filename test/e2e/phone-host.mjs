@@ -1,4 +1,4 @@
-// A long-running real Godbot for phone app tests: an isolated DSH Web with the packaged plugin,
+// A long-running real NativeCrew for phone app tests: an isolated DSH Web with the packaged plugin,
 // a godbot-server relay (with fake FCM), phone access on, and a small control API so a UI test
 // can check on the computer what the phone did. Stop it with Ctrl-C.
 //
@@ -41,7 +41,7 @@ async function channel(endpoint, payload = null) {
 }
 
 await channel('phone-set', { server: relay.url, on: true })
-await until(async () => (await channel('phone-set', {})).status === 'online', 'Godbot online at the relay', 30_000)
+await until(async () => (await channel('phone-set', {})).status === 'online', 'NativeCrew online at the relay', 30_000)
 let pairing = (await channel('phone-pair')).pairing.uri
 let reply = 'Fixture acknowledged'
 host.model.reply = () => reply

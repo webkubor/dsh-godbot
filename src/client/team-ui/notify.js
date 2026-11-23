@@ -44,7 +44,7 @@ export function notifyKind({ before, after, viewing, focused, enabled, muted, gr
 export function noticeText({ title, kind }) {
   const name = String(title ?? '').trim().slice(0, 60)
   const body = t(kind === 'question' ? 'Waiting for your answer' : 'A new reply is waiting')
-  return { title: name === '' ? 'Godbot' : name, body }
+  return { title: name === '' ? 'NativeCrew' : name, body }
 }
 
 /**

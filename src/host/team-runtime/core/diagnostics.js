@@ -66,7 +66,7 @@ export function reportMarkdown({ facts, client = {}, entries = [], clientEntries
   const lines = [
     '| | |',
     '|---|---|',
-    row('Godbot', facts.botVersion),
+    row('NativeCrew', facts.botVersion),
     row('DSH', facts.dshVersion),
     row('Surface', client.surface),
     row('OS', facts.os),

@@ -1,6 +1,6 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
-// The IM platforms Godbot can connect to. The settings page draws the add form from
-// `fields`; `secret` fields are kept as Godbot secrets and never leave the host.
+// The IM platforms NativeCrew can connect to. The settings page draws the add form from
+// `fields`; `secret` fields are kept as NativeCrew secrets and never leave the host.
 // `buttons`: the platform can show card buttons (others answer with numbers).
 // `groups`: the IM bot can be @-mentioned in platform group chats.
 // `login: 'qr'`: the connection starts by scanning a code instead of filling fields.

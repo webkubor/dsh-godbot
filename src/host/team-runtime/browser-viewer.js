@@ -193,7 +193,7 @@ class BrowserViews {
     const resource = await entry.opening?.catch(() => undefined)
     if (resource) {
       entry.resource = undefined
-      // Close the Godbot session while the context is still available for its cookie checkpoint.
+      // Close the NativeCrew session while the context is still available for its cookie checkpoint.
       try { await resource.session.close() } finally { await resource.env.close() }
     }
     if (forget && entry.target !== 'local') await removeVolume(this.rt.home, entry.botId, entry.target, this.config)
@@ -354,10 +354,10 @@ export function install(rt) {
   const config = { executablePath: rt.config.browserExecutablePath, ...(settings || {}) }
   const views = new BrowserViews(rt, config)
   const status = { name: 'browser_status', parameters: {},
-    description: 'Check whether the owner enabled this Bot’s separate Godbot browser, and whether it is available. Does not launch the browser or access a website.' }
+    description: 'Check whether the owner enabled this Bot’s separate NativeCrew browser, and whether it is available. Does not launch the browser or access a website.' }
   const desktop = views.targets().some(target => target !== 'local') ? desktopTools(views) : []
   const tools = [...(plugin.tools ?? plugin.toolDefs), ...desktop].map(def => ({ ...def, needsBrowser: false,
-    description: `${def.description} This uses the Bot’s separate Godbot browser. If it is unavailable, call browser_status and follow the setup or takeover instructions.`,
+    description: `${def.description} This uses the Bot’s separate NativeCrew browser. If it is unavailable, call browser_status and follow the setup or takeover instructions.`,
     execute: (args, ctx) => views.agent(def, args, ctx) }))
   const spec = { ...plugin, tools: [...tools, { ...status, execute: (args, ctx) => views.agent(status, args, ctx) }] }
   const shim = Object.create(rt)
@@ -402,5 +402,5 @@ export function install(rt) {
   rt.ctx.effect(() => async () => {
     views.closed = true
     await Promise.all([...views.entries.values()].map(entry => views.stop(entry)))
-  }, 'Godbot web browsers')
+  }, 'NativeCrew web browsers')
 }

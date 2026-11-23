@@ -1,5 +1,5 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
-// DSH updates: a released Godbot may name the DSH release it was verified
+// DSH updates: a released NativeCrew may name the DSH release it was verified
 // against (`engines.dsh` in package.json); a release that names none
 // offers nothing. The newest released bot wins: offering that version and
 // nothing newer keeps the update path away from DSH releases we have not
@@ -56,7 +56,7 @@ export function install(rt) {
   const installKind = () =>
     typeof ctx.get?.('profileContext')?.packageManager?.command === 'string' ? 'app' : 'npm'
 
-  // The newest Godbot release's DSH requirement, through the same channel the bot
+  // The newest NativeCrew release's DSH requirement, through the same channel the bot
   // itself updates from: its registry, or the public repo's latest release.
   async function releasedDeclaration(source) {
     if (source.kind === 'registry') {

@@ -8,7 +8,7 @@ import { join } from 'node:path'
 import test from 'node:test'
 import { ProviderAccounts, assertProviderAccountSelectable, getDefaultProviderAccount } from '../../src/host/provider-accounts.js'
 import { setSandboxEnabled } from '../../src/host/sandbox-settings.js'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 
 async function fixture(t) {
   const root = await realpath(await mkdtemp(join(tmpdir(), "godbot-account's-test-")))
@@ -40,7 +40,7 @@ const row = (view, kind, id) => byKind(view, kind).accounts.find(a => a.id === i
 test('owner catalog separates CLI identities, names and defaults by slot and profile; passive views never start a VM', async t => {
   const f = await fixture(t)
   const config = { antigravity: { command: '/does/not/exist' } }
-  const service = new GodbotService({ stateDir: f.state, driverConfig: config })
+  const service = new NativeCrewService({ stateDir: f.state, driverConfig: config })
   await service.ready()
   t.after(() => service.close())
   const call = (action, rest = {}) => service.dispatch({ action, ...rest })

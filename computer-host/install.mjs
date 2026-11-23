@@ -64,7 +64,7 @@ function verifyContents(root, manifest = info) {
         '--verify',
         '--strict',
         '-R=identifier "io.github.renjiegod.godbot.computerhost"',
-        join(root, 'native/Godbot Computer Host.app'),
+        join(root, 'native/NativeCrew Computer Host.app'),
       ],
       { stdio: 'pipe' },
     )
@@ -129,8 +129,8 @@ function older(candidate, current) {
 }
 function addMacApplicationShortcut() {
   const apps = join(homedir(), 'Applications')
-  const link = join(apps, 'Godbot Computer Host.app')
-  const target = join(base, 'desktop-current/native/Godbot Computer Host.app')
+  const link = join(apps, 'NativeCrew Computer Host.app')
+  const target = join(base, 'desktop-current/native/NativeCrew Computer Host.app')
   mkdirSync(apps, { recursive: true, mode: 0o700 })
   try {
     symlinkSync(target, link)
@@ -138,11 +138,11 @@ function addMacApplicationShortcut() {
     if (err.code !== 'EEXIST') throw err
     const existing = lstatSync(link)
     if (!existing.isSymbolicLink() || resolve(apps, readlinkSync(link)) !== target) {
-      console.log('The Godbot helper is available at ' + target)
+      console.log('The NativeCrew helper is available at ' + target)
       return
     }
   }
-  console.log('Godbot Computer Host application: ' + link)
+  console.log('NativeCrew Computer Host application: ' + link)
 }
 function point(link, target) {
   const temp = link + '.' + randomUUID()
@@ -189,7 +189,7 @@ try {
       if (
         existsSync(wrapper) &&
         (!lstatSync(wrapper).isFile() ||
-          !readFileSync(wrapper, 'utf8').includes('# Godbot Computer Host launcher'))
+          !readFileSync(wrapper, 'utf8').includes('# NativeCrew Computer Host launcher'))
       ) {
         throw new Error('A different program exists at ' + wrapper)
       }

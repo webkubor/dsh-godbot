@@ -1,5 +1,5 @@
 import { Fragment, createElement as h, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { GodbotModal } from './modal.js'
+import { NativeCrewModal } from './modal.js'
 import { Icon } from './chat-ui.js'
 import { MachineConfirmation } from './machine-confirm.js'
 import { MachineTerminal } from './machine-terminal.js'
@@ -335,7 +335,7 @@ function Computers({ client, close }) {
         : h(
             Fragment,
             null,
-            h('p', null, m('Create a pairing offer in Godbot Computer Host on the target, then paste it here.')),
+            h('p', null, m('Create a pairing offer in NativeCrew Computer Host on the target, then paste it here.')),
             h(
               'label',
               null,
@@ -586,7 +586,7 @@ function Computers({ client, close }) {
       }),
     )
   return h(
-    GodbotModal,
+    NativeCrewModal,
     { title: m('Remote computers'), wide: true, close: askClose },
     h('style', null, style),
     h(

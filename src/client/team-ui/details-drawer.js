@@ -238,7 +238,7 @@ function GroupOverview({ room, roster, actions, usage, useWork, openSettings }) 
 
 // A Bot's chat sessions: the current one first, then the parts opened while the Bot
 // was busy (each still live, marked when its turn runs), then the earlier ones, newest
-// first. Every Bot's chat has parts, whether it answers with a Godbot model or a local
+// first. Every Bot's chat has parts, whether it answers with a NativeCrew model or a local
 // CLI. A running part opened from here is read-only until its turn ends: two sessions
 // running at once means two model calls. Earlier parts nobody talked in hold nothing to
 // go back to, so the list leaves them out, and so does a part opened while the Bot was

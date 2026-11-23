@@ -5,7 +5,7 @@ const prefix = 'godbot-budget-'
 function keyFor(session, message) {
   // DSH can recreate the reminder envelope when delivery raced a restart.
   // Its authenticated schedule source carries the original ID and occurrence.
-  // Godbot likewise resends the same exchange under a fresh inbox MessageId.
+  // NativeCrew likewise resends the same exchange under a fresh inbox MessageId.
   const {source} = message
   let identity = message.id
   if (source?.kind === 'schedule') identity = message.content
@@ -46,7 +46,7 @@ export class BotBudget {
 
   attach(rt) {
     // Selecting the speaker itself can cost tokens, before the chosen member starts.
-    rt.allowGodbotRouting = room => !this.policy.refusal('profile',true) &&
+    rt.allowNativeCrewRouting = room => !this.policy.refusal('profile',true) &&
       room.members.some(id => !this.policy.refusal(id,true))
   }
 

@@ -21,7 +21,7 @@ export async function askLocal({ name, account }, scope, signal) {
       '-e',
       'on run argv',
       '-e',
-      'display dialog (item 1 of argv) with title "Godbot Computer Host" buttons {"Decline", "Allow once"} default button "Decline" cancel button "Decline" giving up after 55',
+      'display dialog (item 1 of argv) with title "NativeCrew Computer Host" buttons {"Decline", "Allow once"} default button "Decline" cancel button "Decline" giving up after 55',
       '-e',
       'if gave up of result then return "decline"',
       '-e',
@@ -35,7 +35,7 @@ export async function askLocal({ name, account }, scope, signal) {
     command = 'zenity'
     args = [
       '--question',
-      '--title=Godbot Computer Host',
+      '--title=NativeCrew Computer Host',
       '--default-cancel',
       '--no-markup',
       '--ok-label=Allow once',

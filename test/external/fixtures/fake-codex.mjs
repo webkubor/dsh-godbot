@@ -1,4 +1,4 @@
-// Modified for Godbot to emit questions and asynchronous interrupted outcomes. See THIRD_PARTY_NOTICES.
+// Modified for NativeCrew to emit questions and asynchronous interrupted outcomes. See THIRD_PARTY_NOTICES.
 // A fake Codex app-server for tests: `codex app-server --listen stdio://`
 // dialect, newline JSON-RPC. The turn's first text picks the behavior:
 //   "ask"      -> an approval request the client must answer

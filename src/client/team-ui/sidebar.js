@@ -855,7 +855,7 @@ export function TeamSidebar(props) {
     shown === 'hidden' ? null : h(LeftColumn, { mode: shown, width: ourWidth, onGrip: startDrag, leaving, animateOnMount: mounted.current }, content))
 }
 
-// The sidebar notice summarizes the update. Its details hold the Godbot and DSH
+// The sidebar notice summarizes the update. Its details hold the NativeCrew and DSH
 // install controls, progress and release notes.
 function UpdateNotice({ wide, useUpdate, actions }) {
   const update = useUpdate(value => value)
@@ -908,17 +908,17 @@ function UpdateNotice({ wide, useUpdate, actions }) {
     setDshError('')
     void actions.installDshUpdate().catch(failure => setDshError(hostText(failure?.message ?? String(failure))))
   }
-  const label = phase === 'installing' ? t('Updating Godbot…')
+  const label = phase === 'installing' ? t('Updating NativeCrew…')
     : dshPhase === 'installing' ? t('Updating DSH…')
-      : phase === 'installed' ? t('Godbot {version} is installed. Restart DSH to use it.', { version: update.installed ?? update.latest })
-        : phase === 'updated' ? t('Godbot {version} is installed.', { version: update.installed ?? update.latest })
+      : phase === 'installed' ? t('NativeCrew {version} is installed. Restart DSH to use it.', { version: update.installed ?? update.latest })
+        : phase === 'updated' ? t('NativeCrew {version} is installed.', { version: update.installed ?? update.latest })
         : dshPhase === 'installed' ? t('Restart DSH to start using DSH {version}.', { version: dsh.installed ?? dsh.verified })
-          : pending ?? (update?.available ? t('Godbot {version} is available', { version: update.latest })
+          : pending ?? (update?.available ? t('NativeCrew {version} is available', { version: update.latest })
             : t('DSH {version} is available', { version: dsh?.verified }))
   const summary = update?.restart?.pending ? t('Restarting DSH…')
-    : phase === 'failed' || error ? t('Godbot update failed')
+    : phase === 'failed' || error ? t('NativeCrew update failed')
     : dshPhase === 'failed' || dshError ? t('DSH update failed')
-      : phase === 'ready' ? t('Godbot {version} is ready to install', { version: update.latest })
+      : phase === 'ready' ? t('NativeCrew {version} is ready to install', { version: update.latest })
         : label
   const message = error || (phase === 'failed' ? update.error : '')
   const dshMessage = dshError || (dshPhase === 'failed' ? dsh?.error : '')
@@ -926,7 +926,7 @@ function UpdateNotice({ wide, useUpdate, actions }) {
   const dshText = dshPhase === 'installed'
     ? t('Restart DSH to start using DSH {version}.', { version: dsh.installed ?? dsh.verified })
     : dsh?.available === false && dsh?.blockedBy
-      ? t('Update Godbot {version} first.', { version: dsh.blockedBy })
+      ? t('Update NativeCrew {version} first.', { version: dsh.blockedBy })
       : t('You have {version}.', { version: dsh?.current })
   return h(Fragment, null,
     h('button', {
@@ -940,13 +940,13 @@ function UpdateNotice({ wide, useUpdate, actions }) {
       !wide && (phase === 'failed' || dshPhase === 'failed' || error || dshError) ? h('span', { className: 'bt-update-dot', 'aria-hidden': true }) : null),
     shown && box ? createPortal(h('div', {
       ref: focusDetails, className: 'bt-update-pop', role: 'dialog', tabIndex: -1,
-      'aria-label': update?.available || phase !== 'idle' ? t('Godbot update') : t('DSH update'), style: box, 'data-leaving': leaving || undefined,
+      'aria-label': update?.available || phase !== 'idle' ? t('NativeCrew update') : t('DSH update'), style: box, 'data-leaving': leaving || undefined,
     },
       update?.available || phase !== 'idle' ? h(Fragment, null,
-        h('div', { className: 'bt-update-title' }, phase === 'installed' || phase === 'updated' ? t('Update installed') : t('Godbot {version}', { version: update.latest })),
+        h('div', { className: 'bt-update-title' }, phase === 'installed' || phase === 'updated' ? t('Update installed') : t('NativeCrew {version}', { version: update.latest })),
         h('div', { className: 'bt-update-text' }, phase === 'installed'
-          ? t('Restart DSH to start using Godbot {version}.', { version: update.installed ?? update.latest })
-          : phase === 'updated' ? t('Godbot {version} is installed.', { version: update.installed ?? update.latest })
+          ? t('Restart DSH to start using NativeCrew {version}.', { version: update.installed ?? update.latest })
+          : phase === 'updated' ? t('NativeCrew {version} is installed.', { version: update.installed ?? update.latest })
             : pending ? sentences(pending, t('You have {version}.', { version: update.current }))
               : t('You have {version}.', { version: update.current })),
         message ? h('div', { className: 'bt-update-error', role: 'alert' }, t('The update did not finish: {reason}', { reason: message })) : null,
@@ -1179,7 +1179,7 @@ export function BotReturn({ wide, useSurface, useRoster, actions }) {
   // Agent mode draws no team sidebar; there this button is the team interface.
   useReportReady(mode === 'agent' && ready)
   if (mode !== 'agent') return null
-  const label = t('Back to Godbot')
+  const label = t('Back to NativeCrew')
   return h('button', { type: 'button', className: 'bt-return', 'aria-label': label, title: label, onClick: () => actions.setSurface('bot') },
     h(BrandMark, { size: 20 }),
     wide ? h('span', { className: 'bt-return-name' }, label) : null,
@@ -1202,7 +1202,7 @@ export function BrandMark({ size = 24 }) {
   return h(WorkspaceMark, { size })
 }
 export function BrandName() {
-  return h('span', { style: { fontWeight: 600, fontSize: 14 } }, 'Godbot')
+  return h('span', { style: { fontWeight: 600, fontSize: 14 } }, 'NativeCrew')
 }
 
 // With the menu holding the settings seat, the Bot row is just the account menu;

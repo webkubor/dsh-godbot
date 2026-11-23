@@ -8,7 +8,7 @@ import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { setTimeout as delay } from 'node:timers/promises'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 
 const cliFile = new URL('../../bin/godbot.mjs', import.meta.url).pathname
 const exec = promisify(execFile)
@@ -26,7 +26,7 @@ async function fixture(t) {
   let service
   async function restart() {
     if (service) await service.close()
-    service = new GodbotService({
+    service = new NativeCrewService({
       stateDir: join(dir, 'state'),
       openDriver: async ({ memberId, onEvent }) => ({
         nativeId: memberId,

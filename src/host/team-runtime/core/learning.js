@@ -360,7 +360,7 @@ export function install(rt) {
   // The team's switches (settings → General → Memory); the host config still overrides them.
   const skillsOn = () => state.prefs?.learnSkills !== false
   const agentsOn = () => config.agentsMd !== false && state.prefs?.learnAgentsMd !== false
-  // Team skills reach only a Bot on one of Godbot's own models: capabilities.js mounts them
+  // Team skills reach only a Bot on one of NativeCrew's own models: capabilities.js mounts them
   // into the DSH agent loop, and a local agent CLI or a remote agent never loads them.
   // 'local' or 'remote' for a Bot they do not reach.
   const outsideOf = (bot) => {
@@ -811,7 +811,7 @@ export function install(rt) {
   async function applySkill(proposal) {
     const bot = rt.botOf(proposal.botId)
     if (bot === undefined) throw new Error('The Bot that learned this skill is gone')
-    if (outsideOf(bot) !== undefined) throw new Error(`${bot.name} runs on ${runsOn(bot)}, which does not read team skills. Decline this proposal, or move the Bot back to one of Godbot's models first.`)
+    if (outsideOf(bot) !== undefined) throw new Error(`${bot.name} runs on ${runsOn(bot)}, which does not read team skills. Decline this proposal, or move the Bot back to one of NativeCrew's models first.`)
     const current = skillsOf()[proposal.name]
     const store = data()
     if (proposal.action === 'create') {
@@ -909,7 +909,7 @@ export function install(rt) {
   async function proposeBrowserSkill(recording) {
     const bot = rt.botOf(recording.botId)
     if (!bot) throw new Error('没有这段示范对应的 Bot')
-    if (outsideOf(bot) !== undefined) throw new Error('这个 Bot 跑在本地或远程 Agent 上，读不到团队技能。先把它换回 Godbot 的模型，再整理成 Skill')
+    if (outsideOf(bot) !== undefined) throw new Error('这个 Bot 跑在本地或远程 Agent 上，读不到团队技能。先把它换回 NativeCrew 的模型，再整理成 Skill')
     const previous = [
       ...Object.values(data().proposals), ...Object.values(data().settled),
     ].find(entry => entry.demonstration?.id === recording.id)

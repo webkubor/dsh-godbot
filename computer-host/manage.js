@@ -185,5 +185,5 @@ export async function openManagementWindow(directory) {
     if (code) void win.close()
   })
   for (const sig of ['SIGTERM', 'SIGINT']) process.once(sig, () => void win.close())
-  console.log('Opened local Godbot Computer Host settings. Remote sharing is paused while settings are active.')
+  console.log('Opened local NativeCrew Computer Host settings. Remote sharing is paused while settings are active.')
 }

@@ -1,5 +1,5 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
-// Delivery: how one Bot, the user, or Godbot itself puts a message into a Bot Session.
+// Delivery: how one Bot, the user, or NativeCrew itself puts a message into a Bot Session.
 import { randomUUID } from 'node:crypto'
 import { createUserMessage } from '@deepseek-ai/dsh-llm'
 import { BACKGROUND_NOTE, BACKGROUND_ROLE, HISTORY_TIMEOUT_MS, LONG_HEAD, MESSAGE_INLINE_MAX, READ_LINE_MAX, SOURCE_KIND, TEXT_KEPT, TEXT_SHOW_MAX } from './constants.js'

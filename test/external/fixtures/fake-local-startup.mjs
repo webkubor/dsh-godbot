@@ -1,4 +1,4 @@
-// Modified for Godbot to advertise the protocol version. See THIRD_PARTY_NOTICES.
+// Modified for NativeCrew to advertise the protocol version. See THIRD_PARTY_NOTICES.
 // A delayed JSON-RPC handshake shared by the ACP and Codex startup tests.
 // Requests sent before initialize succeeds are refused, as an unready CLI does.
 import { createInterface } from 'node:readline'

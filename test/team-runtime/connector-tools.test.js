@@ -63,7 +63,7 @@ test('a session bridge checks the granted registration again on list, call and a
   assert.deepEqual(list(), [])
 })
 
-test('the memory keeper and other tagged Godbot requests keep a round catalog and its call receipts', () => {
+test('the memory keeper and other tagged NativeCrew requests keep a round catalog and its call receipts', () => {
   const cli = 'cli-session', dsh = 'dsh-session'
   const tagged = new WeakSet()
   const rt = {

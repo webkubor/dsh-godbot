@@ -1,4 +1,4 @@
-// Godbot releases on GitHub. Each tag vX.Y.Z carries the packed plugin as the
+// NativeCrew releases on GitHub. Each tag vX.Y.Z carries the packed plugin as the
 // asset dsh-godbot-X.Y.Z.tgz (.github/workflows/release.yml). GitHub records
 // every uploaded asset's SHA-256 as its `digest`; a release without one may
 // carry dsh-godbot-X.Y.Z.tgz.sha256 beside it. An archive is installed only
@@ -37,7 +37,7 @@ export function releasesApi(env = process.env) {
 export const defaultArchiveDir = () => join(homedir(), '.local/share/dsh-godbot/packages')
 
 /** The release asset that holds the packed plugin, as `npm pack` names it. */
-export const assetName = (name, version) => `${name}-${version}.tgz`
+export const assetName = (name, version) => `${name.replace(/^@/, '').replace('/', '-')}-${version}.tgz`
 
 /** Whether version `a` is newer than `b` (semver order, prereleases before their release). */
 export function newer(a, b) {
@@ -109,7 +109,7 @@ export async function fileSha256(path) {
  */
 export async function downloadArchive({ dir, name, version, asset, net, signal, onProgress }) {
   mkdirSync(dir, { recursive: true, mode: 0o700 })
-  const target = join(dir, `${name}-${version}-${asset.sha256.slice(0, 12)}.tgz`)
+  const target = join(dir, assetName(name, `${version}-${asset.sha256.slice(0, 12)}`))
   if (existsSync(target) && await fileSha256(target) === asset.sha256) return target
   const part = `${target}.${randomUUID()}.part`
   try {
@@ -127,7 +127,7 @@ export async function downloadArchive({ dir, name, version, asset, net, signal, 
 
 /**
  * Remove the partial downloads an interrupted run left behind. One younger than
- * `olderThanMs` may still be written by another profile's Godbot sharing the folder.
+ * `olderThanMs` may still be written by another profile's NativeCrew sharing the folder.
  */
 export function dropPartials(dir, { olderThanMs = 60 * 60_000, now = Date.now() } = {}) {
   let names

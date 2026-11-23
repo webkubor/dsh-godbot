@@ -231,6 +231,6 @@ function AgentMenu({ menu, roster, actions, leaving }) {
       index > 0 ? h('div', { className: 'bt-menu-sep', role: 'separator' }) : null,
       group.map(([label, Icon, run, danger, checked]) => h('button', {
         key: label, type: 'button', role: 'menuitem', className: danger ? 'bt-danger' : undefined,
-        onClick: () => { actions.closeMenu(); void Promise.resolve(run()).catch(error => console.warn('[Godbot]', error)) },
+        onClick: () => { actions.closeMenu(); void Promise.resolve(run()).catch(error => console.warn('[NativeCrew]', error)) },
       }, h(Icon), h('span', { className: 'bt-menu-label' }, label), checked ? h('span', { className: 'bt-menu-check' }, h(CheckIcon)) : null)))))
 }

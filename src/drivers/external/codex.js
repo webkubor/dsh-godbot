@@ -1,6 +1,6 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // The Codex app-server engine: `codex app-server --listen stdio://`, one
-// JSON-RPC process per route that multiplexes threads. Godbot Sessions map to
+// JSON-RPC process per route that multiplexes threads. NativeCrew Sessions map to
 // threads; turns stream item notifications back.
 import { effortOptions, requireEffort } from './effort.js'
 import { JsonRpcPeer, wireProcess, EventQueue, newCallId } from './jsonrpc.js'
@@ -211,7 +211,7 @@ export class CodexEngine {
     peer.notificationHandler = (method, params) => this.onNotice(method, params)
     peer.requestHandler = (method, params) => this.onRequest(method, params)
     try {
-      await peer.request('initialize', { clientInfo: { name: 'godbot', title: 'Godbot', version: '1' }, capabilities:{experimentalApi:true} }, { timeout: 30_000 })
+      await peer.request('initialize', { clientInfo: { name: 'godbot', title: 'NativeCrew', version: '1' }, capabilities:{experimentalApi:true} }, { timeout: 30_000 })
       if (this.child !== child) {
         throw Object.assign(new Error(`${this.engine.name} closed while starting`), { code: 'LOCAL_AGENT_EXIT' })
       }

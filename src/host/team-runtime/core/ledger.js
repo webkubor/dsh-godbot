@@ -1,5 +1,5 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
-// The ledger: what is said in a conversation between Bots, kept by Godbot itself. Each
+// The ledger: what is said in a conversation between Bots, kept by NativeCrew itself. Each
 // conversation has one book, a file that is only ever appended to, one record per line,
 // oldest first. A record is written to its book before anything reads or delivers it; a
 // change to it (delivered, answered) is a record of its own, so no line is rewritten.

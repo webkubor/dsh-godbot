@@ -2,11 +2,11 @@
 // Resume: Bot work that DeepSeek Harness dropped when it closed or restarted. DSH closes
 // a turn it never finished as interrupted when the Session next opens, and a clean
 // shutdown also cancels the messages still waiting in a Session's inbox; nothing would
-// ever run either again, and whoever waited for them was not told. Godbot notes each
+// ever run either again, and whoever waited for them was not told. NativeCrew notes each
 // running Bot turn and each message it delivers until a turn takes it up, in
 // inflight.json; what is still noted at the next start is picked up once.
 //
-// A turn that ends while Godbot is not watching it (the plugin reloaded, DSH went on)
+// A turn that ends while NativeCrew is not watching it (the plugin reloaded, DSH went on)
 // is settled from the Session's durable log: an answer that was produced goes to the Bot
 // that waits for it, and an outcome that cannot be read is said to be unknown. The
 // request itself is never sent again there.
@@ -191,7 +191,7 @@ export function install(rt) {
   rt.forgetDelivery = forgetQueued
 
   // A message is done with once a turn takes it up, or once it leaves the inbox untaken
-  // while Godbot runs: the user stopped the Bot, or Godbot moved or withdrew it.
+  // while NativeCrew runs: the user stopped the Bot, or NativeCrew moved or withdrew it.
   ctx.on('agent/inbox/discarded', ({ message } = {}) => {
     if (message?.source?.kind === SOURCE_KIND && message.source.exchangeId) forgetQueued(message.source.exchangeId)
   })
@@ -200,7 +200,7 @@ export function install(rt) {
   let taken = Object.keys(interrupted.queued).length > 0 ? new Set() : undefined
   // The first turn event of each Session since this start, until the noted turns are
   // picked up. A turn that ends, or still runs, before one starts here outlived the
-  // last run: only Godbot restarted (the plugin reloaded) and DSH went on.
+  // last run: only NativeCrew restarted (the plugin reloaded) and DSH went on.
   let firstTurn = Object.keys(interrupted.turns).length > 0 ? new Map() : undefined
   ctx.on('session/event', (session, event) => {
     const id = session?.id
@@ -312,7 +312,7 @@ export function install(rt) {
     return Array.isArray(seen?.events) ? seen.events : undefined
   }
 
-  // A turn that ended while Godbot was not watching it: its answer may exist and never
+  // A turn that ended while NativeCrew was not watching it: its answer may exist and never
   // have gone to the Bot that waits for it. The Session's durable log says what it did;
   // the work it was for is settled once, the way a finished turn settles it.
   async function reconcileEnded(sessionId, record, ended) {
@@ -380,7 +380,7 @@ export function install(rt) {
     }
     if (reason.kind === 'aborted') {
       // The turn was stopped before it could answer: the sender is told, as it is told
-      // when Godbot watches the turn end.
+      // when NativeCrew watches the turn end.
       answerSender(rt, sessionId, asker, `${name} was stopped before it could answer your message.`)
       return
     }
@@ -443,7 +443,7 @@ export function install(rt) {
     for (const [sessionId, record] of Object.entries(noted)) {
       const first = firstTurn.get(sessionId)
       if (first?.type === 'turn/end') {
-        // The turn ended while Godbot was not watching it: what it did is settled from
+        // The turn ended while NativeCrew was not watching it: what it did is settled from
         // the Session's durable log.
         await reconcileEnded(sessionId, record, first).catch(error => rt.warn('godbot: settling the work of %s failed: %s', sessionId, error))
         continue

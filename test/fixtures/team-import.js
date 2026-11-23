@@ -67,7 +67,7 @@ export class TeamImportBridge {
     this.service = service
     this.store = service.store
     this.getRuntime = getRuntime
-    this.workspaceParent = workspaceParent || join(homedir(), 'Godbot Workspaces')
+    this.workspaceParent = workspaceParent || join(homedir(), 'NativeCrew Workspaces')
     this.running = new Map()
     this.nativeSources = new NativeSources(this)
   }
@@ -77,7 +77,7 @@ export class TeamImportBridge {
     this.connection ??= Promise.resolve().then(this.getRuntime).then(async rt => {
       if (!rt) throw new Error('The Bot team runtime is unavailable')
       await rt.load()
-      if (this.service.closing) throw new Error('Godbot is shutting down')
+      if (this.service.closing) throw new Error('NativeCrew is shutting down')
       this.rt = rt
       this.service.budgets?.botBudget?.attach(rt)
       this.service.automation?.full?.attach(rt)
@@ -85,7 +85,7 @@ export class TeamImportBridge {
       rt.godbotWorkspaceConflict = this.guard
       rt.ctx?.effect?.(() => () => {
         if (this.rt === rt) this.invalidate()
-      }, 'Godbot native workspace guard')
+      }, 'NativeCrew native workspace guard')
       return rt
     }).catch(error => {
       this.connection = undefined
@@ -267,7 +267,7 @@ export class TeamImportBridge {
 
   async import(req) {
     const rt = await this.connect()
-    if (this.service.closing) throw new Error('Godbot is shutting down')
+    if (this.service.closing) throw new Error('NativeCrew is shutting down')
     const active = this.running.get(req.teamId)
     if (active) {
       if (active.previewId !== req.previewId) throw new Error('Another import is in progress. Refresh the preview.')
@@ -345,7 +345,7 @@ export class TeamImportBridge {
       if (!bot) {
         if (receipt || m.teamId !== team.id) throw new Error('The source or target member changed')
         prepare(target.workDir)
-        bot = await rt.importGodbotMember({
+        bot = await rt.importNativeCrewMember({
           origin: key, name: target.name, instructions: m.role ?? '', role: m.role ?? '', workDir: target.workDir,
           pickModel: true, model: target.model, effort: target.effort ?? null, readOnly: m.workspaceMode === 'shared-readonly', reservation: reserve(key),
         })
@@ -363,7 +363,7 @@ export class TeamImportBridge {
         if (receipt) throw new Error('The linked group was removed')
         const dir = join(plan.workspaceRoot, 'room')
         prepare(dir)
-        room = await rt.importGodbotRoom({
+        room = await rt.importNativeCrewRoom({
           origin, name: team.name, members: [...ids.values()], admin: ids.get(team.leadId) ?? null, workDir: dir, reservation: reserve(origin),
         })
       }

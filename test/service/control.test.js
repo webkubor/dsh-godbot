@@ -3,7 +3,7 @@ import { mkdtempSync, mkdirSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { test } from 'node:test'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 
 async function until(check) {
   for (let n = 0; n < 100; n++) {
@@ -17,7 +17,7 @@ async function until(check) {
 async function fixture(t) {
   const dir = mkdtempSync(join(tmpdir(), 'godbot-control-'))
   const handles = new Map()
-  const service = new GodbotService({
+  const service = new NativeCrewService({
     stateDir: join(dir, 'state'),
     openDriver: async ({ onEvent, memberId, resumeId }) => {
       const calls = []

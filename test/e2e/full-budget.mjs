@@ -55,7 +55,7 @@ export async function fullBudget(host,note,epoch) {
   await host.rpc('dispatch',{request:{action:'team-workspace.routing',roomId:room.id,enabled:true}})
   let classifications = 0
   const reply = host.model.reply
-  host.model.reply = body => { if (JSON.stringify(body.system).includes('Godbot room routing.')) classifications++; return reply(body) }
+  host.model.reply = body => { if (JSON.stringify(body.system).includes('NativeCrew room routing.')) classifications++; return reply(body) }
   await send(room.id,ids.room)
   const groupHold = await until(async () => (await view('profile')).deferred.find(d => d.owner === b.id && d.origin === 'bot'),'group-assigned member deferred at profile cap')
   assert.equal(classifications,0)

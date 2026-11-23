@@ -1,5 +1,5 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
-// Settings → About Godbot: the version, updates for Godbot and DSH (with the
+// Settings → About NativeCrew: the version, updates for NativeCrew and DSH (with the
 // automatic update mode), and the links to the repository. The sidebar's cloud
 // button shows the same update state.
 import { version } from '../../../package.json'
@@ -15,21 +15,21 @@ function waitingText(waiting) {
   const turns = waiting?.find(reason => reason.kind === 'turns')?.count
   if (turns) return t('It installs once no Bot is working ({count} running).', { count: turns })
   if (waiting?.some(reason => reason.kind === 'terminals')) return t('It installs once every native terminal is handed back.')
-  return t('It installs in a moment, while Godbot is idle.')
+  return t('It installs in a moment, while NativeCrew is idle.')
 }
 
 export function blockedText(update) {
   const blocked = update.blocked ?? {}
-  if (blocked.reason === 'dsh') return t('Godbot {version} needs DSH {dsh}.', { version: update.latest, dsh: blocked.dsh })
-  if (blocked.reason === 'peers') return t('Godbot {version} needs a fresh install: run scripts/install-local.mjs again.', { version: update.latest })
-  return t('The Godbot {version} download does not match its release.', { version: update.latest })
+  if (blocked.reason === 'dsh') return t('NativeCrew {version} needs DSH {dsh}.', { version: update.latest, dsh: blocked.dsh })
+  if (blocked.reason === 'peers') return t('NativeCrew {version} needs a fresh install: run scripts/install-local.mjs again.', { version: update.latest })
+  return t('The NativeCrew {version} download does not match its release.', { version: update.latest })
 }
 
 export function downloadText(update) {
   const { done = 0, total = null } = update.progress ?? {}
   return total > 0
-    ? t('Downloading Godbot {version}… {percent}%', { version: update.latest, percent: Math.min(100, Math.floor((done / total) * 100)) })
-    : t('Downloading Godbot {version}…', { version: update.latest })
+    ? t('Downloading NativeCrew {version}… {percent}%', { version: update.latest, percent: Math.min(100, Math.floor((done / total) * 100)) })
+    : t('Downloading NativeCrew {version}…', { version: update.latest })
 }
 
 /** Two sentences of copy: a space between them, none after CJK end punctuation. */
@@ -37,19 +37,19 @@ export const sentences = (first, second) => (/[。！？]$/u.test(first) ? `${fi
 
 /** The line for a downloaded release: when it installs, or that it waits for a click. */
 export function readyText(update) {
-  const downloaded = t('Godbot {version} is downloaded.', { version: update.latest })
+  const downloaded = t('NativeCrew {version} is downloaded.', { version: update.latest })
   return sentences(downloaded, update.mode === 'auto' ? waitingText(update.waiting) : t('Install it when you are ready.'))
 }
 
 function botHint(update) {
-  if (update.phase === 'installing') return t('Updating Godbot…')
-  if (update.phase === 'installed') return t('Restart DSH to start using Godbot {version}.', { version: update.installed ?? update.latest })
-  if (update.phase === 'updated') return t('Godbot {version} is installed.', { version: update.installed ?? update.latest })
+  if (update.phase === 'installing') return t('Updating NativeCrew…')
+  if (update.phase === 'installed') return t('Restart DSH to start using NativeCrew {version}.', { version: update.installed ?? update.latest })
+  if (update.phase === 'updated') return t('NativeCrew {version} is installed.', { version: update.installed ?? update.latest })
   if (update.phase === 'downloading') return downloadText(update)
   if (update.phase === 'failed') return t('The update did not finish: {reason}', { reason: hostText(update.error ?? '') })
   if (update.blocked) return blockedText(update)
   if (update.phase === 'ready') return readyText(update)
-  if (update.available) return t('Godbot {version} is available', { version: update.latest })
+  if (update.available) return t('NativeCrew {version} is available', { version: update.latest })
   if (update.source === 'app') return t('Updates are managed by the desktop host that installed this workspace.')
   if (update.enabled === false) return t('Update checks are off.')
   if (update.source === 'path') return t('Installed from a local folder; update it there.')
@@ -61,16 +61,16 @@ function botHint(update) {
   return `${failed ? t('Could not check for updates.') : t('Up to date')} · ${checked}`
 }
 
-// The sources Godbot can update by itself, and so offer the automatic modes for.
+// The sources NativeCrew can update by itself, and so offer the automatic modes for.
 const SELF_UPDATING = new Set(['archive', 'registry', 'git'])
 
 function modeHint(mode) {
   if (mode === 'notify') return t('Checks every six hours and downloads new releases; you choose when to install.')
-  if (mode === 'off') return t('Godbot checks only when you click Check for updates.')
-  return t('Checks every six hours, downloads new releases and installs them while Godbot is idle.')
+  if (mode === 'off') return t('NativeCrew checks only when you click Check for updates.')
+  return t('Checks every six hours, downloads new releases and installs them while NativeCrew is idle.')
 }
 
-// A desktop host can supply its packaged update state through the Godbot bridge.
+// A desktop host can supply its packaged update state through the NativeCrew bridge.
 export function ownAppRow(ownApp) {
   if (ownApp === null || typeof ownApp !== 'object') return null
   const version = typeof ownApp.version === 'string' ? ownApp.version : ''
@@ -89,7 +89,7 @@ function dshHint(dsh, shown) {
   if (dsh.phase === 'installing') return t('Updating DSH…')
   if (dsh.phase === 'installed') return t('Restart DSH to start using DSH {version}.', { version: dsh.installed ?? dsh.verified })
   if (dsh.phase === 'failed') return t('The update did not finish: {reason}', { reason: hostText(dsh.error ?? '') })
-  if (dsh.available === false && dsh.blockedBy) return t('Update Godbot {version} first.', { version: dsh.blockedBy })
+  if (dsh.available === false && dsh.blockedBy) return t('Update NativeCrew {version} first.', { version: dsh.blockedBy })
   if (shown) return t('DSH {version} is available', { version: dsh.verified })
   return t('Version {version}', { version: dsh.current })
 }
@@ -156,10 +156,10 @@ export function AboutPage({ useUpdate, actions, run, Section, Row }) {
     h('div', { key: 'hero', className: 'bt-about-hero' },
       h('img', { className: 'bt-about-mark', src: webIconUrl, width: 48, height: 48, alt: '' }),
       h('div', { className: 'bt-about-copy' },
-        h('span', { className: 'bt-about-name' }, 'Godbot'),
+        h('span', { className: 'bt-about-name' }, 'NativeCrew'),
         h('span', { className: 'bt-about-version' }, t('Version {version}', { version })))),
     h(Section, { key: 'updates', title: t('Updates') },
-      h(Row, { label: 'Godbot', hint: ownRow?.hint ?? botHint(update) }, botControl, update.available && update.notesUrl ? h('a', linkProps(update.notesUrl), t("What's new")) : null),
+      h(Row, { label: 'NativeCrew', hint: ownRow?.hint ?? botHint(update) }, botControl, update.available && update.notesUrl ? h('a', linkProps(update.notesUrl), t("What's new")) : null),
       modeControl,
       dsh?.current ? h(Row, { label: 'DeepSeek Harness', hint: dshHint(dsh, dshShown) }, dshControl) : null,
       update.restart?.error ? h('div', { className: 'bt-error', role: 'alert' }, update.restart.error) : null),

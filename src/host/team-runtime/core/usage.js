@@ -4,7 +4,7 @@
 // A call that a Session logs (one assistant settlement per attempt) is read from that
 // log, so calls made before this ledger existed count too. A call outside every log (a
 // checkpoint, a handoff note, the steward, an image reading, DSH titles and compaction)
-// is metered while it streams, from the time Godbot runs. Rows go to usage.sqlite; like
+// is metered while it streams, from the time NativeCrew runs. Rows go to usage.sqlite; like
 // the chat index it is derived from the logs, and deleting it loses only the metered
 // calls and the names of deleted Bots.
 //
@@ -574,7 +574,7 @@ export function install(rt) {
     }
   }
 
-  // Godbot tags the requests it makes outside a Session with the Session they serve.
+  // NativeCrew tags the requests it makes outside a Session with the Session they serve.
   const tags = new WeakMap()
   const tagUsage = (messages, tag) => {
     if (messages !== null && typeof messages === 'object') tags.set(messages, tag)
@@ -584,7 +584,7 @@ export function install(rt) {
     const tag = from !== null && typeof from === 'object' ? tags.get(from) : undefined
     if (tag !== undefined) tagUsage(to, tag)
   }
-  // Godbot's own requests name the Session they serve, as some routes require, so
+  // NativeCrew's own requests name the Session they serve, as some routes require, so
   // `sessionId` alone does not make a request that Session's own round; the tag does.
   const ownRequest = options => tags.has(options?.messages)
   // Owner and group use are journaled with the call itself: a Bot or room that
@@ -654,7 +654,7 @@ export function install(rt) {
     })()
   })
 
-  // A request Godbot makes of a local agent CLI outside the model stream.
+  // A request NativeCrew makes of a local agent CLI outside the model stream.
   const recordUsage = entry => record(entry)
   Object.assign(rt, { usageView, tagUsage, carryUsageTag, ownRequest, recordUsage })
 }

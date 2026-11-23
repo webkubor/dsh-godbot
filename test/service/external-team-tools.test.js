@@ -6,7 +6,7 @@ import { setTimeout as delay } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 import { openExternal } from '../../src/drivers/external/index.js'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 import { rpc } from '../e2e/fixtures/ticket-client.mjs'
 
 async function waitFor(read) {
@@ -21,7 +21,7 @@ async function waitFor(read) {
 test('a resident external MCP accepts writes from its current native prompt, including after reuse', async t => {
   const root = await mkdtemp(join(tmpdir(),'godbot-mcp-turn-'))
   let connections = 0, bridge
-  const service = new GodbotService({stateDir:join(root,'db'),openDriver:async options => {
+  const service = new NativeCrewService({stateDir:join(root,'db'),openDriver:async options => {
     connections++
     bridge = {url:options.mcp.url,headers:{Authorization:'Bearer ' + options.mcp.token}}
     return openExternal({...options,config:{command:process.execPath,

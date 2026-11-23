@@ -1,10 +1,10 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createGodbotRemote } from '../../src/host/dsh-remote.js'
+import { createNativeCrewRemote } from '../../src/host/dsh-remote.js'
 
 test('the panel API requires an authenticated owner even if the payload claims ownership', async () => {
   const calls = []
-  const Remote = createGodbotRemote({
+  const Remote = createNativeCrewRemote({
     snapshot: () => ({ members: [] }),
     slashCommands: () => [{ name: 'review' }],
     claudeStats: () => ({ available: true }),

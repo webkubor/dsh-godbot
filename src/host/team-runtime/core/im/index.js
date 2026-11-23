@@ -1,6 +1,6 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // IM: talk to Bots from chat apps. A connection is one IM bot account bound to a Bot;
-// direct chats reach that Bot, platform group chats can be bound to a Godbot group.
+// direct chats reach that Bot, platform group chats can be bound to a NativeCrew group.
 // The platform adapters (im/platforms/) own the wire; this module owns pairing,
 // routing, cards and the send queues. Only the dsh holding the team lock connects.
 import { randomBytes, randomUUID } from 'node:crypto'
@@ -42,9 +42,9 @@ export function install(rt) {
     const lang = langKey()
     const table = {
       en: {
-        requested: 'A connection request was sent to Godbot; allow it in Settings → IM on the computer.',
-        unbound: 'This IM bot is not bound to a Bot yet; pick one in Godbot Settings → IM.',
-        unboundGroup: 'This group is not bound yet; pick a group or a Bot for it in Godbot Settings → IM.',
+        requested: 'A connection request was sent to NativeCrew; allow it in Settings → IM on the computer.',
+        unbound: 'This IM bot is not bound to a Bot yet; pick one in NativeCrew Settings → IM.',
+        unboundGroup: 'This group is not bound yet; pick a group or a Bot for it in NativeCrew Settings → IM.',
         connected: `Connected — you can talk to ${values.target} now.`,
         stopped: 'Stopped.',
         idle: 'Nothing is running.',
@@ -62,9 +62,9 @@ export function install(rt) {
         reject: 'Reject',
       },
       zh: {
-        requested: '已向 Godbot 发出连接请求，请在电脑上的 Godbot 设置 → IM 里允许。',
-        unbound: '这个 IM 机器人还没绑定 Bot，请在 Godbot 设置 → IM 里选一个。',
-        unboundGroup: '这个群还没绑定，请在 Godbot 设置 → IM 里给它选一个群或 Bot。',
+        requested: '已向 NativeCrew 发出连接请求，请在电脑上的 NativeCrew 设置 → IM 里允许。',
+        unbound: '这个 IM 机器人还没绑定 Bot，请在 NativeCrew 设置 → IM 里选一个。',
+        unboundGroup: '这个群还没绑定，请在 NativeCrew 设置 → IM 里给它选一个群或 Bot。',
         connected: `已连接，现在可以和 ${values.target} 说话了。`,
         stopped: '已停下。',
         idle: '现在没有在做的活。',
@@ -82,9 +82,9 @@ export function install(rt) {
         reject: '拒绝',
       },
       'zh-TW': {
-        requested: '已向 Godbot 發出連線請求，請在電腦上的 Godbot 設定 → IM 裡允許。',
-        unbound: '這個 IM 機器人還沒綁定 Bot，請在 Godbot 設定 → IM 裡選一個。',
-        unboundGroup: '這個群還沒綁定，請在 Godbot 設定 → IM 裡給它選一個群或 Bot。',
+        requested: '已向 NativeCrew 發出連線請求，請在電腦上的 NativeCrew 設定 → IM 裡允許。',
+        unbound: '這個 IM 機器人還沒綁定 Bot，請在 NativeCrew 設定 → IM 裡選一個。',
+        unboundGroup: '這個群還沒綁定，請在 NativeCrew 設定 → IM 裡給它選一個群或 Bot。',
         connected: `已連線，現在可以和 ${values.target} 說話了。`,
         stopped: '已停下。',
         idle: '現在沒有在做的活。',
@@ -102,9 +102,9 @@ export function install(rt) {
         reject: '拒絕',
       },
       ja: {
-        requested: 'Godbot に接続リクエストを送信しました。PC の Godbot 設定 → IM で許可してください。',
-        unbound: 'この IM ボットはまだ Bot に紐付けられていません。Godbot 設定 → IM で選択してください。',
-        unboundGroup: 'このグループはまだ紐付けられていません。Godbot 設定 → IM でグループまたは Bot を選択してください。',
+        requested: 'NativeCrew に接続リクエストを送信しました。PC の NativeCrew 設定 → IM で許可してください。',
+        unbound: 'この IM ボットはまだ Bot に紐付けられていません。NativeCrew 設定 → IM で選択してください。',
+        unboundGroup: 'このグループはまだ紐付けられていません。NativeCrew 設定 → IM でグループまたは Bot を選択してください。',
         connected: `接続しました。${values.target} と話せます。`,
         stopped: '停止しました。',
         idle: '実行中のタスクはありません。',
@@ -122,9 +122,9 @@ export function install(rt) {
         reject: '拒否',
       },
       ko: {
-        requested: 'Godbot에 연결 요청을 보냈습니다. 컴퓨터의 Godbot 설정 → IM에서 허용해 주세요.',
-        unbound: '이 IM 봇은 아직 Bot에 연결되지 않았습니다. Godbot 설정 → IM에서 선택해 주세요.',
-        unboundGroup: '이 그룹은 아직 연결되지 않았습니다. Godbot 설정 → IM에서 그룹이나 Bot을 선택해 주세요.',
+        requested: 'NativeCrew에 연결 요청을 보냈습니다. 컴퓨터의 NativeCrew 설정 → IM에서 허용해 주세요.',
+        unbound: '이 IM 봇은 아직 Bot에 연결되지 않았습니다. NativeCrew 설정 → IM에서 선택해 주세요.',
+        unboundGroup: '이 그룹은 아직 연결되지 않았습니다. NativeCrew 설정 → IM에서 그룹이나 Bot을 선택해 주세요.',
         connected: `연결되었습니다. 이제 ${values.target}와(과) 대화할 수 있습니다.`,
         stopped: '중지되었습니다.',
         idle: '진행 중인 작업이 없습니다.',
@@ -142,9 +142,9 @@ export function install(rt) {
         reject: '거부',
       },
       es: {
-        requested: 'Se envió una solicitud de conexión a Godbot; permítela en Ajustes → IM en el ordenador.',
-        unbound: 'Este bot de IM aún no está vinculado a un Bot; elige uno en Ajustes de Godbot → IM.',
-        unboundGroup: 'Este grupo aún no está vinculado; elige un grupo o un Bot en Ajustes de Godbot → IM.',
+        requested: 'Se envió una solicitud de conexión a NativeCrew; permítela en Ajustes → IM en el ordenador.',
+        unbound: 'Este bot de IM aún no está vinculado a un Bot; elige uno en Ajustes de NativeCrew → IM.',
+        unboundGroup: 'Este grupo aún no está vinculado; elige un grupo o un Bot en Ajustes de NativeCrew → IM.',
         connected: `Conectado — ya puedes hablar con ${values.target}.`,
         stopped: 'Detenido.',
         idle: 'No hay nada en curso.',
@@ -162,9 +162,9 @@ export function install(rt) {
         reject: 'Rechazar',
       },
       fr: {
-        requested: 'Une demande de connexion a été envoyée à Godbot ; autorisez-la dans Paramètres → IM sur l’ordinateur.',
-        unbound: 'Ce bot IM n’est pas encore lié à un Bot ; choisissez-en un dans Paramètres Godbot → IM.',
-        unboundGroup: 'Ce groupe n’est pas encore lié ; choisissez un groupe ou un Bot dans Paramètres Godbot → IM.',
+        requested: 'Une demande de connexion a été envoyée à NativeCrew ; autorisez-la dans Paramètres → IM sur l’ordinateur.',
+        unbound: 'Ce bot IM n’est pas encore lié à un Bot ; choisissez-en un dans Paramètres NativeCrew → IM.',
+        unboundGroup: 'Ce groupe n’est pas encore lié ; choisissez un groupe ou un Bot dans Paramètres NativeCrew → IM.',
         connected: `Connecté — vous pouvez maintenant parler à ${values.target}.`,
         stopped: 'Arrêté.',
         idle: 'Rien n’est en cours.',
@@ -182,9 +182,9 @@ export function install(rt) {
         reject: 'Refuser',
       },
       de: {
-        requested: 'Eine Verbindungsanfrage wurde an Godbot gesendet; erlaube sie am Computer unter Einstellungen → IM.',
-        unbound: 'Dieser IM-Bot ist noch keinem Bot zugewiesen; wähle einen in den Godbot-Einstellungen → IM.',
-        unboundGroup: 'Diese Gruppe ist noch nicht zugewiesen; wähle eine Gruppe oder einen Bot in den Godbot-Einstellungen → IM.',
+        requested: 'Eine Verbindungsanfrage wurde an NativeCrew gesendet; erlaube sie am Computer unter Einstellungen → IM.',
+        unbound: 'Dieser IM-Bot ist noch keinem Bot zugewiesen; wähle einen in den NativeCrew-Einstellungen → IM.',
+        unboundGroup: 'Diese Gruppe ist noch nicht zugewiesen; wähle eine Gruppe oder einen Bot in den NativeCrew-Einstellungen → IM.',
         connected: `Verbunden — du kannst jetzt mit ${values.target} sprechen.`,
         stopped: 'Gestoppt.',
         idle: 'Aktuell läuft nichts.',

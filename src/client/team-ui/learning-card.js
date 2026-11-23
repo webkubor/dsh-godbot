@@ -21,8 +21,8 @@ function skillHome(proposal, botName) {
 // A waiting skill its Bot would not read (`unreachable` from the host): why, instead of Approve.
 function unreachableNote(proposal, botName) {
   if (proposal.kind === 'agents' || proposal.outcome !== undefined) return undefined
-  if (proposal.unreachable === 'local') return t('{name} runs on a local agent, which does not read team skills, so approving this would change nothing. Decline it, or move {name} back to one of Godbot\'s models first.', { name: botName })
-  if (proposal.unreachable === 'remote') return t('{name} runs on a remote agent, which does not read team skills, so approving this would change nothing. Decline it, or move {name} back to one of Godbot\'s models first.', { name: botName })
+  if (proposal.unreachable === 'local') return t('{name} runs on a local agent, which does not read team skills, so approving this would change nothing. Decline it, or move {name} back to one of NativeCrew\'s models first.', { name: botName })
+  if (proposal.unreachable === 'remote') return t('{name} runs on a remote agent, which does not read team skills, so approving this would change nothing. Decline it, or move {name} back to one of NativeCrew\'s models first.', { name: botName })
   return undefined
 }
 

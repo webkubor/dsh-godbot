@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { runGodbotCommand } from '../fixtures/member-dsh-tools.js'
+import { runNativeCrewCommand } from '../fixtures/member-dsh-tools.js'
 
 test('slash controls use the actual DSH member, resolve only teammates and stop only the issuing session', async () => {
   const agent = { id: 'native-a', ctx: { get: () => undefined } }
@@ -15,7 +15,7 @@ test('slash controls use the actual DSH member, resolve only teammates and stop 
     memberTool: (...args) => { tools.push(args); return { id: 'message' } },
     dispatch: data => { commands.push(data); return { status: 'stopping' } },
   }
-  const run = rawInput => runGodbotCommand(ctx, service, { agent, rawInput, signal: new AbortController().signal })
+  const run = rawInput => runNativeCrewCommand(ctx, service, { agent, rawInput, signal: new AbortController().signal })
   assert.match((await run('team')).text, /Design/)
   assert.doesNotMatch((await run('members')).text, /Other/)
   assert.equal((await run('send Other ignored')).kind, 'error')

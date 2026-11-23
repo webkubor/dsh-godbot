@@ -5,7 +5,7 @@ export const currentTeamDirectory = 'team-workspace'
 export const previousTeamDirectory = 'ds-bot'
 
 // Keep existing workspaces in place. DSH sessions, worktrees and browser volumes
-// can all refer to this exact directory, including outside the Godbot database.
+// can all refer to this exact directory, including outside the NativeCrew database.
 export function workspaceHome(stateDir) {
   const current = join(stateDir, currentTeamDirectory)
   const previous = join(stateDir, previousTeamDirectory)

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 export const repository = fileURLToPath(new URL('../../', import.meta.url))
 export const sha256 = data => createHash('sha256').update(data).digest('hex')
 
-// A /plugins/?? response can contain many packages. Hash each complete Godbot registration exactly as delivered.
+// A /plugins/?? response can contain many packages. Hash each complete NativeCrew registration exactly as delivered.
 export function clientRegistrations(source) {
   const start = 'window.__ModuleLoader__.load({ id: "dsh-godbot", factory(require) {'
   const end = '\nreturn Object.defineProperty({ ...module.exports }, Symbol.toStringTag, { value: "Module" });\n} });'

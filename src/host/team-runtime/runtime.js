@@ -1,6 +1,6 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 import * as sandboxPrivacy from './sandbox-privacy.js'
-// Godbot: a team of long-lived Bots on top of ordinary dsh root Sessions.
+// NativeCrew: a team of long-lived Bots on top of ordinary dsh root Sessions.
 // Every Bot is one root Session; the roster, rooms, and the bot-to-bot exchange log live
 // in one JSON file under DSH_HOME so they survive restarts without new Session event types.
 import { join } from 'node:path'
@@ -91,7 +91,7 @@ export function createRuntime(ctx, config = {}) {
     // Bot Session's own scope, never globally (see shareBotTools).
     teamTools: [],
     defaults: {
-      mainName: config.mainName ?? 'GodBot',
+      mainName: config.mainName ?? 'NativeCrew',
       mainRole: config.mainRole ?? 'Team Lead',
     },
   }

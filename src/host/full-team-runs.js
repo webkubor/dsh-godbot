@@ -7,7 +7,7 @@ const tasks = 'fullTeamTasks'
 const works = 'fullTeamWork'
 const evidence = 'fullTeamEvidence'
 const running = row => row?.status === 'running'
-const marker = id => '[Godbot CI ' + id + ']'
+const marker = id => '[NativeCrew CI ' + id + ']'
 const unavailable = () => new AutomationError(404, 'No accessible bound Bot or group for this target')
 
 export class FullTeamRuns {
@@ -17,7 +17,7 @@ export class FullTeamRuns {
     // The Host can die between an external dispatch and its receipt. Never replay
     // that dispatch or sign off on an outcome whose terminal event was lost.
     for (const task of this.store.all(tasks).filter(running)) {
-      this.store.update(tasks, task.id, { status: 'unknown', detail: 'Host restarted before the Godbot receipt' })
+      this.store.update(tasks, task.id, { status: 'unknown', detail: 'Host restarted before the NativeCrew receipt' })
     }
   }
 
@@ -89,7 +89,7 @@ export class FullTeamRuns {
         await rt.sendUser({ sessionId: id, requestId: work, initiator, content: [{ type: 'text', text }] })
       } else {
         rt.openWork(work, { to: id })
-        await rt.deliver({ role: 'request', fromName: 'Godbot CI', toId: id, exchangeId: work, text, initiator })
+        await rt.deliver({ role: 'request', fromName: 'NativeCrew CI', toId: id, exchangeId: work, text, initiator })
       }
     }
     void send().catch(() => this.end(work, 'unknown', 'Delivery could not be confirmed'))
@@ -157,7 +157,7 @@ export class FullTeamRuns {
       return result
     })
     for (const name of ['dropWork', 'abandonWork']) hook(rt, name, old => (id, ...args) => {
-      this.end(id, name === 'abandonWork' ? 'stopped' : 'unknown', 'Godbot ' + name)
+      this.end(id, name === 'abandonWork' ? 'stopped' : 'unknown', 'NativeCrew ' + name)
       const result = old(id, ...args)
       if (name === 'dropWork' || result) this.service.botTasks?.botFailed(id, 'unknown', 'Bot 已结束此派工，尚无结果回执。')
       return result
@@ -202,7 +202,7 @@ export class FullTeamRuns {
             else void rt.ledger.written(book).then(() => {
               if (this.rt !== rt || this.service.closing) return
               this.report(row.workId, 'Group round ' + entry.from + '–' + entry.to, receipt)
-              if (!row.parentTaskId) rt.closeWork(row.workId, 'Godbot CI', '')
+              if (!row.parentTaskId) rt.closeWork(row.workId, 'NativeCrew CI', '')
             }, () => { if (!this.service.closing) this.end(row.workId, 'unknown', 'Group ledger write failed') })
           }
         }
@@ -232,7 +232,7 @@ export class FullTeamRuns {
       const entry = rt.live.get(session.id)
       const question = rt.state.questions?.[session.id]
       if (question?.id) this.store.update(tasks, row.id, { questionId: question.id, questionSession: session.id })
-      if (entry.joined?.some(item => rt.workOf(item.info) !== row.workId)) return this.end(row.workId, 'unknown', 'Mixed requests in one Godbot turn')
+      if (entry.joined?.some(item => rt.workOf(item.info) !== row.workId)) return this.end(row.workId, 'unknown', 'Mixed requests in one NativeCrew turn')
       if (event.data?.reason?.kind === 'error') return this.end(row.workId, 'failed', 'DSH model turn failed')
       if (event.data?.reason?.kind === 'aborted') return this.end(row.workId, 'stopped', 'DSH turn stopped')
       if (entry.info?.role === 'room') {
@@ -247,7 +247,7 @@ export class FullTeamRuns {
       this.detach = undefined
     }
     this.detach = detach
-    rt.ctx.effect(() => detach, 'Godbot CI full-team run receipts')
+    rt.ctx.effect(() => detach, 'NativeCrew CI full-team run receipts')
   }
 
   async inspect(principal, runId, exported = false) {
@@ -264,9 +264,9 @@ export class FullTeamRuns {
       const info = rt.live.get(q.sessionId)?.info
       return current.some(row => row.workId === rt.workOf(info) || row.workId === info?.exchangeId)
     }).map(q => ({ id: q.id, type: 'approval' })).concat(questions)
-    let state = 'running', reason = 'Godbot work in progress'
-    if (current.some(row => row.status === 'unknown')) { state = 'unknown'; reason = 'Godbot outcome needs reconciliation' }
-    else if (current.some(row => row.status === 'failed')) { state = 'failed'; reason = 'A required Godbot turn failed' }
+    let state = 'running', reason = 'NativeCrew work in progress'
+    if (current.some(row => row.status === 'unknown')) { state = 'unknown'; reason = 'NativeCrew outcome needs reconciliation' }
+    else if (current.some(row => row.status === 'failed')) { state = 'failed'; reason = 'A required NativeCrew turn failed' }
     else if (current.some(row => row.status === 'stopped')) { state = 'stopped'; reason = 'Required work stopped' }
     else if (pending.length || current.some(row => row.status === 'reported')) { state = 'needs_input'; reason = pending.length ? 'An owner approval is pending' : 'Owner review required' }
     else if (current.length && current.every(row => row.status === 'completed')) { state = 'completed'; reason = 'Owner accepted every work receipt' }

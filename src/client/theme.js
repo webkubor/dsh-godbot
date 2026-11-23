@@ -1,7 +1,7 @@
 // The default team theme and native workbench share these surfaces. The team
 // workspace also uses this shape for its user-selectable themes.
 export const workspaceTheme = {
-  label: 'Godbot',
+  label: 'NativeCrew',
   light: {
     bg: '#fbfcfd', sidebar: '#edf2f5', bubble: '#ecf1f5', card: '#ffffff',
     text: '#17293d', user: '#203e58', userText: '#ffffff', accent: '#126975',
@@ -84,7 +84,7 @@ const aliases = `
 `
 
 // Installed for the whole plugin lifetime. .gb-theme gives the same palette to
-// Godbot surfaces that DSH mounts outside a workspace, such as its overlay seat.
+// NativeCrew surfaces that DSH mounts outside a workspace, such as its overlay seat.
 export const themeStyle = `
 :is(.gb-root,.gb-theme){${declare(lightTokens)}${aliases}}
 body[data-ds-dark-theme] :is(.gb-root,.gb-theme){${declare(darkTokens)}}

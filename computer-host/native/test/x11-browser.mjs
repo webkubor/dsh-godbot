@@ -180,19 +180,19 @@ try {
     await until(
       () =>
         execFileSync('xdotool', ['getactivewindow', 'getwindowname'], { encoding: 'utf8' }).trim() ===
-        'Godbot E2E target',
+        'NativeCrew E2E target',
     )
   await emit({ type: 'text', text: 'verified', revision: display.revision - 1 })
   await delay(200)
   assert.equal(await receipt(), '')
-  await emit({ type: 'text', text: 'Godbot中' })
+  await emit({ type: 'text', text: 'NativeCrew中' })
   await emit({ type: 'key', code: 'KeyX', down: true })
   await emit({ type: 'key', code: 'KeyX', down: false })
-  await until(async () => (await receipt()) === 'Godbot中x')
+  await until(async () => (await receipt()) === 'NativeCrew中x')
   await session.setControl(false)
   await emit({ type: 'text', text: 'blocked' })
   await delay(250)
-  assert.equal(await receipt(), 'Godbot中x')
+  assert.equal(await receipt(), 'NativeCrew中x')
   console.log('Real GTK receipt confirmed; view-only, stale revision and released control rejected')
   if (!wayland) {
     await session.setControl(true)
@@ -207,7 +207,7 @@ try {
       )
     const before = await frameCount()
     await until(async () => (await frameCount()) > before)
-    assert.equal(await receipt(), 'Godbot中x')
+    assert.equal(await receipt(), 'NativeCrew中x')
     assert.equal(nativeEnded, '')
     console.log('Input process failure revoked control, released input and preserved decoded video')
   }

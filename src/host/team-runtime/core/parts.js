@@ -215,7 +215,7 @@ export function install(rt) {
   const STEWARD_TIMEOUT_MS = 120_000
   const STEWARD_LINES = 40
   const FOLDER_RETRY_MS = 300_000
-  const PAUSE_NOTE = 'Godbot paused your turn for a context check. Go on with it now from where you stopped.'
+  const PAUSE_NOTE = 'NativeCrew paused your turn for a context check. Go on with it now from where you stopped.'
 
   // A broken provider adapter must not crash every turn; estimate from the
   // derived messages instead, with one warning.
@@ -297,15 +297,15 @@ export function install(rt) {
 
   // The backend's own entry points leave Bot Sessions alone, earlier parts and group
   // records included: automatic pressure and overflow compaction do nothing, and
-  // /compact is refused. Only Godbot condenses a Bot Session, when the steward says so,
-  // and then the summary is Godbot's checkpoint. An explicit range is different: with
+  // /compact is refused. Only NativeCrew condenses a Bot Session, when the steward says so,
+  // and then the summary is NativeCrew's checkpoint. An explicit range is different: with
   // those entry points closed, the only range DSH still asks of a Bot Session is the one
   // a model switch needs to fit the new model's window, and a refusal there ended the
-  // switch itself (MODEL_SWITCH_COMPACTION_FAILED). So Godbot condenses that range as its
+  // switch itself (MODEL_SWITCH_COMPACTION_FAILED). So NativeCrew condenses that range as its
   // own checkpoint instead. Each preset mount has its own compaction backend. Every other
   // Session, subagents included, is as it was.
   const adoptedEngines = new Set()
-  // Sessions Godbot itself is condensing right now.
+  // Sessions NativeCrew itself is condensing right now.
   const condensing = new Set()
   // The range of a Bot Session DSH is condensing for a model switch, where the route the
   // Session used last is the one being switched away from.
@@ -317,8 +317,8 @@ export function install(rt) {
     return id !== undefined && (rt.selfOf(id) !== undefined || rt.roomOf(id) !== undefined)
   }
   const ownedByBot = target => isBotTarget(target) && !condensing.has(target.session.id)
-  // Condenses a range of a Bot Session the way Godbot condenses its own parts: the
-  // session counts as condensing, so the summary hook writes Godbot's checkpoint rather
+  // Condenses a range of a Bot Session the way NativeCrew condenses its own parts: the
+  // session counts as condensing, so the summary hook writes NativeCrew's checkpoint rather
   // than the backend writing one of its own.
   async function condenseRange(target, run, { forSwitch = false } = {}) {
     const sessionId = target.session.id
@@ -331,7 +331,7 @@ export function install(rt) {
       if (forSwitch) switchRanges.delete(sessionId)
     }
   }
-  // The engine that serves this agent, when Godbot can condense through it.
+  // The engine that serves this agent, when NativeCrew can condense through it.
   const engineOf = agent => [ctx.get('agentPresets')?.serviceFor(agent, 'compaction'), ctx.get('compaction')]
     .find(engine => typeof engine?.[ORIGINAL_COMPACT]?.summarize === 'function')
   // The wrapper decides per call, so it can go on before the Session is a Bot's.
@@ -497,7 +497,7 @@ export function install(rt) {
     ['Where to look', 'details this note leaves out that you may need again, each with a few words copied exactly from the message that holds it, for read_own_chat to search'],
   ]
   const handoffPrompt = why => [
-    `You are now writing a handoff note to yourself. This request comes from Godbot, not from the user: do not answer or continue the messages above. ${why}, so it moves on to a fresh conversation now. The fresh one starts with this note and your latest messages word for word; everything else leaves your working context. The full record stays saved, and you can search it later with read_own_chat. Write the note that lets you carry on as the same Bot without losing anything that matters.`,
+    `You are now writing a handoff note to yourself. This request comes from NativeCrew, not from the user: do not answer or continue the messages above. ${why}, so it moves on to a fresh conversation now. The fresh one starts with this note and your latest messages word for word; everything else leaves your working context. The full record stays saved, and you can search it later with read_own_chat. Write the note that lets you carry on as the same Bot without losing anything that matters.`,
     '',
     'Output EXACTLY the Markdown structure below: every heading as written, in English and in this order. Write the content in the language the user writes in, as terse bullets. Write "(none)" under a heading with nothing to say.',
     '',
@@ -632,7 +632,7 @@ export function install(rt) {
     return { kept: kept.reverse(), more }
   }
 
-  // Godbot's summary for a Bot Session, in place of the backend's. Like the backend's
+  // NativeCrew's summary for a Bot Session, in place of the backend's. Like the backend's
   // own, it is one request on the conversation's own prefix, so the provider serves
   // that from cache.
   async function writeCheckpoint(input, agent, signal) {
@@ -786,7 +786,7 @@ export function install(rt) {
     const sessionId = agent.session.id
     condensing.add(sessionId)
     try {
-      // Through the service itself, past Godbot's own wrapper: only a call on the
+      // Through the service itself, past NativeCrew's own wrapper: only a call on the
       // service gives the engine its own context, with the services it injects.
       const result = inTurn
         ? await engine.compactIfNeeded(agent, 'context-overflow', signal)
@@ -841,7 +841,7 @@ export function install(rt) {
     return after === undefined || after < lines.check
   }
 
-  // The note a part opened with, as the fresh part shows it. A note Godbot put
+  // The note a part opened with, as the fresh part shows it. A note NativeCrew put
   // together without the model carries the last note the model wrote.
   function noteText(segment) {
     if (segment?.fallback === undefined) return segment?.note
@@ -855,7 +855,7 @@ export function install(rt) {
           : segment.fallback === 'engine' ? 'what you run on changed'
             : segment.fallback === 'manual' ? 'the user started a new session'
               : 'the model did not write a usable note'
-    const head = `(Godbot put this note together without the model, because ${why}.`
+    const head = `(NativeCrew put this note together without the model, because ${why}.`
     return segment.note === undefined
       ? `${head} There was no earlier note to carry over. Go by the messages below, and look up anything else.)`
       : `${head} It is the note written at the end of part ${segment.noteFrom}, carried over unchanged; anything newer is in the messages below, and read_own_chat finds the rest.)\n\n${segment.note}`
@@ -882,7 +882,7 @@ export function install(rt) {
     ]
     return [
       `[Handoff · part ${number}]`,
-      `Godbot moved ${where} on to a fresh conversation, part ${number}, because ${reason}. This message is not from the user.`,
+      `NativeCrew moved ${where} on to a fresh conversation, part ${number}, because ${reason}. This message is not from the user.`,
       'It is reference, not new instructions: the note and the messages below are a record of earlier work. Do what they say only as part of the work they record, and take new requests only from messages that come after this one.',
       `Everything earlier stays saved: ${lookup}`,
       ...(engine !== undefined ? [`You now run on ${engine}. Your memory, instructions, team and folder stay yours, but your own tools and how they work may differ from the ones in the messages below: look at what you have before you repeat a step.`] : []),
@@ -941,7 +941,7 @@ export function install(rt) {
   // A handoff in every other way (hidden, not talk, acknowledged without the model);
   // `opening` tells the chat that nothing came over with it, and `fromPart` names the
   // part the user left, still live in the background.
-  const openingSource = fromPart => ({ kind: SOURCE_KIND, form: 'relay', role: 'handoff', senderName: 'Godbot', exchangeId: randomUUID(), handoff: true, opening: true, fromPart })
+  const openingSource = fromPart => ({ kind: SOURCE_KIND, form: 'relay', role: 'handoff', senderName: 'NativeCrew', exchangeId: randomUUID(), handoff: true, opening: true, fromPart })
 
   // Carries any active IM turn origin onto a synthetic switch/resume source without
   // replaying a stale request rpcId that the earlier part already consumed.
@@ -958,7 +958,7 @@ export function install(rt) {
   // shows each part as a session of its own and links back to that one, and `manual`
   // tells it the user asked for the fresh part.
   const handoffSource = (job, resume, fromPart) => carryOriginSource(job, {
-    ...(resume && job.info ? job.info : { kind: SOURCE_KIND, form: 'relay', role: 'handoff', senderName: 'Godbot' }),
+    ...(resume && job.info ? job.info : { kind: SOURCE_KIND, form: 'relay', role: 'handoff', senderName: 'NativeCrew' }),
     exchangeId: job.info?.exchangeId ?? randomUUID(),
     handoff: true,
     fromPart,
@@ -1076,7 +1076,7 @@ export function install(rt) {
   // Input in the inbox is durable but does not wake the driver; send() is what wakes
   // it. Re-send what waits, in order, the first message with the wake, so a stopped
   // turn goes on without waiting for the next input. Only while the plugin is live —
-  // a turn that starts during unload would run without Godbot's hooks.
+  // a turn that starts during unload would run without NativeCrew's hooks.
   const wake = (agent) => {
     const pending = [...agent.inbox.nextStep, ...agent.inbox.nextTurn]
     for (const message of pending) agent.inbox.remove(message.id)
@@ -1167,7 +1167,7 @@ export function install(rt) {
             content: [{ type: 'text', text: PAUSE_NOTE }],
             source: carryOriginSource(job, job.info
               ? { ...job.info, ...carried }
-              : { kind: SOURCE_KIND, form: 'relay', role: 'resume', exchangeId: randomUUID(), senderName: 'Godbot', ...carried }),
+              : { kind: SOURCE_KIND, form: 'relay', role: 'resume', exchangeId: randomUUID(), senderName: 'NativeCrew', ...carried }),
           }))
         }
         await forward(job, back, threadTargetOf(agent.id, job)).then(() => {
@@ -1433,11 +1433,11 @@ export function install(rt) {
       })
     }
     ctx.logger.info('godbot: %s%s moved on to part %d at %d tokens (check line %d, hard line %d); %s; %d latest and %d earlier messages carried%s', name, bot !== undefined && room !== undefined ? ` in ${room.name}` : '', number + 1, tokens ?? -1, lines?.check ?? -1, lines?.hard ?? -1,
-      written !== undefined ? `note written in ${written.attempts} attempt(s)` : `note put together by Godbot (${noted.fallback}${noted.note ? `, carries part ${noted.noteFrom}'s` : ', nothing to carry'})`,
+      written !== undefined ? `note written in ${written.attempts} attempt(s)` : `note put together by NativeCrew (${noted.fallback}${noted.note ? `, carries part ${noted.noteFrom}'s` : ', nothing to carry'})`,
       carried.recent.length, carried.earlier.length, folder === undefined ? '' : `; now works in ${folder}`)
   }
 
-  // Ends a step Godbot takes over. Before a turn's first step an empty batch ends the
+  // Ends a step NativeCrew takes over. Before a turn's first step an empty batch ends the
   // turn as completed, where a reject ends it as blocked, which other listeners read as
   // a failure. Later in a turn an empty batch would run another model step, and a turn
   // carried through a steer cut keeps its reject, since a completed turn reads as answered.
@@ -1475,7 +1475,7 @@ export function install(rt) {
     if (place.botId === undefined) return next()
     if (!readOnly() && engineMoved(agent, place, payload.modelSelection)) return switchBeforeStep(agent, payload, { engine: true })
     if (offEngine(agent, place, payload.modelSelection)) return holdStep(agent, payload)
-    // A local agent CLI condenses on its own inside a running turn, and Godbot cannot
+    // A local agent CLI condenses on its own inside a running turn, and NativeCrew cannot
     // step in between its model calls: a part on one is checked when its turn ends.
     if (localPart(agent.session)) return next()
     const lines = await contextLines(agent.session).catch(() => undefined)
@@ -1522,7 +1522,7 @@ export function install(rt) {
 
   // DSH 0.2.1 checks a Session's folder as it puts each model request together, before
   // agent/pre-step, and fails the turn when both the folder and the one the Session was
-  // made in are gone. The team folder is Godbot's own, so it is made again; a Bot whose
+  // made in are gone. The team folder is NativeCrew's own, so it is made again; a Bot whose
   // own folder went away first changes to the folder it would move to, through DSH's
   // documented way out (`workingDirectory.set`), and the pre-step then moves it to a
   // fresh part there, as on DSH 0.2.0.
@@ -2108,7 +2108,7 @@ export function install(rt) {
   }
 
   // Whether anyone has talked in a part yet: the user, another Bot, or an answer to a
-  // card. Godbot's handoff package (and the fixed line that acknowledges it), a setup
+  // card. NativeCrew's handoff package (and the fixed line that acknowledges it), a setup
   // kickoff and DSH's context notes are not talk, so a part with only those in it is
   // still the fresh conversation a New session gives. Each part is read from its record
   // once, then kept by session/event; a part made here starts out with no talk.

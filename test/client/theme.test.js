@@ -60,7 +60,7 @@ test('base control rules have zero specificity so component rules win in every s
   }
 })
 
-test('every Godbot alert carries a styled class, including those shown in the Bot workspace', () => {
+test('every NativeCrew alert carries a styled class, including those shown in the Bot workspace', () => {
   const dir = new URL('../../src/client/', import.meta.url)
   for (const name of readdirSync(dir).filter(file => file.endsWith('.js'))) {
     const source = readFileSync(new URL(name, dir), 'utf8')

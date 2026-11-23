@@ -5,7 +5,7 @@ import { mkdtempSync, mkdirSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { setImmediate as drain } from 'node:timers/promises'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 
 function location(t) {
   const cwd = mkdtempSync(join(tmpdir(), 'godbot-service-review-'))
@@ -32,7 +32,7 @@ async function rig(t) {
   const paths = location(t)
   const connections = new Map()
   const service = paths.attach(
-    new GodbotService({
+    new NativeCrewService({
       stateDir: paths.stateDir,
       openDriver: async ({ memberId, onEvent, resumeId }) => {
         const handle = {
@@ -80,10 +80,10 @@ async function rig(t) {
 test('a host restart during reconnect leaves the member recoverable without resending an input', async (t) => {
   const paths = location(t)
   const moduleUrl = new URL('../fixtures/member-service.js', import.meta.url).href
-  const child = `import { GodbotService } from ${JSON.stringify(moduleUrl)}
+  const child = `import { NativeCrewService } from ${JSON.stringify(moduleUrl)}
     import { writeFileSync } from 'node:fs'
     const [stateDir,cwd] = process.argv.slice(1)
-    const host = new GodbotService({stateDir,openDriver:async()=>{throw new Error('must not be needed')}})
+    const host = new NativeCrewService({stateDir,openDriver:async()=>{throw new Error('must not be needed')}})
     await host.ready()
     const team = host.dispatch({action:'team.create',cwd,name:'restored'})
     const member = host.dispatch({action:'member.add',teamId:team.id,kind:'dsh',name:'restored'})
@@ -96,7 +96,7 @@ test('a host restart during reconnect leaves the member recoverable without rese
     { encoding: 'utf8' },
   )
   const host = paths.attach(
-    new GodbotService({
+    new NativeCrewService({
       stateDir: paths.stateDir,
       openDriver: async () => {
         throw new Error('Test adapter unavailable')
@@ -118,7 +118,7 @@ test('opening another host with the same store cannot mark a live owner turn los
   // A host may reject a second writer at construction or readiness; either preserves the active owner's execution.
   try {
     const other = attach(
-      new GodbotService({
+      new NativeCrewService({
         stateDir,
         openDriver: async () => {
           throw new Error('No work should be started')
@@ -246,7 +246,7 @@ test('the event cursor returns append-only deltas and restarts with a full snaps
   )
   assert.throws(() => service.snapshot({ afterEventSeq: -1 }), /afterEventSeq/)
   await service.close()
-  const reopened = attach(new GodbotService({ stateDir }))
+  const reopened = attach(new NativeCrewService({ stateDir }))
   await reopened.ready()
   const reset = reopened.snapshot(cursor)
   assert.notEqual(reset.eventStreamId, snapshot.eventStreamId)
@@ -255,7 +255,7 @@ test('the event cursor returns append-only deltas and restarts with a full snaps
     reset.events.map((e) => e.id),
     [first.id, second.id],
   )
-  const different = attach(new GodbotService({ stateDir: join(stateDir, 'separate-profile') }))
+  const different = attach(new NativeCrewService({ stateDir: join(stateDir, 'separate-profile') }))
   await different.ready()
   const replacement = different.snapshot(cursor)
   assert.equal(replacement.eventAfter, null)

@@ -45,7 +45,7 @@ function observeSidebar(selector) {
       if (hash.startsWith('#/godbot') && !stats.firstLeak)
         stats.firstLeak = { hash, timeMs: Math.round(performance.now()), control: native.getAttribute('aria-label') || native.tagName }
     }
-    const active = document.querySelector('[aria-label="Godbot 工作区"] .gb-workspace-action[aria-label="返回 dsh"]')
+    const active = document.querySelector('[aria-label="NativeCrew 工作区"] .gb-workspace-action[aria-label="返回 dsh"]')
     if (active && onScreen(active)) row.workspace++
     frame = requestAnimationFrame(() => samples.port2.postMessage(null))
   }
@@ -84,7 +84,7 @@ async function holdInitialSnapshot(page, enter, note, label, outcome) {
 async function checkObservations(page, note, phase) {
   const observation = await page.evaluate(() => window.__godbotSidebarPaint.stats)
   note('sidebar-painted-frames', { phase, ...observation })
-  assert.equal(observation.firstLeak, null, 'DSH sidebar was visible on a Godbot route: ' + JSON.stringify(observation.firstLeak))
+  assert.equal(observation.firstLeak, null, 'DSH sidebar was visible on a NativeCrew route: ' + JSON.stringify(observation.firstLeak))
 }
 
 async function openPreviousDocument(host) {
@@ -101,7 +101,7 @@ async function openPreviousDocument(host) {
     removed++
     return ''
   })
-  assert.ok(removed > 0, 'the cached document fixture must omit Godbot bootstrap')
+  assert.ok(removed > 0, 'the cached document fixture must omit NativeCrew bootstrap')
   await page.route(url, route => route.fulfill({ response, body }), { times: 1 })
   await page.goto(url, { waitUntil: 'domcontentloaded' })
 }
@@ -120,12 +120,12 @@ export async function verifySidebarPaint(host, note) {
 
     await page.goto('about:blank')
     await holdInitialSnapshot(page, () => page.goto(host.url + '/#/godbot', { waitUntil: 'domcontentloaded' }), note, 'cold deep link')
-    const navigation = page.getByRole('navigation', { name: 'Godbot 工作区' })
+    const navigation = page.getByRole('navigation', { name: 'NativeCrew 工作区' })
     const back = navigation.getByRole('button', { name: '返回 dsh' })
     await back.click({ trial: true })
     await until(() => page.evaluate(() => window.__godbotSidebarPaint.stats.routes['#/godbot']?.workspace >= 3), 'team sidebar painted')
     await back.click()
-    await until(async () => (await nativeFrames()) >= 3, 'native sidebar restored after leaving Godbot')
+    await until(async () => (await nativeFrames()) >= 3, 'native sidebar restored after leaving NativeCrew')
     note('sidebar-native-control', { frames: controlFrames })
     await checkObservations(page, note, 'workspace handoffs')
 
@@ -142,7 +142,7 @@ export async function verifySidebarPaint(host, note) {
     await native.click({ trial: true })
     await until(async () => (await nativeFrames()) >= 3, 'native sidebar visible on the previous HTML')
     await page.evaluate(() => window.__godbotSidebarPaint.arm())
-    const entry = page.locator('[class*="_sidebarCol"]').getByRole('button', { name: 'Godbot', exact: true })
+    const entry = page.locator('[class*="_sidebarCol"]').getByRole('button', { name: 'NativeCrew', exact: true })
     await holdInitialSnapshot(page, () => entry.click(), note, 'cached shell to unavailable team', 'unavailable')
     const failure = page.locator('[data-godbot-runtime="unavailable"]')
     await failure.getByRole('alert').getByText(/E0 workspace snapshot unavailable/).waitFor()

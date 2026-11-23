@@ -16,7 +16,7 @@ function identify(row) {
   if (typeof provider !== 'string') return
   const sandbox = sandboxRouteInfo(provider)
   if (sandbox) return { route: sandbox.base, accountId: sandbox.accountId, attribution: 'sandbox' }
-  // Godbot records the full route for ordinary calls and manual compaction.
+  // NativeCrew records the full route for ordinary calls and manual compaction.
   if (provider.startsWith('local-') && !provider.startsWith('local-sandbox-'))
     return { route: provider, accountId: null, attribution: 'host' }
 }

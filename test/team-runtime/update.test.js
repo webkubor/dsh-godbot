@@ -8,14 +8,14 @@ import { afterEach, test } from 'node:test'
 import { gzipSync } from 'node:zlib'
 import { IDLE_MS, RETRY_MS, install, profileCommand, sourceOf } from '../../src/host/team-runtime/core/update.js'
 import {
-  GITHUB_API, archiveManifest, compatibility, downloadArchive, newer, newestRelease, releasesApi, sidecarDigest,
+  GITHUB_API, assetName, archiveManifest, compatibility, downloadArchive, newer, newestRelease, releasesApi, sidecarDigest,
 } from '../../src/host/team-runtime/core/update-release.js'
 
 const PKG = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8'))
 const [major, minor, patch] = PKG.version.split('-')[0].split('.').map(Number)
 // A stable release newer than whatever this checkout is: offered on either channel.
 const NEXT = `${major}.${minor}.${patch + 1}`
-const REPO = 'renjiegod/dsh-godbot'
+const REPO = 'webkubor/nativecrew'
 const LIST = `https://api.github.com/repos/${REPO}/releases?per_page=30`
 const sha = data => createHash('sha256').update(data).digest('hex')
 
@@ -47,10 +47,10 @@ function tarEntry(name, body, type = '0') {
 }
 const tgz = entries => gzipSync(Buffer.concat([...entries.map(([name, body, type]) => tarEntry(name, Buffer.from(body), type)), Buffer.alloc(1024)]))
 const manifestFor = (version, extra = {}) => JSON.stringify({ name: PKG.name, version, engines: PKG.engines, peerDependencies: PKG.peerDependencies, ...extra })
-const archiveFor = (version, extra) => tgz([['package/README.md', '# Godbot\n'], ['package/package.json', manifestFor(version, extra)]])
+const archiveFor = (version, extra) => tgz([['package/README.md', '# NativeCrew\n'], ['package/package.json', manifestFor(version, extra)]])
 
 function release(version, { data = archiveFor(version), digest = true, prerelease = version.includes('-'), draft = false, sidecar = false } = {}) {
-  const name = `${PKG.name}-${version}.tgz`
+  const name = assetName(PKG.name, version)
   const url = `https://github.com/${REPO}/releases/download/v${version}/${name}`
   const assets = [{ name, browser_download_url: url, size: data.length, ...(digest ? { digest: `sha256:${sha(data)}` } : {}) }]
   if (sidecar) assets.push({ name: `${name}.sha256`, browser_download_url: `${url}.sha256`, size: 90 })
@@ -155,7 +155,7 @@ function harness({ releases, routes = {}, mode, dsh = PKG.engines.dsh, peers = O
   return { rt, net, clock, installs, archives, home, warnings, manager, profile, dshHome, services }
 }
 
-// Download the release, let Godbot sit idle, and let the clock install it.
+// Download the release, let NativeCrew sit idle, and let the clock install it.
 async function installWhenIdle({ rt, clock }) {
   await rt.updateTick()
   await rt.updatePrepare()
@@ -171,7 +171,7 @@ test('a packed archive install updates from GitHub releases; a folder or link do
   assert.equal(sourceOf('link:/Users/me/code/dsh-godbot').kind, 'path')
   assert.equal(sourceOf('file:/Users/me/code/dsh-godbot').kind, 'path')
   assert.equal(sourceOf('dsh-godbot@0.2.0').kind, 'registry')
-  assert.equal(sourceOf('github:renjiegod/dsh-godbot#v0.2.0').kind, 'git')
+  assert.equal(sourceOf('github:webkubor/nativecrew#v0.2.0').kind, 'git')
   assert.equal(sourceOf('https://example.com/dsh-godbot-0.2.0.tgz').kind, 'tarball')
 })
 
@@ -193,7 +193,7 @@ test('GODBOT_UPDATE_API points the release list at another server', async () => 
   assert.equal(releasesApi({}), GITHUB_API)
   assert.equal(releasesApi({ GODBOT_UPDATE_API: 'file:///etc/passwd' }), GITHUB_API)
   assert.equal(releasesApi({ GODBOT_UPDATE_API: 'http://127.0.0.1:9000/' }), 'http://127.0.0.1:9000/')
-  const local = 'http://127.0.0.1:9000/repos/renjiegod/dsh-godbot/releases?per_page=30'
+  const local = 'http://127.0.0.1:9000/repos/webkubor/nativecrew/releases?per_page=30'
   assert.equal(await newestRelease({ repo: REPO, name: PKG.name, prerelease: false, net: fakeNet({ [local]: [] }), api: 'http://127.0.0.1:9000/' }), null)
 })
 
@@ -212,7 +212,7 @@ test('an archive is kept only when its bytes match the release', async () => {
   const good = Buffer.from('archive bytes')
   const asset = { url: 'https://example.com/a.tgz', size: good.length, sha256: sha(good) }
   const path = await downloadArchive({ dir, name: PKG.name, version: '9.9.9', asset, net: fakeNet({ [asset.url]: good }) })
-  assert.equal(path, join(dir, `${PKG.name}-9.9.9-${asset.sha256.slice(0, 12)}.tgz`))
+  assert.equal(path, join(dir, assetName(PKG.name, `9.9.9-${asset.sha256.slice(0, 12)}`)))
   // Present with the same hash: used as it is, not fetched again.
   const offline = fakeNet({})
   assert.equal(await downloadArchive({ dir, name: PKG.name, version: '9.9.9', asset, net: offline }), path)
@@ -246,7 +246,7 @@ test('an archive installs only for the running DSH and the peers the profile lin
   assert.equal(newer('0.2.0-rc.10', '0.2.0-rc.9'), true)
 })
 
-test('auto mode downloads a release, waits until Godbot is idle, then installs it', async () => {
+test('auto mode downloads a release, waits until NativeCrew is idle, then installs it', async () => {
   const next = release(NEXT)
   const { rt, clock, installs, archives, home } = harness({ releases: [next] })
   await rt.updateTick()
@@ -256,7 +256,7 @@ test('auto mode downloads a release, waits until Godbot is idle, then installs i
   assert.equal(view.phase, 'ready')
   assert.equal(view.available, true)
   assert.equal(view.mode, 'auto')
-  const archive = join(archives, `${PKG.name}-${NEXT}-${sha(next.data).slice(0, 12)}.tgz`)
+  const archive = join(archives, assetName(PKG.name, `${NEXT}-${sha(next.data).slice(0, 12)}`))
   assert.ok(existsSync(archive))
 
   // A Bot at work holds the install back.
@@ -408,7 +408,7 @@ test('a newer release found mid-download replaces the one being fetched', async 
   const view = rt.updateView()
   assert.equal(view.latest, later.body.tag_name.slice(1))
   assert.equal(view.phase, 'ready')
-  assert.deepEqual(readdirSync(archives).filter(name => name.endsWith('.tgz')), [`${PKG.name}-${view.latest}-${sha(later.data).slice(0, 12)}.tgz`])
+  assert.deepEqual(readdirSync(archives).filter(name => name.endsWith('.tgz')), [assetName(PKG.name, `${view.latest}-${sha(later.data).slice(0, 12)}`)])
 })
 
 test('the start that runs the new version reports the update', () => {
@@ -456,7 +456,7 @@ test('where DSH reloads in place, its CLI installs the release and this process 
   const cli = fakeSpawn({ install: (profile, args) => setDependency(profile, `file:${args.at(-1)}`) })
   const h = harness({ releases: [next], hmr: true, cli: true, spawn: cli.spawnProcess })
   await installWhenIdle(h)
-  const archive = join(h.archives, `${PKG.name}-${NEXT}-${sha(next.data).slice(0, 12)}.tgz`)
+  const archive = join(h.archives, assetName(PKG.name, `${NEXT}-${sha(next.data).slice(0, 12)}`))
   // Nothing went through the plugin manager here, which would load the new version into this process.
   assert.deepEqual(h.installs, [])
   assert.equal(cli.calls.length, 1)
@@ -498,7 +498,7 @@ test('a release DSH\'s CLI could not install leaves the running version in place
   const other = harness({ releases: [next], hmr: true, cli: true, spawn: silent.spawnProcess })
   await installWhenIdle(other)
   assert.equal(other.rt.updateView().phase, 'failed')
-  assert.match(other.rt.updateView().error, /left dsh-godbot at file:\/old\//)
+  assert.match(other.rt.updateView().error, /left @dsh-plugins\/nativecrew at file:\/old\//)
   assert.equal(existsSync(join(other.home, 'update.json')), false)
 })
 

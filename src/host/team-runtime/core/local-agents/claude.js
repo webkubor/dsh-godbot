@@ -174,7 +174,7 @@ class ClaudeSession {
       args.push('--mcp-config', JSON.stringify({
         mcpServers: { godbot: { type: 'http', url: mcp.url, headers: { Authorization: `Bearer ${mcp.token}` } } },
       }))
-      // Godbot's own team tools need no approval, as for a model-backed Bot:
+      // NativeCrew's own team tools need no approval, as for a model-backed Bot:
       // toolsFor() already narrowed what this Bot may call.
       args.push('--allowedTools', 'mcp__godbot')
     }

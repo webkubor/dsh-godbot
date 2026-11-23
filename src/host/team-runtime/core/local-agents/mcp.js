@@ -1,7 +1,7 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // The loopback MCP server: one per CLI session, Streamable HTTP on 127.0.0.1
 // with a random port and a per-session bearer token. It serves only the
-// Godbot team tools; every call is handed to the adapter, which emits it as a
+// NativeCrew team tools; every call is handed to the adapter, which emits it as a
 // DSH tool call and answers here once the result arrives.
 import { createServer } from 'node:http'
 import { randomBytes, randomUUID } from 'node:crypto'

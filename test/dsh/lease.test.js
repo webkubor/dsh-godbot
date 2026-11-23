@@ -24,9 +24,9 @@ test('a second Host cannot enter recovery while the owner is running', t => {
     owner.put('turns', { id: 'turn', status: 'running' })
     assert.throws(() => new Store(dir), { code: 'GODBOT_STATE_IN_USE' })
     const other = spawnSync(process.execPath, ['--input-type=module', '--eval', `
-      import { GodbotService } from ${JSON.stringify(serviceUrl)}
+      import { NativeCrewService } from ${JSON.stringify(serviceUrl)}
       try {
-        const service = new GodbotService({ stateDir: process.argv[1] })
+        const service = new NativeCrewService({ stateDir: process.argv[1] })
         await service.ready()
         await service.close()
         process.exitCode = 1
@@ -52,7 +52,7 @@ test('a live Store retains ownership across GC and process death releases it', {
     import { Store } from ${JSON.stringify(storeUrl)}
     const store = new Store(process.argv[1])
     store.put('teams', { id: 'persisted' })
-    // The live GodbotService holds its Store. An empty IPC listener would
+    // The live NativeCrewService holds its Store. An empty IPC listener would
     // keep only Node alive, letting GC finalize both SQLite connections.
     process.on('message', () => process.send(store.get('teams', 'persisted')))
     setImmediate(() => { global.gc(); process.send('ready') })

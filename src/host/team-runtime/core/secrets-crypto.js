@@ -32,7 +32,7 @@ export class SecretsPassphraseError extends Error {
 }
 
 export class SecretsFormatError extends Error {
-  constructor(message = 'The secrets file is not in a form this Godbot can read.') {
+  constructor(message = 'The secrets file is not in a form this NativeCrew can read.') {
     super(message)
     this.code = 'secrets/format'
   }
@@ -52,11 +52,11 @@ export const isEncryptedSecretsFile = value => value !== null && typeof value ==
 const safeKdf = (kdf) => {
   if (kdf === null || typeof kdf !== 'object') throw new SecretsFormatError('The secrets file has no key settings.')
   if (kdf.name !== KDF.name || kdf.r !== KDF.r || kdf.p !== KDF.p || !Number.isInteger(kdf.N)) {
-    throw new SecretsFormatError('The secrets file uses key settings this Godbot does not know.')
+    throw new SecretsFormatError('The secrets file uses key settings this NativeCrew does not know.')
   }
   // Refuse a cost the file could use to wedge startup: at most 2^17 and a power of two.
   if (kdf.N < 1 << 14 || kdf.N > 1 << 17 || (kdf.N & (kdf.N - 1)) !== 0) {
-    throw new SecretsFormatError('The secrets file uses key settings this Godbot does not accept.')
+    throw new SecretsFormatError('The secrets file uses key settings this NativeCrew does not accept.')
   }
   return kdf
 }
@@ -122,7 +122,7 @@ export function decryptSecrets(envelope, passphrase) {
     throw new SecretsFormatError('The secrets file decrypted to something that is not JSON.')
   }
   if (payload === null || typeof payload !== 'object' || !Array.isArray(payload.secrets)) {
-    throw new SecretsFormatError('The secrets file decrypted to a form this Godbot does not know.')
+    throw new SecretsFormatError('The secrets file decrypted to a form this NativeCrew does not know.')
   }
   return payload
 }

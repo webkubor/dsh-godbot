@@ -520,7 +520,7 @@ export function install(rt, host) {
       if (url.pathname !== '/callback') { res.writeHead(404); res.end(); return }
       res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' })
       if (!url.searchParams.get('code')) {
-        res.end('<p style="font-family:sans-serif">Google sign-in did not finish — go back to Godbot and try again.</p>')
+        res.end('<p style="font-family:sans-serif">Google sign-in did not finish — go back to NativeCrew and try again.</p>')
         rt.warn('godbot: mail Google sign-in failed: %s', url.searchParams.get('error') ?? 'no code')
         return
       }

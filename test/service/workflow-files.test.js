@@ -44,7 +44,7 @@ test('team templates install runnable public workflows owned by the newly create
     botOf(id) { return this.state.bots[id] }, chatOf: id => id,
     expandCapabilities: () => [], scheduleEndpoint: async () => ({ tasks: [] }), readOnly: () => false,
     async ensureWorkspace() {}, async save() {},
-    async importGodbotMember({ origin, name, reservation }) {
+    async importNativeCrewMember({ origin, name, reservation }) {
       const bot = { id: reservation.id, name, godbotOrigin: origin }
       this.state.bots[bot.id] = bot
       return bot

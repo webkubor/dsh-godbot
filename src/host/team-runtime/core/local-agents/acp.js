@@ -1,7 +1,7 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // The Agent Client Protocol engine: one child process per route (or per working
 // folder when the CLI pins shell commands to its process cwd), ACP over stdio.
-// A process multiplexes sessions: each Godbot Session maps to one ACP session,
+// A process multiplexes sessions: each NativeCrew Session maps to one ACP session,
 // created or resumed with our loopback MCP server attached.
 import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -12,7 +12,7 @@ import { cleanEnv, findEngineExecutable, spawnAgent, terminateChild } from '../.
 import { acpMode } from './engines.js'
 
 const CLIENT = { name: 'godbot', version: '1' }
-// Godbot's loopback MCP server, which carries the Bot's team tools.
+// NativeCrew's loopback MCP server, which carries the Bot's team tools.
 const MCP_SERVER = 'godbot'
 const AUTH_ERROR = /not signed in|not logged in|login required|unauthorized|authentication/i
 const TIMEOUT_ERROR = /timed out|timeout/i
@@ -130,7 +130,7 @@ export class AcpEngine {
     try {
       const reply = await peer.request('initialize', {
         protocolVersion: 1,
-        // `session.compaction` asks for compaction_update notices, so Godbot hears when
+        // `session.compaction` asks for compaction_update notices, so NativeCrew hears when
         // the agent condenses its own context.
         clientCapabilities: { fs: { readTextFile: false, writeTextFile: false }, terminal: false, session: { compaction: {} } },
         clientInfo: CLIENT,
@@ -234,7 +234,7 @@ export class AcpEngine {
       if (session === undefined) return Promise.reject({ code: -32603, message: 'unknown session' })
       const options = (params?.options ?? []).map(option => ({ optionId: option.optionId, name: option.name, kind: option.kind }))
       const call = callOf(session, params?.toolCall)
-      // Cursor, Devin and Antigravity ask before MCP tool calls. A call to Godbot's
+      // Cursor, Devin and Antigravity ask before MCP tool calls. A call to NativeCrew's
       // own server is approved once here: toolsFor() already narrowed what the Bot
       // may call. Other tools, and an agent that offers no one-time allow, still ask.
       const once = ownToolCall(call) ? options.find(option => option.kind === 'allow_once') : undefined
@@ -338,7 +338,7 @@ export class AcpEngine {
     }
   }
 
-  // A new or resumed ACP session for one Godbot Session.
+  // A new or resumed ACP session for one NativeCrew Session.
   async open(dshSessionId, openArgs) {
     if (this.engine.cwdPerProcess) return this.openInWorker(dshSessionId, openArgs)
     const { cwd, mcp, resumeId, preset, model } = openArgs

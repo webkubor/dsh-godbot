@@ -2,7 +2,7 @@
 export const PROTOCOL_VERSION = 1
 // Where the Relay Server listens; a bare relay host means this path.
 export const LINK_PATH = '/v1/link'
-// Godbot's push extension (godbot-server docs/protocol.md §9). Only sides that offered it in
+// NativeCrew's push extension (godbot-server docs/protocol.md §9). Only sides that offered it in
 // hello and saw it in hello.ack send or receive the push.* frames.
 export const PUSH_CAPABILITY = 'push.fcm.v1'
 export const MAX_PUSH_CIPHERTEXT = 3072

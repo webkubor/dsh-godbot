@@ -171,7 +171,7 @@ export class NativeRoutines {
     } catch (error) {
       // A temporarily unwritable database must not take down the host or turn
       // an already-due occurrence into a zero-delay retry loop.
-      process.emitWarning('Godbot 自动化调度稍后重试：' + error.message, { code: 'GODBOT_ROUTINE_RETRY' })
+      process.emitWarning('NativeCrew 自动化调度稍后重试：' + error.message, { code: 'GODBOT_ROUTINE_RETRY' })
       this.timer = setTimeout(() => this.wake(), 30000)
       this.timer.unref()
     }

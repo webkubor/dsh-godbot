@@ -83,7 +83,7 @@ export function CliList({ agents, known, scanning, refresh, selected, onPick, ac
 }
 
 export const RunModeSwitch = ({ mode, setMode }) => h(Segmented, { label: t('Runs on'), value: mode },
-  h('button', { type: 'button', 'aria-pressed': mode === 'model', onClick: () => setMode('model') }, t('Godbot model')),
+  h('button', { type: 'button', 'aria-pressed': mode === 'model', onClick: () => setMode('model') }, t('NativeCrew model')),
   h('button', { type: 'button', 'aria-pressed': mode === 'local', onClick: () => setMode('local') }, t('Local agent')))
 
 export const ReadingModels = () => h('span', { className: 'bt-loading' },
@@ -113,8 +113,8 @@ export function RunModeCard({ bot, roster, actions, run, Card }) {
   return h(Card, { title: t('Runs on') },
     h('div', { className: 'bt-set-row bt-bs-row' },
       h('span', { className: 'bt-set-copy' },
-        h('span', { className: 'bt-bs-label' }, bot.engine === undefined ? t('Godbot model') : engineName, bot.engine === undefined ? null : h(AgentBadge, { engine: bot.engine })),
-        h('span', { className: 'bt-set-hint' }, bot.engine === undefined ? t('Answers with a model served by Godbot, with Godbot\'s tools.') : t('Answers through this CLI on your computer, with its own tools and sign-in.'))),
+        h('span', { className: 'bt-bs-label' }, bot.engine === undefined ? t('NativeCrew model') : engineName, bot.engine === undefined ? null : h(AgentBadge, { engine: bot.engine })),
+        h('span', { className: 'bt-set-hint' }, bot.engine === undefined ? t('Answers with a model served by NativeCrew, with NativeCrew\'s tools.') : t('Answers through this CLI on your computer, with its own tools and sign-in.'))),
       h('button', { type: 'button', className: 'bt-soft bt-soft-sm', 'aria-expanded': open, onClick: () => (open ? setOpen(false) : start()) }, open ? t('Cancel') : t('Change'))),
     open ? h('div', { className: 'bt-runmode' },
       h(RunModeSwitch, { mode, setMode: switchMode }),

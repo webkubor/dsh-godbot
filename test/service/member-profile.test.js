@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { setTimeout as sleep } from 'node:timers/promises'
 import test from 'node:test'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 import { profileChanges } from '../fixtures/member-team.js'
 
 async function until(read) {
@@ -22,7 +22,7 @@ async function setup(t, driverConfig = {}) {
   await mkdir(cwd); await mkdir(other)
   const connected = [], starts = [], configurations = [], unavailable = new Set()
   const stateDir = join(root, 'state')
-  const create = () => new GodbotService({ stateDir, driverConfig, openDriver: async options => {
+  const create = () => new NativeCrewService({ stateDir, driverConfig, openDriver: async options => {
     connected.push(options)
     if (unavailable.has(options.config.model)) throw new Error('Configured model unavailable')
     let nativeOptions = { currentModel: 'model-a', currentEffort: 'low' }

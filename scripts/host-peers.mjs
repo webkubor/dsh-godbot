@@ -33,7 +33,7 @@ export function hostPeerSpecs(pkg, executable = findExecutable('dsh')) {
   if (!executable) throw new Error('Cannot find the DSH executable on PATH')
   const manifest = findHostManifest(executable)
   const app = JSON.parse(readFileSync(manifest, 'utf8'))
-  if (app.version !== pkg.engines.dsh) throw new Error('Godbot requires DSH ' + pkg.engines.dsh + ', found ' + app.version)
+  if (app.version !== pkg.engines.dsh) throw new Error('NativeCrew requires DSH ' + pkg.engines.dsh + ', found ' + app.version)
   const fromHost = createRequire(manifest)
   return Object.entries(pkg.peerDependencies).map(([name, version]) => {
     const owner = realpathSync(fromHost.resolve(name + '/package.json'))

@@ -74,7 +74,7 @@ export function BrowserPage({ roster, actions, run, Section, Row }) {
       h('p', { className: 'bt-browser-note' }, t('A Bot can read the page you have open: its title, address and visible text. By default it cannot click, type, scroll or open pages.')),
       h(Row, {
         label: t('How to enable interactive browsing'),
-        hint: t('In this DSH profile, set browserPlugin to refs, script or task, then restart Godbot.'),
+        hint: t('In this DSH profile, set browserPlugin to refs, script or task, then restart NativeCrew.'),
       }),
       h('p', { className: 'bt-browser-note' }, t('With an interactive plugin, Bots browse, click and fill in forms. Posting, uploading, downloading and deleting ask you first unless you allow them here. Payments are always yours: the Bot hands the page to you.'))),
     h(Section, { title: t('Allowed actions') },

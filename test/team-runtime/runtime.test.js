@@ -36,7 +36,7 @@ async function profile(t, overlays = []) {
   return { home, owner, child, stateDir: join(home, 'godbot', 'web'), injected: () => injected }
 }
 
-test('the managed runtime loads one durable workspace in the owning Godbot profile', async t => {
+test('the managed runtime loads one durable workspace in the owning NativeCrew profile', async t => {
   const { home, owner, child, stateDir, injected } = await profile(t)
   const expectedHome = join(stateDir, 'team-workspace')
   await mkdir(expectedHome, { recursive: true })
@@ -67,7 +67,7 @@ test('the managed runtime loads one durable workspace in the owning Godbot profi
 
 })
 
-test('a Main Bot that kept the old defaults Chief, Chief of Staff becomes GodBot, Team Lead once', async t => {
+test('a Main Bot that kept the old defaults Chief, Chief of Staff becomes NativeCrew, Team Lead once', async t => {
   async function open(extra) {
     const { home, owner, stateDir } = await profile(t)
     const workspace = join(stateDir, 'team-workspace')
@@ -86,8 +86,8 @@ test('a Main Bot that kept the old defaults Chief, Chief of Staff becomes GodBot
     return { bots: Object.fromEntries(state.value.bots.map(bot => [bot.id, [bot.name, bot.role]])), saved }
   }
   const upgraded = await open()
-  assert.deepEqual(upgraded.bots, { m1: ['GodBot', 'Team Lead'], w1: ['Writer', undefined] })
-  assert.deepEqual([upgraded.saved.bots.m1.name, upgraded.saved.bots.m1.role], ['GodBot', 'Team Lead'])
+  assert.deepEqual(upgraded.bots, { m1: ['NativeCrew', 'Team Lead'], w1: ['Writer', undefined] })
+  assert.deepEqual([upgraded.saved.bots.m1.name, upgraded.saved.bots.m1.role], ['NativeCrew', 'Team Lead'])
   assert.deepEqual([upgraded.saved.mainRenamed, upgraded.saved.mainRoleRenamed], [true, true])
   // A team already renamed before the role changed gets only the new role.
   const named = await open({ mainRenamed: true })

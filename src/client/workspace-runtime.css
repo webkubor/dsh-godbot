@@ -1,5 +1,5 @@
 /* DSH mounts this overlay while a team workspace starts or cannot start. Its
-   card is a non-modal <dialog open> with the Godbot dialog classes (.gb-modal),
+   card is a non-modal <dialog open> with the NativeCrew dialog classes (.gb-modal),
    so it matches the workspace dialogs without blocking the shell while starting. */
 .gb-runtime {
   position: fixed;

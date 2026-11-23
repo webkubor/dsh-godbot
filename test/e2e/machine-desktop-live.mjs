@@ -1,4 +1,4 @@
-// Exercise an installed dsh web against the disposable Godbot Linux GTK display.
+// Exercise an installed dsh web against the disposable NativeCrew Linux GTK display.
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
 import { readFile, unlink, writeFile } from 'node:fs/promises'

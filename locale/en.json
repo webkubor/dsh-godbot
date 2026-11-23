@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "NativeCrew",
+    "description": "Native agent collaboration in isolated sandboxes, with automatic delegation and session handoff."
+  }
+}

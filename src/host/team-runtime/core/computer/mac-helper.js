@@ -2,7 +2,7 @@
 // macOS attributes Screen Recording for an application nested in another signed application to
 // the outer one, so a grant to "DSH Computer Use" does nothing while the helper lies inside
 // the desktop app. The provider runs a copy from outside the bundle: the copy keeps DeepSeek's
-// signature, so the grant stays with the helper and survives Godbot's own updates.
+// signature, so the grant stays with the helper and survives NativeCrew's own updates.
 import { execFile } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import { mkdir, readdir, readFile, rename, rm } from 'node:fs/promises'

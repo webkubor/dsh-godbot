@@ -1,7 +1,7 @@
 // Modified for Godbot. See THIRD_PARTY_NOTICES.
 // Changing several Bots to one model from Settings. Kept free of React so the rules
 // are testable: how a Bot runs is its own property, so a Bot on a local agent keeps
-// that and is reported as skipped instead of being moved onto a Godbot model.
+// that and is reported as skipped instead of being moved onto a NativeCrew model.
 import { isLocalRoute } from './agent-routes.js'
 
 export const SKIP_LOCAL_AGENT = 'local-agent'

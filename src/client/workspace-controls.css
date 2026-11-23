@@ -207,7 +207,7 @@
   font-weight: 500;
 }
 
-/* A failure note inside a Godbot panel: the same note the Godbot dialogs show
+/* A failure note inside a NativeCrew panel: the same note the NativeCrew dialogs show
    (.gb-modal-note[role=alert]). It also renders in the Bot workspace, outside
    .gb-task-settings and .gb-modal, so it carries its own class. */
 .gb-error {

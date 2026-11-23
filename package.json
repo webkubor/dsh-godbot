@@ -1,20 +1,23 @@
 {
-  "name": "dsh-godbot",
-  "version": "0.2.0-rc.27",
-  "description": "Control native agent sessions and collaborate in a local dsh team.",
+  "name": "@dsh-plugins/nativecrew",
+  "version": "0.2.0-rc.28",
+  "description": "NativeCrew 原生协作：隔离沙箱中的原生 Agent 自动派工与任务交接。",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/renjiegod/dsh-godbot.git"
+    "url": "git+https://github.com/webkubor/nativecrew.git"
   },
-  "homepage": "https://github.com/renjiegod/dsh-godbot#readme",
+  "homepage": "https://github.com/webkubor/nativecrew#readme",
   "type": "module",
   "exports": {
     ".": "./src/host/plugin.js",
     "./client": "./client.js",
     "./assets/godbot-icon-*.png": "./src/host/assets/godbot-icon-*.png",
     "./web-search": "./src/host/workspace-search.js",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./icon": "./icon.svg",
+    "./locale/*.json": "./locale/*.json",
+    "./assets/nativecrew-icon-*.png": "./src/host/assets/nativecrew-icon-*.png"
   },
   "files": [
     "bin",
@@ -27,7 +30,10 @@
     "THIRD_PARTY_NOTICES",
     "licenses",
     "FEATURE_PARITY.md",
-    "README.md"
+    "README.md",
+    "icon.svg",
+    "locale",
+    "brand"
   ],
   "dsh": {
     "manifestVersion": 1,
@@ -88,6 +94,14 @@
   },
   "bin": {
     "godbot": "bin/godbot.mjs",
-    "godbot-computer": "computer-host/cli.mjs"
-  }
+    "godbot-computer": "computer-host/cli.mjs",
+    "nativecrew": "bin/nativecrew.mjs"
+  },
+  "bugs": {
+    "url": "https://github.com/webkubor/nativecrew/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "icon": "./icon.svg"
 }

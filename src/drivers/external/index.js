@@ -310,7 +310,7 @@ export async function openExternal({ kind, cwd, resumeId, onEvent, mcp, config =
       const turn = (active = { id: turnId, early: [], usageCount: 0 })
       const blocks = Array.isArray(text) ? [...text] : [{ type: 'text', text }]
       if (teamTurnKey && capabilities.teamTools) blocks.push({ type: 'text',
-        text: '[Godbot team tools] For send_message, assign_task, and report_result in this turn, pass turnContext=' + teamTurnKey + '. Keep it out of messages and reports.' })
+        text: '[NativeCrew team tools] For send_message, assign_task, and report_result in this turn, pass turnContext=' + teamTurnKey + '. Keep it out of messages and reports.' })
       try {
         if (isAcp) {
           void engine.prompt(session, blocks, {}).catch((error) => {

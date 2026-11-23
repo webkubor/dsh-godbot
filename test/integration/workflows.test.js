@@ -5,12 +5,12 @@ import { mkdirSync, mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { setTimeout as delay } from 'node:timers/promises'
-import { GodbotService } from '../fixtures/member-service.js'
+import { NativeCrewService } from '../fixtures/member-service.js'
 
 async function fixture(t) {
   const dir = mkdtempSync(join(tmpdir(), 'godbot-workflow-'))
   const turns = new Map()
-  const open = () => new GodbotService({
+  const open = () => new NativeCrewService({
     stateDir: join(dir, 'state'),
     openDriver: async ({ memberId, onEvent }) => ({
       nativeId: memberId, capabilities: {},

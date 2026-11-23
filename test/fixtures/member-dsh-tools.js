@@ -15,7 +15,7 @@ export function registerMemberTools(agent, memberId, memberTool, isAuthorized) {
           execute: (input, execution) => {
             execution.signal.throwIfAborted()
             if (execution.agent !== agent || !isAuthorized())
-              throw new Error('This turn does not own the Godbot member')
+              throw new Error('This turn does not own the NativeCrew member')
             return memberTool(memberId, tool.name, input, execution.callId)
           },
         }),
@@ -31,9 +31,9 @@ export function registerMemberTools(agent, memberId, memberTool, isAuthorized) {
 }
 
 const commandHelp =
-  '打开左侧栏的 Godbot 工作台控制团队。在已绑定的 dsh 成员会话中可以使用 /godbot team、/godbot members、/godbot send <成员> <消息>、/godbot stop。'
+  '打开左侧栏的 NativeCrew 工作台控制团队。在已绑定的 dsh 成员会话中可以使用 /godbot team、/godbot members、/godbot send <成员> <消息>、/godbot stop。'
 
-export async function runGodbotCommand(ctx, service, { agent, rawInput, signal }) {
+export async function runNativeCrewCommand(ctx, service, { agent, rawInput, signal }) {
   signal.throwIfAborted()
   const input = rawInput.trim()
   if (!input || input === 'help') return { kind: 'success', text: commandHelp }
@@ -67,7 +67,7 @@ export async function runGodbotCommand(ctx, service, { agent, rawInput, signal }
     if (target && target !== member.id && target !== member.name)
       return {
         kind: 'error',
-        text: 'A member can stop its own turn. Open the Godbot panel to stop another agent.',
+        text: 'A member can stop its own turn. Open the NativeCrew panel to stop another agent.',
       }
     if (!member.activeTurnId) return { kind: 'success', text: member.name + ' is idle.' }
     const result = await service.dispatch({
@@ -99,11 +99,11 @@ export function registerCommand(ctx, service) {
   ctx.commands.register({
     name: 'godbot',
     definitionId: 'dsh-godbot',
-    description: 'Open the Godbot agent team controls',
+    description: 'Open the NativeCrew agent team controls',
     input: { hint: 'team | members | send <member> <message> | stop' },
     handler: async (invocation) => {
       try {
-        return await runGodbotCommand(ctx, service, invocation)
+        return await runNativeCrewCommand(ctx, service, invocation)
       } catch (error) {
         return { kind: 'error', text: error.message }
       }

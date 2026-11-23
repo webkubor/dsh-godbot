@@ -372,7 +372,7 @@ test(
     const peer = identity()
     client = await connect(parseMachinePairingUri((await admin('pair')).uri), peer)
     const id = peer.deviceId
-    await assert.rejects(admin('remember-portal', id, 'desktop.view'), /corresponding Godbot desktop grant/)
+    await assert.rejects(admin('remember-portal', id, 'desktop.view'), /corresponding NativeCrew desktop grant/)
     await admin('grant', id, 'desktop.control')
     await admin('remember-portal', id, 'desktop.view')
     await admin('remember-portal', id, 'desktop.control')

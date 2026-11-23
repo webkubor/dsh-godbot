@@ -92,7 +92,7 @@ function entries(base, relative = '') {
 }
 const launch = [
   '#!/bin/sh',
-  '# Godbot Computer Host launcher',
+  '# NativeCrew Computer Host launcher',
   'set -eu',
   'machine_root="$HOME/.local/share/godbot-computer"',
   'if [ -d "$machine_root/desktop-current/native" ] && [ -z "${GODBOT_DESKTOP_RUNTIME:-}" ]; then',
@@ -232,7 +232,7 @@ try {
       if (process.platform !== 'darwin') throw Error('Build the signed macOS add-on on a Mac')
       const app =
         args['mac-app'] ||
-        join(homedir(), 'Library/Application Support/Godbot Computer Host/native/Godbot Computer Host.app')
+        join(homedir(), 'Library/Application Support/NativeCrew Computer Host/native/NativeCrew Computer Host.app')
       run('codesign', ['--verify', '--strict', '-R=identifier "io.github.renjiegod.godbot.computerhost"', app])
       const capture = join(app, 'Contents/MacOS/godbot-screen')
       run('lipo', ['-verify_arch', 'arm64', capture])
@@ -247,12 +247,12 @@ try {
       if (compiled.protocol !== 1 || compiled.publisherKeySha256 !== hash(encoded)) {
         throw new Error('Rebuild the Mac capture app with the public key for this host signing key')
       }
-      cpSync(app, join(native, 'Godbot Computer Host.app'), { recursive: true })
+      cpSync(app, join(native, 'NativeCrew Computer Host.app'), { recursive: true })
       run('codesign', [
         '--verify',
         '--strict',
         '-R=identifier "io.github.renjiegod.godbot.computerhost"',
-        join(native, 'Godbot Computer Host.app'),
+        join(native, 'NativeCrew Computer Host.app'),
       ])
     } else {
       cp(join(root, 'computer-host/native/linux/desktop.py'), join(native, 'godbot-screen'))

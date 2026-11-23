@@ -1,2 +1,2 @@
-export const webIconFile = 'godbot-icon-a4e5427b7eeb.png'
-export const webIconUrl = './plugins/dsh-godbot/assets/' + webIconFile
+export const webIconFile = 'nativecrew-icon-80cd460a88ce.png'
+export const webIconUrl = './plugins/@dsh-plugins/nativecrew/assets/' + webIconFile

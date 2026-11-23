@@ -5,7 +5,7 @@ import { parseArgs } from 'node:util'
 import { defaultHome, localRequest } from './local.js'
 import { startComputerHost } from './runtime.js'
 
-const help = `Godbot Computer Host
+const help = `NativeCrew Computer Host
 
   godbot-computer start --relay wss://<relay>/v1/link [--name NAME]
   godbot-computer status | controllers | sessions | history
@@ -75,7 +75,7 @@ async function main() {
     }
     process.on('SIGTERM', stop)
     process.on('SIGINT', stop)
-    console.log('Godbot Computer Host started for ' + host.deviceId)
+    console.log('NativeCrew Computer Host started for ' + host.deviceId)
     return
   }
   const result = await localRequest(directory, command, args)
@@ -89,7 +89,7 @@ async function main() {
       qr.addData(result.uri)
       qr.make()
       console.log(qr.createASCII(1, 2))
-      console.log('Scan with Godbot. Expires ' + new Date(result.expiresAt).toISOString())
+      console.log('Scan with NativeCrew. Expires ' + new Date(result.expiresAt).toISOString())
     } else console.log(result.uri)
   } else console.log(JSON.stringify(result, null, 2))
 }

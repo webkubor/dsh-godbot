@@ -1,7 +1,7 @@
 import { Fragment, createElement as h, useCallback, useEffect, useRef, useState } from 'react'
 import { Interaction } from './controls.js'
 import { Icon } from './chat-ui.js'
-import { GodbotModal } from './modal.js'
+import { NativeCrewModal } from './modal.js'
 import { TeamTemplates } from './team-templates.js'
 
 const title = '工作台收件箱'
@@ -41,7 +41,7 @@ function Inbox({ client, close }) {
     await reload()
     if (mounted.current) setBusy(false)
   }
-  return h(GodbotModal, { title, close },
+  return h(NativeCrewModal, { title, close },
     (error || loadError) && h('p', { className: 'gb-modal-note', role: 'alert' }, error || loadError),
     !state && !loadError && h('p', { className: 'gb-modal-note', role: 'status' }, '正在读取…'),
     state?.rows.length === 0 && h('p', { className: 'gb-modal-note' },

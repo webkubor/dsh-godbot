@@ -1,4 +1,4 @@
-// PHONE-ANDROID: the real Godbot Android app on an emulator pairs with this Godbot through a
+// PHONE-ANDROID: the real NativeCrew Android app on an emulator pairs with this NativeCrew through a
 // godbot-server relay, loads the team, sends the Main Bot a message and shows the Bot's reply.
 // Needs GODBOT_RELAY_BIN (godbot-relay), GODBOT_ANDROID_E2E (a godbot-app checkout with a built
 // APK) and a running emulator; ANDROID_SERIAL picks one when several are attached.
@@ -55,7 +55,7 @@ export default async function check({ makeHost, candidate, reportDir, scratch, n
     await host.install(candidate)
     await host.start()
     await channel(host, 'phone-set', { server: relay.url, on: true })
-    await until(async () => (await channel(host, 'phone-set', {})).status === 'online', 'Godbot online at the relay', 30_000)
+    await until(async () => (await channel(host, 'phone-set', {})).status === 'online', 'NativeCrew online at the relay', 30_000)
     const { pairing } = await channel(host, 'phone-pair')
     assert.ok(pairing.uri.startsWith('godbot://pair?'))
 
@@ -83,7 +83,7 @@ export default async function check({ makeHost, candidate, reportDir, scratch, n
     ui.tap(await ui.waitFor(nodes => ui.find(nodes, 'Settings', '设置'), 'the Settings button'))
     const keepAlive = nodes => nodes.find(node => node.cls.endsWith('Switch') && /Keep connected in background|后台保持连接/.test(node.desc))
     ui.tap(await ui.waitFor(keepAlive, 'the keep-alive switch'))
-    await until(() => /GodbotKeepAlive|KeepAliveService|keepalive/i.test(ui.shell(`dumpsys activity services ${ui.PACKAGE}`)), 'the keep-alive service running', 20_000)
+    await until(() => /NativeCrewKeepAlive|KeepAliveService|keepalive/i.test(ui.shell(`dumpsys activity services ${ui.PACKAGE}`)), 'the keep-alive service running', 20_000)
     ui.screenshot('phone-android-keepalive-on')
     ui.shell('input keyevent KEYCODE_HOME')
     const background = 'BACKGROUND-' + Date.now()
