@@ -335,7 +335,7 @@ var workspaceTheme = {
     text: "#17293d",
     user: "#203e58",
     userText: "#ffffff",
-    accent: "#126975"
+    accent: "#b54425"
   },
   dark: {
     bg: "#101923",
@@ -345,7 +345,7 @@ var workspaceTheme = {
     text: "#e6f0f5",
     user: "#24485b",
     userText: "#edfaff",
-    accent: "#82d7df"
+    accent: "#ffa47a"
   }
 };
 function surfaceTokens(palette) {

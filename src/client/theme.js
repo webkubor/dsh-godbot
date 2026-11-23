@@ -4,11 +4,11 @@ export const workspaceTheme = {
   label: 'NativeCrew',
   light: {
     bg: '#fbfcfd', sidebar: '#edf2f5', bubble: '#ecf1f5', card: '#ffffff',
-    text: '#17293d', user: '#203e58', userText: '#ffffff', accent: '#126975',
+    text: '#17293d', user: '#203e58', userText: '#ffffff', accent: '#b54425',
   },
   dark: {
     bg: '#101923', sidebar: '#141f2c', bubble: '#223345', card: '#1b2938',
-    text: '#e6f0f5', user: '#24485b', userText: '#edfaff', accent: '#82d7df',
+    text: '#e6f0f5', user: '#24485b', userText: '#edfaff', accent: '#ffa47a',
   },
 }
 
