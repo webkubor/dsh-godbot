@@ -7,6 +7,11 @@
 // runtime lives inside its bundle and only its own updater moves it, to the
 // newest release it finds, so the client offers it only when that release is
 // the verified one.
+//
+// This path only ever moves DSH forward. A bot verified against an older DSH
+// than the one running offers nothing: the host is not downgraded to make a
+// plugin loadable. A plugin that cannot run on the installed DSH stays
+// unloaded until a bot verified against that DSH is released.
 import { spawn } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 
@@ -41,12 +46,16 @@ export function install(rt) {
   // A newer `minBot` than the running bot gates the offer: the bot goes first.
   const blocked = () => status.blockedBy !== null && newer(status.blockedBy, PKG.version)
 
+  // Forward only: the verified release is offered when it is newer than the
+  // running one. An older verified release is not an update, it is a downgrade.
+  const movesForward = () =>
+    status.current !== null && status.verified !== null && newer(status.verified, status.current)
+
   const view = () => ({
     current: status.current, verified: status.verified, kind: status.kind, blockedBy: status.blockedBy,
     checkedAt: status.checkedAt, phase: status.phase, installed: status.installed, error: status.error,
     // Nothing is offered without a current version to compare against.
-    available: status.phase !== 'installed' && target !== null && status.current !== null
-      && status.verified !== null && status.verified !== status.current && !blocked(),
+    available: status.phase !== 'installed' && target !== null && movesForward() && !blocked(),
   })
 
   const currentDsh = () => runningDsh(ctx)
@@ -106,9 +115,7 @@ export function install(rt) {
       // A release may gate the DSH update on a newer bot: offer nothing until
       // the bot itself is at least `minBot`.
       status.blockedBy = cleanVersion(newestDeclared?.minBot)
-      target = status.current !== null && status.verified !== null && status.verified !== status.current
-        ? { version: status.verified }
-        : null
+      target = movesForward() ? { version: status.verified } : null
       status.error = null
     } catch (error) {
       rt.warn('godbot: dsh update check failed: %s', error?.message ?? error)
@@ -135,6 +142,11 @@ export function install(rt) {
     if (target === null || blocked()) throw new Error('No DSH update is available')
     if (status.kind !== 'npm') throw new Error('This DSH updates with its app')
     const chosen = target
+    // The install site refuses a downgrade even on a stale target: nothing here
+    // may move the host backwards to suit this plugin.
+    if (!newer(chosen.version, status.current)) {
+      throw new Error(`Refusing to move DSH from ${status.current} to ${chosen.version}: this path only upgrades`)
+    }
     Object.assign(status, { phase: 'installing', error: null })
     const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm'
     const args = ['install', '-g', `${DSH_PACKAGE}@${chosen.version}`]

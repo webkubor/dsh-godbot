@@ -47,7 +47,7 @@
 | --- | --- |
 | 操作系统 | macOS（首版支持范围） |
 | Node.js | 24.9 或以上，并准备好 npm 和 pnpm |
-| DSH | DSH Web `0.2.2-rc.5` |
+| DSH | DSH Web `0.2.2-rc.5`（本版本验证过的宿主）。宿主只向前走：**不要为了装插件把 DSH 降级**，宿主比这新时插件停用即可，等验证过新宿主的 NativeCrew 发布 |
 | Agent CLI | 需要使用的 Claude Code、Codex 或 Antigravity，并已在**同一系统用户**的终端中完成正常登录 |
 | 原生 dsh 成员 | 目标 profile 中至少配置一条可用的模型路由 |
 
@@ -55,10 +55,10 @@
 
 ```sh
 # 首次使用 DSH 时安装
-npm install -g @deepseek-ai/dsh@0.2.2-rc.5
+npm install -g @deepseek-ai/dsh
 
-git clone https://github.com/renjiegod/dsh-godbot.git
-cd dsh-godbot
+git clone https://github.com/webkubor/nativecrew.git
+cd nativecrew
 dsh --version
 npm ci
 node scripts/install-local.mjs web

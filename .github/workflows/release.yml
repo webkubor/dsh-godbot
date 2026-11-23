@@ -1,6 +1,6 @@
-name: Release Godbot
+name: Release NativeCrew
 # Push a tag vX.Y.Z (matching package.json) to publish the packed plugin as a
-# GitHub release. Installed Godbots find it through the releases API, check the
+# GitHub release. Installed NativeCrews find it through the releases API, check the
 # archive against the SHA-256 GitHub records for it (and the .sha256 beside it),
 # and install it through DSH's plugin manager.
 on:
@@ -51,7 +51,7 @@ jobs:
         run: |
           mkdir -p dist
           package=$(npm pack --pack-destination dist --silent)
-          test "$package" = "dsh-godbot-$VERSION.tgz"
+          test "$package" = "dsh-plugins-nativecrew-$VERSION.tgz"
           (cd dist && shasum -a 256 "$package" > "$package.sha256" && cat "$package.sha256")
       - name: Publish the release
         shell: bash
@@ -61,8 +61,8 @@ jobs:
           flags=()
           case "$VERSION" in *-*) flags+=(--prerelease) ;; esac
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" "dist/dsh-godbot-$VERSION.tgz" "dist/dsh-godbot-$VERSION.tgz.sha256" --clobber
+            gh release upload "$TAG" "dist/dsh-plugins-nativecrew-$VERSION.tgz" "dist/dsh-plugins-nativecrew-$VERSION.tgz.sha256" --clobber
           else
-            gh release create "$TAG" "dist/dsh-godbot-$VERSION.tgz" "dist/dsh-godbot-$VERSION.tgz.sha256" \
-              --title "Godbot $VERSION" --generate-notes --verify-tag "${flags[@]}"
+            gh release create "$TAG" "dist/dsh-plugins-nativecrew-$VERSION.tgz" "dist/dsh-plugins-nativecrew-$VERSION.tgz.sha256" \
+              --title "NativeCrew $VERSION" --generate-notes --verify-tag "${flags[@]}"
           fi
