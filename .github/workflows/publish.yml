@@ -1,0 +1,67 @@
+name: Publish NativeCrew to npm
+
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Annotated release tag to publish
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-publish-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.event_name == 'push' || github.ref == 'refs/heads/main'
+    runs-on: macos-latest
+    timeout-minutes: 25
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify release tag
+        shell: bash
+        run: |
+          [[ "$RELEASE_TAG" =~ ^(nativecrew-)?v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]
+          ref="refs/tags/$RELEASE_TAG"
+          test "$(git cat-file -t "$ref")" = tag
+          git merge-base --is-ancestor "$ref^{commit}" origin/main
+          git checkout --detach "$ref^{commit}"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+      - name: Verify package identity and choose npm tag
+        shell: bash
+        run: |
+          version=$(node -p "require('./package.json').version")
+          test "$(node -p "require('./package.json').name")" = '@dsh-plugins/nativecrew'
+          test "${RELEASE_TAG#nativecrew-}" = "v$version"
+          case "$version" in
+            *-*) echo 'NPM_DIST_TAG=next' >> "$GITHUB_ENV" ;;
+            *) echo 'NPM_DIST_TAG=latest' >> "$GITHUB_ENV" ;;
+          esac
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: Pack release
+        shell: bash
+        run: |
+          mkdir -p dist
+          archive=$(npm pack --pack-destination dist --silent)
+          echo "NPM_ARCHIVE=dist/$archive" >> "$GITHUB_ENV"
+      - name: Publish with npm Trusted Publishing
+        run: npm publish "$NPM_ARCHIVE" --access public --tag "$NPM_DIST_TAG"
