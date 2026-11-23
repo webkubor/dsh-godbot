@@ -17,17 +17,15 @@
 
 ## Why NativeCrew
 
-Have Codex implement a page and Claude Code review it. Open either agent's original conversation in DSH to check the work. Save the handoff as a workflow to run it again with its own reports and review history.
-
 | What you need | Coordinating CLI sessions by hand | With NativeCrew |
 | --- | --- | --- |
-| Hand off work | Copy requirements and results between terminals | Assign workflow steps by owner and condition |
-| Review a delivery | Find the output and conversation in separate terminals | Open the owner's conversation and report from the task board |
-| Isolate accounts and project files | Maintain separate environments yourself | Bind a Bot to a configured sandbox account and allowed directories |
+| Hand off work automatically | ❌ Copy requirements and results between terminals | ✅ Assign workflow steps by owner and condition |
+| Review a delivery in one place | ❌ Find the output and conversation in separate terminals | ✅ Open the owner's conversation and report from the task board |
+| Isolate accounts and project files per member | Maintain separate environments yourself | ✅ Bind a Bot to a configured sandbox account and allowed directories |
 
-- **Native sessions.** Codex uses app-server, Claude Code uses stream-json, and Antigravity uses ACP. Each CLI handles its own sign-in and model requests.
-- **Delegation with review.** Assign owners and acceptance criteria. Agents run in their own conversations and report back. Review the evidence on the task board and accept or return the work.
-- **Isolation per Bot.** Bind members to their own configured sandbox account, session, and approved project directories. Provider terms apply to each account and authentication method.
+- 🔌 **Native sessions.** Codex uses app-server, Claude Code uses stream-json, and Antigravity uses ACP. Each CLI handles its own sign-in and model requests.
+- 📋 **Delegation with review.** Assign owners and acceptance criteria. Agents run in their own conversations and report back. Review the evidence on the task board and accept or return the work.
+- 🔒 **Isolation per Bot.** Bind members to their own configured sandbox account, session, and approved project directories. Provider terms apply to each account and authentication method.
 
 ## Install
 
@@ -41,7 +39,9 @@ Verified on **macOS with DSH Web `0.2.2-rc.5`**. To connect a native agent, inst
 
 ## See it in DSH
 
-![The NativeCrew task board shows the owner, acceptance criteria, submitted evidence, and review controls](https://raw.githubusercontent.com/webkubor/nativecrew/main/docs/media/task-board.png)
+For a page delivery, have Codex implement it and Claude Code review it. Open the assigned agent's conversation in DSH to check the evidence.
+
+![The NativeCrew task board shows the owner, acceptance criteria, submitted evidence, and review controls](https://raw.githubusercontent.com/webkubor/nativecrew/main/assets/task-board.png)
 
 This screenshot shows NativeCrew `0.2.0-rc.28` in DSH Web with the Chinese interface. A local test model submitted the sample report through the actual task flow.
 
