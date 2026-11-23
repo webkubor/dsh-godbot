@@ -41,9 +41,9 @@ Verified on **macOS with DSH Web `0.2.2-rc.5`**. To connect a native agent, inst
 
 For a page delivery, have Codex implement it and Claude Code review it. Open the assigned agent's conversation in DSH to check the evidence.
 
-![The NativeCrew task board shows the owner, acceptance criteria, submitted evidence, and review controls](https://raw.githubusercontent.com/webkubor/nativecrew/main/assets/task-board.png)
+![The NativeCrew task board shows the owner, acceptance criteria, submitted evidence, and review controls](https://raw.githubusercontent.com/webkubor/nativecrew/main/assets/task-board-terracotta.png)
 
-This screenshot shows NativeCrew `0.2.0-rc.28` in DSH Web with the Chinese interface. A local test model submitted the sample report through the actual task flow.
+This screenshot shows the current NativeCrew development build with the terracotta theme in DSH Web. The interface language is Chinese. A local test model submitted the sample report through the actual task flow.
 
 **Try one assignment.** Open **Settings → Task board → Assign task**, pick a configured Bot, and add acceptance criteria. When the Bot reports back, review its evidence on the board. Save repeated assignments as a workflow.
 
