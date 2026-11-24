@@ -52,3 +52,4 @@ This screenshot shows the NativeCrew terracotta theme running in DSH Web. The in
 - [Workbench reference (Chinese)](https://github.com/webkubor/nativecrew/blob/main/docs/workbench-reference.md) covers sandboxes, workflows, automation, CLI commands, and migration.
 - See the [verification notes](https://github.com/webkubor/nativecrew/blob/main/VERIFICATION.md) for test coverage. Include your DSH and plugin versions when you [report an issue](https://github.com/webkubor/nativecrew/issues).
 - [MIT License](https://github.com/webkubor/nativecrew/blob/main/LICENSE) · [Upstream and third-party notices](https://github.com/webkubor/nativecrew/blob/main/THIRD_PARTY_NOTICES)
+- The NativeCrew mark was designed with [logo-brand-designer](https://webkubor.github.io/logo-brand-designer/en/), an open-source skill for transparent SVG logos.

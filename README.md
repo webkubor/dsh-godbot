@@ -52,3 +52,4 @@
 - [工作台参考](https://github.com/webkubor/nativecrew/blob/main/docs/workbench-reference.md)涵盖沙箱、工作流、自动化、命令行和备份迁移。
 - [验证记录](https://github.com/webkubor/nativecrew/blob/main/VERIFICATION.md)说明测试范围。[报告问题](https://github.com/webkubor/nativecrew/issues)时，请带上 DSH 和插件版本。
 - [MIT License](https://github.com/webkubor/nativecrew/blob/main/LICENSE) · [上游项目与第三方许可](https://github.com/webkubor/nativecrew/blob/main/THIRD_PARTY_NOTICES)
+- 品牌 Logo 使用 [logo-brand-designer](https://webkubor.github.io/logo-brand-designer/) 设计。也可以用这个开源 Skill 为自己的项目设计透明底 SVG 标识。
